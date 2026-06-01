@@ -1,0 +1,784 @@
+{
+  "tournament": "FIFA World Cup 2026",
+  "hosts": ["United States", "Canada", "Mexico"],
+  "startDate": "2026-06-11",
+  "endDate": "2026-07-19",
+  "fifaRankingDate": "2026-04-01",
+  "teams": [
+    { "name": "Mexico", "code": "MEX", "group": "A", "confederation": "CONCACAF", "fifaRanking": 15 },
+    { "name": "South Africa", "code": "RSA", "group": "A", "confederation": "CAF", "fifaRanking": 60 },
+    { "name": "South Korea", "code": "KOR", "group": "A", "confederation": "AFC", "fifaRanking": 25 },
+    { "name": "Czech Republic", "code": "CZE", "group": "A", "confederation": "UEFA", "fifaRanking": 41 },
+    { "name": "Canada", "code": "CAN", "group": "B", "confederation": "CONCACAF", "fifaRanking": 30 },
+    { "name": "Bosnia and Herzegovina", "code": "BIH", "group": "B", "confederation": "UEFA", "fifaRanking": 65 },
+    { "name": "Qatar", "code": "QAT", "group": "B", "confederation": "AFC", "fifaRanking": 55 },
+    { "name": "Switzerland", "code": "SUI", "group": "B", "confederation": "UEFA", "fifaRanking": 19 },
+    { "name": "Brazil", "code": "BRA", "group": "C", "confederation": "CONMEBOL", "fifaRanking": 6 },
+    { "name": "Morocco", "code": "MAR", "group": "C", "confederation": "CAF", "fifaRanking": 8 },
+    { "name": "Haiti", "code": "HAI", "group": "C", "confederation": "CONCACAF", "fifaRanking": 83 },
+    { "name": "Scotland", "code": "SCO", "group": "C", "confederation": "UEFA", "fifaRanking": 43 },
+    { "name": "United States", "code": "USA", "group": "D", "confederation": "CONCACAF", "fifaRanking": 16 },
+    { "name": "Paraguay", "code": "PAR", "group": "D", "confederation": "CONMEBOL", "fifaRanking": 40 },
+    { "name": "Australia", "code": "AUS", "group": "D", "confederation": "AFC", "fifaRanking": 27 },
+    { "name": "Turkey", "code": "TUR", "group": "D", "confederation": "UEFA", "fifaRanking": 22 },
+    { "name": "Germany", "code": "GER", "group": "E", "confederation": "UEFA", "fifaRanking": 10 },
+    { "name": "Curaçao", "code": "CUW", "group": "E", "confederation": "CONCACAF", "fifaRanking": 82 },
+    { "name": "Ivory Coast", "code": "CIV", "group": "E", "confederation": "CAF", "fifaRanking": 34 },
+    { "name": "Ecuador", "code": "ECU", "group": "E", "confederation": "CONMEBOL", "fifaRanking": 23 },
+    { "name": "Netherlands", "code": "NED", "group": "F", "confederation": "UEFA", "fifaRanking": 7 },
+    { "name": "Japan", "code": "JPN", "group": "F", "confederation": "AFC", "fifaRanking": 18 },
+    { "name": "Sweden", "code": "SWE", "group": "F", "confederation": "UEFA", "fifaRanking": 38 },
+    { "name": "Tunisia", "code": "TUN", "group": "F", "confederation": "CAF", "fifaRanking": 44 },
+    { "name": "Belgium", "code": "BEL", "group": "G", "confederation": "UEFA", "fifaRanking": 9 },
+    { "name": "Egypt", "code": "EGY", "group": "G", "confederation": "CAF", "fifaRanking": 29 },
+    { "name": "Iran", "code": "IRN", "group": "G", "confederation": "AFC", "fifaRanking": 21 },
+    { "name": "New Zealand", "code": "NZL", "group": "G", "confederation": "OFC", "fifaRanking": 85 },
+    { "name": "Spain", "code": "ESP", "group": "H", "confederation": "UEFA", "fifaRanking": 2 },
+    { "name": "Cape Verde", "code": "CPV", "group": "H", "confederation": "CAF", "fifaRanking": 69 },
+    { "name": "Saudi Arabia", "code": "KSA", "group": "H", "confederation": "AFC", "fifaRanking": 61 },
+    { "name": "Uruguay", "code": "URU", "group": "H", "confederation": "CONMEBOL", "fifaRanking": 17 },
+    { "name": "France", "code": "FRA", "group": "I", "confederation": "UEFA", "fifaRanking": 1 },
+    { "name": "Senegal", "code": "SEN", "group": "I", "confederation": "CAF", "fifaRanking": 14 },
+    { "name": "Iraq", "code": "IRQ", "group": "I", "confederation": "AFC", "fifaRanking": 57 },
+    { "name": "Norway", "code": "NOR", "group": "I", "confederation": "UEFA", "fifaRanking": 31 },
+    { "name": "Argentina", "code": "ARG", "group": "J", "confederation": "CONMEBOL", "fifaRanking": 3 },
+    { "name": "Algeria", "code": "ALG", "group": "J", "confederation": "CAF", "fifaRanking": 28 },
+    { "name": "Austria", "code": "AUT", "group": "J", "confederation": "UEFA", "fifaRanking": 24 },
+    { "name": "Jordan", "code": "JOR", "group": "J", "confederation": "AFC", "fifaRanking": 63 },
+    { "name": "Portugal", "code": "POR", "group": "K", "confederation": "UEFA", "fifaRanking": 5 },
+    { "name": "DR Congo", "code": "COD", "group": "K", "confederation": "CAF", "fifaRanking": 46 },
+    { "name": "Uzbekistan", "code": "UZB", "group": "K", "confederation": "AFC", "fifaRanking": 50 },
+    { "name": "Colombia", "code": "COL", "group": "K", "confederation": "CONMEBOL", "fifaRanking": 13 },
+    { "name": "England", "code": "ENG", "group": "L", "confederation": "UEFA", "fifaRanking": 4 },
+    { "name": "Croatia", "code": "CRO", "group": "L", "confederation": "UEFA", "fifaRanking": 11 },
+    { "name": "Ghana", "code": "GHA", "group": "L", "confederation": "CAF", "fifaRanking": 74 },
+    { "name": "Panama", "code": "PAN", "group": "L", "confederation": "CONCACAF", "fifaRanking": 33 }
+  ],
+  "venues": [
+    { "name": "Estadio Azteca", "city": "Mexico City", "country": "Mexico" },
+    { "name": "Estadio Akron", "city": "Guadalajara", "country": "Mexico" },
+    { "name": "Estadio BBVA", "city": "Monterrey", "country": "Mexico" },
+    { "name": "BMO Field", "city": "Toronto", "country": "Canada" },
+    { "name": "BC Place", "city": "Vancouver", "country": "Canada" },
+    { "name": "MetLife Stadium", "city": "East Rutherford, NJ", "country": "United States" },
+    { "name": "SoFi Stadium", "city": "Los Angeles, CA", "country": "United States" },
+    { "name": "AT&T Stadium", "city": "Arlington, TX", "country": "United States" },
+    { "name": "Hard Rock Stadium", "city": "Miami Gardens, FL", "country": "United States" },
+    { "name": "Mercedes-Benz Stadium", "city": "Atlanta, GA", "country": "United States" },
+    { "name": "NRG Stadium", "city": "Houston, TX", "country": "United States" },
+    { "name": "Lincoln Financial Field", "city": "Philadelphia, PA", "country": "United States" },
+    { "name": "Lumen Field", "city": "Seattle, WA", "country": "United States" },
+    { "name": "Gillette Stadium", "city": "Foxborough, MA", "country": "United States" },
+    { "name": "Levi's Stadium", "city": "Santa Clara, CA", "country": "United States" },
+    { "name": "Arrowhead Stadium", "city": "Kansas City, MO", "country": "United States" }
+  ],
+  "groupStageMatches": [
+    {
+      "matchNumber": 1,
+      "date": "2026-06-11",
+      "time_et": "15:00",
+      "homeTeam": "MEX",
+      "awayTeam": "RSA",
+      "group": "A",
+      "venue": "Mexico City"
+    },
+    {
+      "matchNumber": 2,
+      "date": "2026-06-11",
+      "time_et": "22:00",
+      "homeTeam": "KOR",
+      "awayTeam": "CZE",
+      "group": "A",
+      "venue": "Guadalajara"
+    },
+    {
+      "matchNumber": 3,
+      "date": "2026-06-12",
+      "time_et": "15:00",
+      "homeTeam": "CAN",
+      "awayTeam": "BIH",
+      "group": "B",
+      "venue": "Toronto"
+    },
+    {
+      "matchNumber": 4,
+      "date": "2026-06-12",
+      "time_et": "21:00",
+      "homeTeam": "USA",
+      "awayTeam": "PAR",
+      "group": "D",
+      "venue": "Los Angeles"
+    },
+    {
+      "matchNumber": 5,
+      "date": "2026-06-13",
+      "time_et": "15:00",
+      "homeTeam": "BRA",
+      "awayTeam": "MAR",
+      "group": "C",
+      "venue": "New York/New Jersey"
+    },
+    {
+      "matchNumber": 6,
+      "date": "2026-06-13",
+      "time_et": "18:00",
+      "homeTeam": "AUS",
+      "awayTeam": "TUR",
+      "group": "D",
+      "venue": "Vancouver"
+    },
+    {
+      "matchNumber": 7,
+      "date": "2026-06-13",
+      "time_et": "21:00",
+      "homeTeam": "HAI",
+      "awayTeam": "SCO",
+      "group": "C",
+      "venue": "Boston"
+    },
+    {
+      "matchNumber": 8,
+      "date": "2026-06-14",
+      "time_et": "00:00",
+      "homeTeam": "QAT",
+      "awayTeam": "SUI",
+      "group": "B",
+      "venue": "San Francisco Bay Area"
+    },
+    {
+      "matchNumber": 9,
+      "date": "2026-06-14",
+      "time_et": "13:00",
+      "homeTeam": "GER",
+      "awayTeam": "CUW",
+      "group": "E",
+      "venue": "Houston"
+    },
+    {
+      "matchNumber": 10,
+      "date": "2026-06-14",
+      "time_et": "16:00",
+      "homeTeam": "CIV",
+      "awayTeam": "ECU",
+      "group": "E",
+      "venue": "Philadelphia"
+    },
+    {
+      "matchNumber": 11,
+      "date": "2026-06-14",
+      "time_et": "19:00",
+      "homeTeam": "NED",
+      "awayTeam": "JPN",
+      "group": "F",
+      "venue": "Dallas"
+    },
+    {
+      "matchNumber": 12,
+      "date": "2026-06-14",
+      "time_et": "22:00",
+      "homeTeam": "SWE",
+      "awayTeam": "TUN",
+      "group": "F",
+      "venue": "Monterrey"
+    },
+    {
+      "matchNumber": 13,
+      "date": "2026-06-15",
+      "time_et": "12:00",
+      "homeTeam": "ESP",
+      "awayTeam": "CPV",
+      "group": "H",
+      "venue": "Atlanta"
+    },
+    {
+      "matchNumber": 14,
+      "date": "2026-06-15",
+      "time_et": "15:00",
+      "homeTeam": "BEL",
+      "awayTeam": "EGY",
+      "group": "G",
+      "venue": "Seattle"
+    },
+    {
+      "matchNumber": 15,
+      "date": "2026-06-15",
+      "time_et": "18:00",
+      "homeTeam": "KSA",
+      "awayTeam": "URU",
+      "group": "H",
+      "venue": "Miami"
+    },
+    {
+      "matchNumber": 16,
+      "date": "2026-06-15",
+      "time_et": "21:00",
+      "homeTeam": "IRN",
+      "awayTeam": "NZL",
+      "group": "G",
+      "venue": "Los Angeles"
+    },
+    {
+      "matchNumber": 17,
+      "date": "2026-06-16",
+      "time_et": "15:00",
+      "homeTeam": "FRA",
+      "awayTeam": "SEN",
+      "group": "I",
+      "venue": "New York/New Jersey"
+    },
+    {
+      "matchNumber": 18,
+      "date": "2026-06-16",
+      "time_et": "18:00",
+      "homeTeam": "IRQ",
+      "awayTeam": "NOR",
+      "group": "I",
+      "venue": "Boston"
+    },
+    {
+      "matchNumber": 19,
+      "date": "2026-06-16",
+      "time_et": "21:00",
+      "homeTeam": "ARG",
+      "awayTeam": "ALG",
+      "group": "J",
+      "venue": "Kansas City"
+    },
+    {
+      "matchNumber": 20,
+      "date": "2026-06-17",
+      "time_et": "00:00",
+      "homeTeam": "AUT",
+      "awayTeam": "JOR",
+      "group": "J",
+      "venue": "San Francisco Bay Area"
+    },
+    {
+      "matchNumber": 21,
+      "date": "2026-06-17",
+      "time_et": "13:00",
+      "homeTeam": "POR",
+      "awayTeam": "COD",
+      "group": "K",
+      "venue": "Houston"
+    },
+    {
+      "matchNumber": 22,
+      "date": "2026-06-17",
+      "time_et": "16:00",
+      "homeTeam": "ENG",
+      "awayTeam": "CRO",
+      "group": "L",
+      "venue": "Dallas"
+    },
+    {
+      "matchNumber": 23,
+      "date": "2026-06-17",
+      "time_et": "19:00",
+      "homeTeam": "GHA",
+      "awayTeam": "PAN",
+      "group": "L",
+      "venue": "Toronto"
+    },
+    {
+      "matchNumber": 24,
+      "date": "2026-06-17",
+      "time_et": "22:00",
+      "homeTeam": "UZB",
+      "awayTeam": "COL",
+      "group": "K",
+      "venue": "Mexico City"
+    },
+    {
+      "matchNumber": 25,
+      "date": "2026-06-18",
+      "time_et": "12:00",
+      "homeTeam": "CZE",
+      "awayTeam": "RSA",
+      "group": "A",
+      "venue": "Atlanta"
+    },
+    {
+      "matchNumber": 26,
+      "date": "2026-06-18",
+      "time_et": "15:00",
+      "homeTeam": "SUI",
+      "awayTeam": "BIH",
+      "group": "B",
+      "venue": "Los Angeles"
+    },
+    {
+      "matchNumber": 27,
+      "date": "2026-06-18",
+      "time_et": "18:00",
+      "homeTeam": "CAN",
+      "awayTeam": "QAT",
+      "group": "B",
+      "venue": "Vancouver"
+    },
+    {
+      "matchNumber": 28,
+      "date": "2026-06-18",
+      "time_et": "21:00",
+      "homeTeam": "MEX",
+      "awayTeam": "KOR",
+      "group": "A",
+      "venue": "Guadalajara"
+    },
+    {
+      "matchNumber": 29,
+      "date": "2026-06-19",
+      "time_et": "15:00",
+      "homeTeam": "USA",
+      "awayTeam": "AUS",
+      "group": "D",
+      "venue": "Seattle"
+    },
+    {
+      "matchNumber": 30,
+      "date": "2026-06-19",
+      "time_et": "18:00",
+      "homeTeam": "SCO",
+      "awayTeam": "MAR",
+      "group": "C",
+      "venue": "Boston"
+    },
+    {
+      "matchNumber": 31,
+      "date": "2026-06-19",
+      "time_et": "21:00",
+      "homeTeam": "BRA",
+      "awayTeam": "HAI",
+      "group": "C",
+      "venue": "Philadelphia"
+    },
+    {
+      "matchNumber": 32,
+      "date": "2026-06-20",
+      "time_et": "00:00",
+      "homeTeam": "TUR",
+      "awayTeam": "PAR",
+      "group": "D",
+      "venue": "San Francisco Bay Area"
+    },
+    {
+      "matchNumber": 33,
+      "date": "2026-06-20",
+      "time_et": "13:00",
+      "homeTeam": "NED",
+      "awayTeam": "SWE",
+      "group": "F",
+      "venue": "Houston"
+    },
+    {
+      "matchNumber": 34,
+      "date": "2026-06-20",
+      "time_et": "16:00",
+      "homeTeam": "GER",
+      "awayTeam": "CIV",
+      "group": "E",
+      "venue": "Toronto"
+    },
+    {
+      "matchNumber": 35,
+      "date": "2026-06-20",
+      "time_et": "20:00",
+      "homeTeam": "ECU",
+      "awayTeam": "CUW",
+      "group": "E",
+      "venue": "Kansas City"
+    },
+    {
+      "matchNumber": 36,
+      "date": "2026-06-21",
+      "time_et": "00:00",
+      "homeTeam": "TUN",
+      "awayTeam": "JPN",
+      "group": "F",
+      "venue": "Monterrey"
+    },
+    {
+      "matchNumber": 37,
+      "date": "2026-06-21",
+      "time_et": "12:00",
+      "homeTeam": "ESP",
+      "awayTeam": "KSA",
+      "group": "H",
+      "venue": "Atlanta"
+    },
+    {
+      "matchNumber": 38,
+      "date": "2026-06-21",
+      "time_et": "15:00",
+      "homeTeam": "BEL",
+      "awayTeam": "IRN",
+      "group": "G",
+      "venue": "Los Angeles"
+    },
+    {
+      "matchNumber": 39,
+      "date": "2026-06-21",
+      "time_et": "18:00",
+      "homeTeam": "URU",
+      "awayTeam": "CPV",
+      "group": "H",
+      "venue": "Miami"
+    },
+    {
+      "matchNumber": 40,
+      "date": "2026-06-21",
+      "time_et": "21:00",
+      "homeTeam": "NZL",
+      "awayTeam": "EGY",
+      "group": "G",
+      "venue": "Vancouver"
+    },
+    {
+      "matchNumber": 41,
+      "date": "2026-06-22",
+      "time_et": "13:00",
+      "homeTeam": "ARG",
+      "awayTeam": "AUT",
+      "group": "J",
+      "venue": "Dallas"
+    },
+    {
+      "matchNumber": 42,
+      "date": "2026-06-22",
+      "time_et": "17:00",
+      "homeTeam": "FRA",
+      "awayTeam": "IRQ",
+      "group": "I",
+      "venue": "Philadelphia"
+    },
+    {
+      "matchNumber": 43,
+      "date": "2026-06-22",
+      "time_et": "20:00",
+      "homeTeam": "NOR",
+      "awayTeam": "SEN",
+      "group": "I",
+      "venue": "New York/New Jersey"
+    },
+    {
+      "matchNumber": 44,
+      "date": "2026-06-22",
+      "time_et": "23:00",
+      "homeTeam": "JOR",
+      "awayTeam": "ALG",
+      "group": "J",
+      "venue": "San Francisco Bay Area"
+    },
+    {
+      "matchNumber": 45,
+      "date": "2026-06-23",
+      "time_et": "13:00",
+      "homeTeam": "POR",
+      "awayTeam": "UZB",
+      "group": "K",
+      "venue": "Houston"
+    },
+    {
+      "matchNumber": 46,
+      "date": "2026-06-23",
+      "time_et": "16:00",
+      "homeTeam": "ENG",
+      "awayTeam": "GHA",
+      "group": "L",
+      "venue": "Boston"
+    },
+    {
+      "matchNumber": 47,
+      "date": "2026-06-23",
+      "time_et": "19:00",
+      "homeTeam": "PAN",
+      "awayTeam": "CRO",
+      "group": "L",
+      "venue": "Toronto"
+    },
+    {
+      "matchNumber": 48,
+      "date": "2026-06-23",
+      "time_et": "22:00",
+      "homeTeam": "COL",
+      "awayTeam": "COD",
+      "group": "K",
+      "venue": "Guadalajara"
+    },
+    {
+      "matchNumber": 49,
+      "date": "2026-06-24",
+      "time_et": "15:00",
+      "homeTeam": "CAN",
+      "awayTeam": "SUI",
+      "group": "B",
+      "venue": "Vancouver"
+    },
+    {
+      "matchNumber": 50,
+      "date": "2026-06-24",
+      "time_et": "15:00",
+      "homeTeam": "BIH",
+      "awayTeam": "QAT",
+      "group": "B",
+      "venue": "Seattle"
+    },
+    {
+      "matchNumber": 51,
+      "date": "2026-06-24",
+      "time_et": "18:00",
+      "homeTeam": "SCO",
+      "awayTeam": "BRA",
+      "group": "C",
+      "venue": "Miami"
+    },
+    {
+      "matchNumber": 52,
+      "date": "2026-06-24",
+      "time_et": "18:00",
+      "homeTeam": "MAR",
+      "awayTeam": "HAI",
+      "group": "C",
+      "venue": "Atlanta"
+    },
+    {
+      "matchNumber": 53,
+      "date": "2026-06-24",
+      "time_et": "21:00",
+      "homeTeam": "MEX",
+      "awayTeam": "CZE",
+      "group": "A",
+      "venue": "Mexico City"
+    },
+    {
+      "matchNumber": 54,
+      "date": "2026-06-24",
+      "time_et": "21:00",
+      "homeTeam": "KOR",
+      "awayTeam": "RSA",
+      "group": "A",
+      "venue": "Monterrey"
+    },
+    {
+      "matchNumber": 55,
+      "date": "2026-06-25",
+      "time_et": "16:00",
+      "homeTeam": "ECU",
+      "awayTeam": "GER",
+      "group": "E",
+      "venue": "New York/New Jersey"
+    },
+    {
+      "matchNumber": 56,
+      "date": "2026-06-25",
+      "time_et": "16:00",
+      "homeTeam": "CUW",
+      "awayTeam": "CIV",
+      "group": "E",
+      "venue": "Philadelphia"
+    },
+    {
+      "matchNumber": 57,
+      "date": "2026-06-25",
+      "time_et": "19:00",
+      "homeTeam": "TUN",
+      "awayTeam": "NED",
+      "group": "F",
+      "venue": "Kansas City"
+    },
+    {
+      "matchNumber": 58,
+      "date": "2026-06-25",
+      "time_et": "19:00",
+      "homeTeam": "JPN",
+      "awayTeam": "SWE",
+      "group": "F",
+      "venue": "Dallas"
+    },
+    {
+      "matchNumber": 59,
+      "date": "2026-06-25",
+      "time_et": "22:00",
+      "homeTeam": "USA",
+      "awayTeam": "TUR",
+      "group": "D",
+      "venue": "Los Angeles"
+    },
+    {
+      "matchNumber": 60,
+      "date": "2026-06-25",
+      "time_et": "22:00",
+      "homeTeam": "PAR",
+      "awayTeam": "AUS",
+      "group": "D",
+      "venue": "San Francisco Bay Area"
+    },
+    {
+      "matchNumber": 61,
+      "date": "2026-06-26",
+      "time_et": "13:00",
+      "homeTeam": "CPV",
+      "awayTeam": "KSA",
+      "group": "H",
+      "venue": "Houston"
+    },
+    {
+      "matchNumber": 62,
+      "date": "2026-06-26",
+      "time_et": "15:00",
+      "homeTeam": "NOR",
+      "awayTeam": "FRA",
+      "group": "I",
+      "venue": "Boston"
+    },
+    {
+      "matchNumber": 63,
+      "date": "2026-06-26",
+      "time_et": "15:00",
+      "homeTeam": "SEN",
+      "awayTeam": "IRQ",
+      "group": "I",
+      "venue": "Toronto"
+    },
+    {
+      "matchNumber": 64,
+      "date": "2026-06-26",
+      "time_et": "20:00",
+      "homeTeam": "NZL",
+      "awayTeam": "BEL",
+      "group": "G",
+      "venue": "Vancouver"
+    },
+    {
+      "matchNumber": 65,
+      "date": "2026-06-26",
+      "time_et": "20:00",
+      "homeTeam": "EGY",
+      "awayTeam": "IRN",
+      "group": "G",
+      "venue": "Seattle"
+    },
+    {
+      "matchNumber": 66,
+      "date": "2026-06-26",
+      "time_et": "23:00",
+      "homeTeam": "URU",
+      "awayTeam": "ESP",
+      "group": "H",
+      "venue": "Guadalajara"
+    },
+    {
+      "matchNumber": 67,
+      "date": "2026-06-27",
+      "time_et": "17:00",
+      "homeTeam": "PAN",
+      "awayTeam": "ENG",
+      "group": "L",
+      "venue": "New York/New Jersey"
+    },
+    {
+      "matchNumber": 68,
+      "date": "2026-06-27",
+      "time_et": "17:00",
+      "homeTeam": "CRO",
+      "awayTeam": "GHA",
+      "group": "L",
+      "venue": "Philadelphia"
+    },
+    {
+      "matchNumber": 69,
+      "date": "2026-06-27",
+      "time_et": "19:30",
+      "homeTeam": "COL",
+      "awayTeam": "POR",
+      "group": "K",
+      "venue": "Miami"
+    },
+    {
+      "matchNumber": 70,
+      "date": "2026-06-27",
+      "time_et": "19:30",
+      "homeTeam": "COD",
+      "awayTeam": "UZB",
+      "group": "K",
+      "venue": "Atlanta"
+    },
+    {
+      "matchNumber": 71,
+      "date": "2026-06-27",
+      "time_et": "22:00",
+      "homeTeam": "JOR",
+      "awayTeam": "ARG",
+      "group": "J",
+      "venue": "Dallas"
+    },
+    {
+      "matchNumber": 72,
+      "date": "2026-06-27",
+      "time_et": "22:00",
+      "homeTeam": "ALG",
+      "awayTeam": "AUT",
+      "group": "J",
+      "venue": "Kansas City"
+    }
+  ],
+  "knockoutRounds": {
+    "note": "Third-place team matchups in R32 depend on which 8 of 12 third-place teams qualify. The homeSlotLabel/awaySlotLabel values for 3rd-place slots show all possible source groups. The admin will confirm actual teams once group stage is complete.",
+    "roundOf32": [
+      { "matchNumber": 73, "date": "2026-06-28", "time_et": "15:00", "homeSlotLabel": "2nd Group A", "awaySlotLabel": "2nd Group B", "venue": "Los Angeles", "knockoutRound": "round_of_32" },
+      { "matchNumber": 74, "date": "2026-06-29", "time_et": "16:30", "homeSlotLabel": "1st Group E", "awaySlotLabel": "3rd Group A/B/C/D/F", "venue": "Boston", "knockoutRound": "round_of_32" },
+      { "matchNumber": 75, "date": "2026-06-29", "time_et": "21:00", "homeSlotLabel": "1st Group F", "awaySlotLabel": "2nd Group C", "venue": "Monterrey", "knockoutRound": "round_of_32" },
+      { "matchNumber": 76, "date": "2026-06-29", "time_et": "12:00", "homeSlotLabel": "1st Group C", "awaySlotLabel": "2nd Group F", "venue": "Houston", "knockoutRound": "round_of_32" },
+      { "matchNumber": 77, "date": "2026-06-30", "time_et": "17:00", "homeSlotLabel": "1st Group I", "awaySlotLabel": "3rd Group C/D/F/G/H", "venue": "New York/New Jersey", "knockoutRound": "round_of_32" },
+      { "matchNumber": 78, "date": "2026-06-30", "time_et": "12:00", "homeSlotLabel": "2nd Group E", "awaySlotLabel": "2nd Group I", "venue": "Dallas", "knockoutRound": "round_of_32" },
+      { "matchNumber": 79, "date": "2026-06-30", "time_et": "21:00", "homeSlotLabel": "1st Group A", "awaySlotLabel": "3rd Group C/E/F/H/I", "venue": "Mexico City", "knockoutRound": "round_of_32" },
+      { "matchNumber": 80, "date": "2026-07-01", "time_et": "12:00", "homeSlotLabel": "1st Group L", "awaySlotLabel": "3rd Group E/H/I/J/K", "venue": "Atlanta", "knockoutRound": "round_of_32" },
+      { "matchNumber": 81, "date": "2026-07-01", "time_et": "20:00", "homeSlotLabel": "1st Group D", "awaySlotLabel": "3rd Group B/E/F/I/J", "venue": "San Francisco Bay Area", "knockoutRound": "round_of_32" },
+      { "matchNumber": 82, "date": "2026-07-01", "time_et": "16:00", "homeSlotLabel": "1st Group G", "awaySlotLabel": "3rd Group A/E/H/I/J", "venue": "Seattle", "knockoutRound": "round_of_32" },
+      { "matchNumber": 83, "date": "2026-07-02", "time_et": "19:00", "homeSlotLabel": "2nd Group K", "awaySlotLabel": "2nd Group L", "venue": "Toronto", "knockoutRound": "round_of_32" },
+      { "matchNumber": 84, "date": "2026-07-02", "time_et": "15:00", "homeSlotLabel": "1st Group H", "awaySlotLabel": "2nd Group J", "venue": "Los Angeles", "knockoutRound": "round_of_32" },
+      { "matchNumber": 85, "date": "2026-07-02", "time_et": "23:00", "homeSlotLabel": "1st Group B", "awaySlotLabel": "3rd Group E/F/G/I/J", "venue": "Vancouver", "knockoutRound": "round_of_32" },
+      { "matchNumber": 86, "date": "2026-07-03", "time_et": "18:00", "homeSlotLabel": "1st Group J", "awaySlotLabel": "2nd Group H", "venue": "Miami", "knockoutRound": "round_of_32" },
+      { "matchNumber": 87, "date": "2026-07-03", "time_et": "21:30", "homeSlotLabel": "1st Group K", "awaySlotLabel": "3rd Group D/E/I/J/L", "venue": "Kansas City", "knockoutRound": "round_of_32" },
+      { "matchNumber": 88, "date": "2026-07-03", "time_et": "13:00", "homeSlotLabel": "2nd Group D", "awaySlotLabel": "2nd Group G", "venue": "Dallas", "knockoutRound": "round_of_32" }
+    ],
+    "roundOf16": [
+      { "matchNumber": 89, "date": "2026-07-04", "time_et": "17:00", "homeSlotLabel": "Winner Match 74", "awaySlotLabel": "Winner Match 77", "venue": "Philadelphia", "knockoutRound": "round_of_16" },
+      { "matchNumber": 90, "date": "2026-07-04", "time_et": "12:00", "homeSlotLabel": "Winner Match 73", "awaySlotLabel": "Winner Match 75", "venue": "Houston", "knockoutRound": "round_of_16" },
+      { "matchNumber": 91, "date": "2026-07-05", "time_et": "16:00", "homeSlotLabel": "Winner Match 76", "awaySlotLabel": "Winner Match 78", "venue": "New York/New Jersey", "knockoutRound": "round_of_16" },
+      { "matchNumber": 92, "date": "2026-07-05", "time_et": "20:00", "homeSlotLabel": "Winner Match 79", "awaySlotLabel": "Winner Match 80", "venue": "Mexico City", "knockoutRound": "round_of_16" },
+      { "matchNumber": 93, "date": "2026-07-06", "time_et": "14:00", "homeSlotLabel": "Winner Match 83", "awaySlotLabel": "Winner Match 84", "venue": "Dallas", "knockoutRound": "round_of_16" },
+      { "matchNumber": 94, "date": "2026-07-06", "time_et": "20:00", "homeSlotLabel": "Winner Match 81", "awaySlotLabel": "Winner Match 82", "venue": "Seattle", "knockoutRound": "round_of_16" },
+      { "matchNumber": 95, "date": "2026-07-07", "time_et": "12:00", "homeSlotLabel": "Winner Match 86", "awaySlotLabel": "Winner Match 88", "venue": "Atlanta", "knockoutRound": "round_of_16" },
+      { "matchNumber": 96, "date": "2026-07-07", "time_et": "16:00", "homeSlotLabel": "Winner Match 85", "awaySlotLabel": "Winner Match 87", "venue": "Vancouver", "knockoutRound": "round_of_16" }
+    ],
+    "quarterFinals": [
+      { "matchNumber": 97, "date": "2026-07-09", "time_et": "16:00", "homeSlotLabel": "Winner Match 89", "awaySlotLabel": "Winner Match 90", "venue": "Boston", "knockoutRound": "quarter_finals" },
+      { "matchNumber": 98, "date": "2026-07-10", "time_et": "15:00", "homeSlotLabel": "Winner Match 93", "awaySlotLabel": "Winner Match 94", "venue": "Los Angeles", "knockoutRound": "quarter_finals" },
+      { "matchNumber": 99, "date": "2026-07-11", "time_et": "17:00", "homeSlotLabel": "Winner Match 91", "awaySlotLabel": "Winner Match 92", "venue": "Miami", "knockoutRound": "quarter_finals" },
+      { "matchNumber": 100, "date": "2026-07-11", "time_et": "20:00", "homeSlotLabel": "Winner Match 95", "awaySlotLabel": "Winner Match 96", "venue": "Kansas City", "knockoutRound": "quarter_finals" }
+    ],
+    "semiFinals": [
+      { "matchNumber": 101, "date": "2026-07-14", "time_et": "14:00", "homeSlotLabel": "Winner Match 97", "awaySlotLabel": "Winner Match 98", "venue": "Dallas", "knockoutRound": "semi_finals" },
+      { "matchNumber": 102, "date": "2026-07-15", "time_et": "15:00", "homeSlotLabel": "Winner Match 99", "awaySlotLabel": "Winner Match 100", "venue": "Atlanta", "knockoutRound": "semi_finals" }
+    ],
+    "thirdPlace": [
+      { "matchNumber": 103, "date": "2026-07-18", "time_et": "17:00", "homeSlotLabel": "Loser Match 101", "awaySlotLabel": "Loser Match 102", "venue": "Miami", "knockoutRound": "third_place" }
+    ],
+    "final": [
+      { "matchNumber": 104, "date": "2026-07-19", "time_et": "15:00", "homeSlotLabel": "Winner Match 101", "awaySlotLabel": "Winner Match 102", "venue": "New York/New Jersey", "knockoutRound": "final" }
+    ]
+  },
+  "notes": [
+    "All times are US Eastern (ET). Subtract 3 hours for Pacific, add 5 for UK (BST in summer), add 9.5 for India (IST).",
+    "Matches on the same date with the same kickoff time in the final matchday of each group are played simultaneously.",
+    "Czech Republic qualified via UEFA Path D playoff.",
+    "Bosnia and Herzegovina qualified via UEFA Path A playoff.",
+    "Turkey qualified via UEFA Path C playoff.",
+    "Sweden qualified via UEFA Path B playoff.",
+    "Iraq qualified via Inter-confederation Pathway 2 playoff.",
+    "DR Congo qualified via Inter-confederation Pathway 1 playoff.",
+    "The Round of 32 is new for 2026 — previous World Cups went directly from groups to Round of 16.",
+    "Source: Wikipedia (2026 FIFA World Cup draw) and USA Today Pro Soccer Wire schedule."
+  ]
+}

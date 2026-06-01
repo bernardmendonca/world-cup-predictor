@@ -2,26 +2,29 @@
 
 ## Introduction
 
-A football World Cup predictor game designed for small groups of friends and colleagues (20-50 members). Players predict match outcomes during group stages and team advancement during knockout stages. The game features a scoring system with bonuses for favorite/minnow team selections and an odds multiplier that rewards less popular correct predictions. The system supports two deployment modes: an internal deployment on AWS with SSO authentication, and an external deployment on a free/low-cost platform with email verification.
+A football World Cup predictor game designed for small groups of friends and colleagues (20-50 members). Players predict match scores for both group stages and knockout stages. In knockout stages, players additionally predict a penalty shootout winner when they predict a drawn score. The game features a scoring system with bonuses for favorite/minnow team selections and an odds multiplier that rewards less popular correct predictions. The system supports two deployment modes: an internal deployment on AWS with SSO authentication, and an external deployment on a free/low-cost platform with email verification.
 
 ## Glossary
 
 - **Predictor_System**: The World Cup predictor application responsible for managing predictions, scoring, and leaderboards
 - **Player**: A registered user who submits predictions and competes in the game
-- **Prediction**: A Player's submitted forecast for a match outcome (group stage) or team advancement (knockout stage)
+- **Prediction**: A Player's submitted forecast for a match outcome including score predictions for both group and knockout stages
 - **Match**: A scheduled World Cup game between two teams
 - **Group_Stage**: The initial phase of the World Cup where teams play in round-robin groups
-- **Knockout_Stage**: The elimination phase including Round of 32, Quarter Finals, Semi Finals, Third Place, and Final
+- **Knockout_Stage**: The elimination phase including Round of 32, Round of 16, Quarter Finals, Semi Finals, Third Place, and Final
 - **Favorite_Team**: A team selected by a Player whose matches earn double points
 - **Minnow_Team**: A team selected by a Player (typically a lower-ranked or underdog team) whose matches earn double points
 - **Odds_Multiplier**: A scoring multiplier calculated from the distribution of predictions among all Players for a given match, rewarding less popular correct predictions
 - **Kickoff_Time**: The official scheduled start time of a Match
 - **Prediction_Deadline**: The time 2 hours before Kickoff_Time after which predictions can no longer be submitted or modified
 - **Team_Selection_Deadline**: The time 2 hours before the Kickoff_Time of the first Match of the tournament, after which Favorite_Team and Minnow_Team selections can no longer be made
-- **Correct_Result**: A prediction that correctly identifies the match outcome (win for Team A, win for Team B, or draw)
-- **Correct_Exact_Score**: A prediction that correctly identifies the exact final score of a match
+- **Correct_Result**: A prediction that correctly identifies the match winner (or, in knockout draws, correctly identifies the penalty winner)
+- **Correct_Exact_Score**: A prediction that correctly identifies the exact final score of a match (and in knockout draws, also correctly identifies the penalty winner)
+- **Penalty_Winner**: In a Knockout_Stage match where the predicted scores are equal, the team selected by the Player as the predicted winner of the penalty shootout
 - **Internal_Deployment**: The deployment hosted on the company AWS account using HERE SSO for authentication
 - **External_Deployment**: The deployment hosted on a free or minimal-cost platform using email verification for authentication
+- **Player_Group**: An independent group of players identified by a unique URL slug, with its own isolated set of players, predictions, scores, and leaderboard on a shared deployment instance
+- **Admin**: A Player whose email is listed in the `ADMIN_EMAILS` environment variable, granting access to the admin page for recording match results and managing knockout team assignments
 
 ## Requirements
 
@@ -33,9 +36,9 @@ A football World Cup predictor game designed for small groups of friends and col
 
 1. WHERE the Internal_Deployment is configured, THE Predictor_System SHALL authenticate Players via HERE SSO
 2. WHERE the External_Deployment is configured, THE Predictor_System SHALL authenticate Players via a single-use verification link sent to the Player's provided email address, valid for 15 minutes
-3. THE Predictor_System SHALL support a maximum of 50 registered Players per deployment
+3. THE Predictor_System SHALL support a maximum of 50 registered Players per group
 4. WHEN a Player successfully authenticates, THE Predictor_System SHALL create a session with a duration of 7 days and redirect the Player to the main dashboard
-5. IF a Player attempts to register and the deployment has already reached 50 registered Players, THEN THE Predictor_System SHALL reject the registration and display a message indicating the maximum player limit has been reached
+5. IF a Player attempts to register and the group has already reached 50 registered Players, THEN THE Predictor_System SHALL reject the registration and display a message indicating the maximum player limit has been reached
 6. IF a Player's authentication attempt fails, THEN THE Predictor_System SHALL display a message indicating the authentication was unsuccessful and allow the Player to retry
 
 ### Requirement 2: Group Stage Score Predictions
@@ -44,9 +47,9 @@ A football World Cup predictor game designed for small groups of friends and col
 
 #### Acceptance Criteria
 
-1. WHEN a Player navigates to a Group_Stage Match, THE Predictor_System SHALL display a form accepting integer score predictions for both teams with values between 0 and 20 inclusive
-2. WHEN a Player submits a score prediction, THE Predictor_System SHALL store the prediction associated with the Player and the Match and display a confirmation message indicating the prediction was saved
-3. WHEN a Player submits a prediction for a Match they have already predicted, THE Predictor_System SHALL update the existing prediction with the new values and display a confirmation message indicating the prediction was updated
+1. THE Predictor_System SHALL display a batch prediction page showing all matches for the selected stage/round with inline score input fields (home and away) for each match, allowing Players to enter predictions without navigating to individual match pages
+2. WHEN a Player enters scores and clicks the "Save All Predictions" button, THE Predictor_System SHALL store all new or modified predictions in a single batch operation and display a confirmation indicating how many predictions were saved
+3. WHEN a Player submits a prediction for a Match they have already predicted, THE Predictor_System SHALL update the existing prediction with the new values
 4. WHILE the current time is before the Prediction_Deadline for a Match, THE Predictor_System SHALL allow Players to submit or modify predictions for that Match
 5. WHEN the current time reaches or passes the Prediction_Deadline for a Match, THE Predictor_System SHALL reject any new or modified predictions for that Match
 6. IF a Player attempts to submit a prediction after the Prediction_Deadline, THEN THE Predictor_System SHALL display a message indicating that predictions are closed for that Match
@@ -62,31 +65,43 @@ A football World Cup predictor game designed for small groups of friends and col
 2. WHEN a Group_Stage Match result is recorded, THE Predictor_System SHALL award 3 base points to each Player who predicted the Correct_Exact_Score
 3. WHEN a Player has predicted the Correct_Exact_Score, THE Predictor_System SHALL award both the Correct_Result base point (1) and the Correct_Exact_Score base point (3), for a total of 4 base points
 4. WHEN a Group_Stage Match result is recorded, THE Predictor_System SHALL calculate the final points for each Player as: base_points × Odds_Multiplier × team_multiplier, rounded to 2 decimal places
-5. IF a Player has selected a Favorite_Team or Minnow_Team that is involved in the Match, THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 11 after applying the Odds_Multiplier
+5. IF a Player has selected a Favorite_Team or Minnow_Team that is involved in the Match, THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 13 after applying the Odds_Multiplier
 6. IF a Player did not submit a prediction for a Match, THEN THE Predictor_System SHALL award 0 points to that Player for that Match
 
-### Requirement 4: Knockout Stage Predictions
+### Requirement 4: Knockout Stage Score Predictions
 
-**User Story:** As a player, I want to predict which teams advance through each knockout round from day one of the tournament, so that I can earn points for correctly forecasting the tournament bracket.
+**User Story:** As a player, I want to submit score predictions for knockout stage matches as they become available, so that I can earn points based on my football knowledge throughout the tournament.
 
 #### Acceptance Criteria
 
-1. WHEN the tournament begins, THE Predictor_System SHALL make Knockout_Stage predictions available to all Players from day one, displaying all 42 participating teams in the bracket
-2. WHEN a Player navigates to the Knockout_Stage prediction view, THE Predictor_System SHALL display the full bracket for Round of 32, Quarter Finals, Semi Finals, Third Place, Runner Up, and Final Winner, allowing the Player to select teams for each stage
-3. WHEN a Player submits Knockout_Stage predictions, THE Predictor_System SHALL store the Player's selected teams for each round of the bracket
-4. WHILE the current time is before the Kickoff_Time of the first Match of the tournament, THE Predictor_System SHALL allow Players to submit or modify Knockout_Stage predictions for all rounds
-5. WHEN the current time reaches or passes the Kickoff_Time of the first Match of the tournament, THE Predictor_System SHALL lock all Knockout_Stage predictions and reject any new or modified submissions
-6. IF a Player attempts to submit or modify a Knockout_Stage prediction after the Kickoff_Time of the first Match of the tournament, THEN THE Predictor_System SHALL display a message indicating that knockout predictions are locked for the remainder of the tournament
-7. IF a Player predicted a team to reach a knockout round and that team does not actually qualify for that round, THEN THE Predictor_System SHALL award 0 points to that Player for that prediction
-8. WHEN a team advances to the Round of 32 in the actual tournament, THE Predictor_System SHALL award 2 points to each Player who correctly predicted that team to reach the Round of 32, with no Odds_Multiplier applied
-9. WHEN a team advances to the Quarter Finals in the actual tournament, THE Predictor_System SHALL award 3 points to each Player who correctly predicted that team to reach the Quarter Finals, with no Odds_Multiplier applied
-10. WHEN a team advances to the Semi Finals in the actual tournament, THE Predictor_System SHALL award 4 points to each Player who correctly predicted that team to reach the Semi Finals, with no Odds_Multiplier applied
-11. WHEN a team finishes in Third Place in the actual tournament, THE Predictor_System SHALL award 5 points to each Player who correctly predicted that team to finish Third, with no Odds_Multiplier applied
-12. WHEN a team finishes as Runner Up in the actual tournament, THE Predictor_System SHALL award 6 points to each Player who correctly predicted that team to be Runner Up, with no Odds_Multiplier applied
-13. WHEN a team wins the tournament, THE Predictor_System SHALL award 8 points to each Player who correctly predicted that team to win the tournament, with no Odds_Multiplier applied
-14. WHEN a Player earns Knockout_Stage points for a prediction involving their Favorite_Team or Minnow_Team, THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 11
+1. WHEN a Knockout_Stage Match has both teams confirmed (qualified from previous rounds), THE Predictor_System SHALL make that Match available for score predictions
+2. WHEN a Player views a Knockout_Stage Match on the batch prediction page, THE Predictor_System SHALL display inline score input fields for both teams with values between 0 and 20 inclusive, plus a penalty winner selection that appears when the predicted scores are equal
+3. WHEN a Player predicts equal scores for both teams in a Knockout_Stage Match, THE Predictor_System SHALL require the Player to select exactly one team as the predicted penalty shootout winner via a checkbox/radio control
+4. THE Predictor_System SHALL NOT allow a draw prediction without a penalty winner selection in Knockout_Stage matches — exactly one team must be marked as the winner
+5. WHEN a Player predicts unequal scores for a Knockout_Stage Match, THE Predictor_System SHALL disable and clear the penalty winner selection (the team with the higher predicted score is the implied winner)
+6. WHILE the current time is before the Prediction_Deadline for a Knockout_Stage Match, THE Predictor_System SHALL allow Players to submit or modify predictions for that Match
+7. WHEN the current time reaches or passes the Prediction_Deadline for a Knockout_Stage Match, THE Predictor_System SHALL reject any new or modified predictions for that Match
+8. IF a Player attempts to submit a prediction after the Prediction_Deadline, THEN THE Predictor_System SHALL display a message indicating that predictions are closed for that Match
+9. IF a Player submits a score value that is not an integer or is outside the range of 0 to 20, THEN THE Predictor_System SHALL reject the submission and display a message indicating the valid score range
+10. WHEN a Player submits a prediction for a Knockout_Stage Match they have already predicted, THE Predictor_System SHALL update the existing prediction with the new values
 
-### Requirement 5: Favorite Team Selection
+### Requirement 5: Knockout Stage Scoring
+
+**User Story:** As a player, I want to earn points for correct knockout stage predictions using the same scoring rules as group stage, so that the competition remains consistent throughout the tournament.
+
+#### Acceptance Criteria
+
+1. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL award 1 base point to each Player who predicted the Correct_Result (correct winner, or correct draw with correct penalty winner)
+2. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL award 3 base points to each Player who predicted the Correct_Exact_Score (exact scoreline match after regular/extra time)
+3. WHEN a Player has predicted the Correct_Exact_Score in a Knockout_Stage Match, THE Predictor_System SHALL award both the Correct_Result base point (1) and the Correct_Exact_Score base point (3), for a total of 4 base points
+4. FOR Knockout_Stage matches that end in a draw (decided by penalties), a Correct_Result prediction requires: (a) predicting equal scores AND (b) correctly selecting the penalty winner
+5. FOR Knockout_Stage matches that end in a draw (decided by penalties), a Correct_Exact_Score prediction requires: (a) predicting the exact drawn scoreline AND (b) correctly selecting the penalty winner
+6. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL calculate the Odds_Multiplier using the same formula as group stage (based on prediction distribution within the group for that match)
+7. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL calculate the final points for each Player as: base_points × Odds_Multiplier × team_multiplier, rounded to 2 decimal places
+8. IF a Player has selected a Favorite_Team or Minnow_Team that is involved in the Knockout_Stage Match, THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 13
+9. IF a Player did not submit a prediction for a Knockout_Stage Match, THEN THE Predictor_System SHALL award 0 points to that Player for that Match
+
+### Requirement 6: Favorite Team Selection
 
 **User Story:** As a player, I want to select a favorite team, so that I earn double points on all matches involving that team throughout the tournament.
 
@@ -99,7 +114,7 @@ A football World Cup predictor game designed for small groups of friends and col
 5. WHEN a Match involves a Player's Favorite_Team, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
 6. THE Predictor_System SHALL apply the Favorite_Team multiplier to both Group_Stage and Knockout_Stage matches
 
-### Requirement 6: Minnow Team Selection
+### Requirement 7: Minnow Team Selection
 
 **User Story:** As a player, I want to select a minnow team, so that I earn double points on all matches involving that underdog team throughout the tournament.
 
@@ -113,7 +128,7 @@ A football World Cup predictor game designed for small groups of friends and col
 6. THE Predictor_System SHALL apply the Minnow_Team multiplier to both Group_Stage and Knockout_Stage matches
 7. THE Predictor_System SHALL allow a Player to select the same team as both Favorite_Team and Minnow_Team, resulting in a 4x multiplier for matches involving that team
 
-### Requirement 7: Odds Multiplier Calculation
+### Requirement 8: Odds Multiplier Calculation
 
 **User Story:** As a player, I want an odds multiplier based on prediction distribution, so that correctly predicting less popular outcomes is rewarded more than predicting popular outcomes.
 
@@ -126,7 +141,7 @@ A football World Cup predictor game designed for small groups of friends and col
 5. WHEN the Prediction_Deadline for a Match is reached, THE Predictor_System SHALL display the Odds_Multiplier values to all Players
 6. IF no Player has predicted a particular outcome, THEN THE Predictor_System SHALL assign an Odds_Multiplier of 0 for that outcome (no one predicted it, so no one can earn points from it)
 7. IF only one Player has submitted a prediction for a Match, THEN THE Predictor_System SHALL assign an Odds_Multiplier of 1.00 for the predicted outcome
-8. THE Predictor_System SHALL apply the Odds_Multiplier only to Group_Stage matches; Knockout_Stage matches SHALL have an implicit Odds_Multiplier of 1.00
+8. THE Predictor_System SHALL apply the Odds_Multiplier to both Group_Stage and Knockout_Stage matches, calculated independently per match based on the prediction distribution within the group
 
 #### Odds Multiplier Examples
 
@@ -175,7 +190,7 @@ The lone Draw predictor gets the highest multiplier (1.80) if correct.
 
 Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for being contrarian when there is no crowd).
 
-### Requirement 8: Leaderboard
+### Requirement 9: Leaderboard
 
 **User Story:** As a player, I want to see a leaderboard showing all players' total points, so that I can track my ranking and compete with others.
 
@@ -186,19 +201,33 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 3. THE Predictor_System SHALL display each Player's total points, rank position, and number of predictions where the Player earned points (including both Correct_Result and Correct_Exact_Score predictions) on the leaderboard
 4. WHEN two or more Players have the same total points, THE Predictor_System SHALL rank them first by the number of Correct_Exact_Score predictions (descending), then by alphabetical order of Player name as a secondary tiebreaker
 
-### Requirement 9: Match Schedule and Results
+### Requirement 10: Match Schedule and Results
 
-**User Story:** As a player, I want to see the match schedule and results, so that I know which matches are upcoming and what the outcomes were.
+**User Story:** As a player, I want to see match results and scoring details, so that I know what the outcomes were and how points were awarded.
 
 #### Acceptance Criteria
 
-1. THE Predictor_System SHALL display the full World Cup match schedule including team names, dates, times (shown in US Eastern, UK GMT/BST, and India IST time zones), and venues
-2. WHEN a Match result is available, THE Predictor_System SHALL display the final score alongside the match details
+1. THE Predictor_System SHALL display match details including team names, dates, times (shown in US Eastern, UK GMT/BST, and India IST time zones), and venues on the batch prediction page
+2. WHEN a Match result is available, THE Predictor_System SHALL display the final score inline on the prediction page alongside the match details
 3. THE Predictor_System SHALL display the Prediction_Deadline for each upcoming Match where the current time is before the Prediction_Deadline
-4. WHEN a Match is complete, THE Predictor_System SHALL display a summary showing each Player's predicted score, the actual result, and the points awarded for that Match
+4. WHEN a Match is complete, THE Predictor_System SHALL provide a match detail view showing each Player's predicted score, the actual result, and the points awarded for that Match
 5. THE Predictor_System SHALL categorize each Match with a status of Upcoming, In Progress, or Completed
 
-### Requirement 10: Deployment Configuration
+### Requirement 11: Missing Prediction Awareness
+
+**User Story:** As a player, I want to be visually alerted when I have missing or incomplete predictions for a stage, so that I don't accidentally miss submitting predictions before deadlines.
+
+#### Acceptance Criteria
+
+1. WHEN a Player views the batch prediction page, THE Predictor_System SHALL highlight any Match within the current view where the Player has not yet submitted a prediction, provided the Prediction_Deadline has not passed
+2. THE Predictor_System SHALL display an info icon (ℹ) on each highlighted Match row, which on hover or tap shows a tooltip explaining what is missing (e.g., "No prediction submitted for this match")
+3. FOR Knockout_Stage matches where a Player has predicted equal scores but has not selected a penalty winner, THE Predictor_System SHALL highlight that Match and display a tooltip stating "Penalty winner selection is missing"
+4. THE Predictor_System SHALL apply missing prediction highlighting per stage: all Group_Stage matches are treated as one set from day one; each Knockout_Stage round (Round of 32, Round of 16, Quarter Finals, Semi Finals, Third Place, Final) is treated as a separate set once its matches are confirmed
+5. THE Predictor_System SHALL allow Players to submit predictions even when other matches in the same stage are incomplete — highlighting is informational only and does not block submission
+6. THE Predictor_System SHALL NOT highlight matches where the Prediction_Deadline has already passed (missed predictions cannot be recovered)
+7. THE Predictor_System SHALL display a summary count at the top of each stage view showing "X of Y predictions submitted" to give Players a quick overview of their completion status
+
+### Requirement 12: Deployment Configuration
 
 **User Story:** As an administrator, I want to deploy the system in two configurations, so that it can serve both internal company users and external friends.
 
@@ -212,7 +241,7 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 6. THE Predictor_System SHALL use a single codebase with environment-based configuration to switch between Internal_Deployment and External_Deployment
 7. THE Predictor_System SHALL be runnable locally on a developer's machine with a single setup command for testing and development purposes, without requiring external cloud services or paid infrastructure
 
-### Requirement 11: Points Stacking for Favorite and Minnow Teams
+### Requirement 13: Points Stacking for Favorite and Minnow Teams
 
 **User Story:** As a player, I want clarity on how Favorite_Team and Minnow_Team multipliers stack with the Odds_Multiplier, so that I understand my total points for each match.
 
@@ -224,3 +253,51 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 4. WHEN a Match involves both a Player's Favorite_Team and Minnow_Team as the same team (Player selected the same team for both), THE Predictor_System SHALL apply a team_multiplier of 4
 5. WHEN a Match involves a Player's Favorite_Team and Minnow_Team as two different teams (one on each side of the Match), THE Predictor_System SHALL apply a team_multiplier of 4
 6. WHEN a Match does not involve a Player's Favorite_Team or Minnow_Team, THE Predictor_System SHALL apply a team_multiplier of 1
+
+### Requirement 14: Local Test Mode
+
+**User Story:** As a developer, I want a local test mode with dummy users and no authentication, so that I can verify all predictions and scoring logic work correctly before deploying.
+
+#### Acceptance Criteria
+
+1. WHERE the deployment environment is set to "test", THE Predictor_System SHALL bypass all authentication and provide three pre-configured dummy Players (Test Player 1, Test Player 2, Test Player 3)
+2. WHERE the deployment environment is set to "test", THE Predictor_System SHALL display a player switcher in the UI allowing the developer to switch between the three dummy Players without logging in or out
+3. WHERE the deployment environment is set to "test", THE Predictor_System SHALL pre-seed the database with the full World Cup match schedule so predictions can be submitted immediately
+4. WHERE the deployment environment is set to "test", THE Predictor_System SHALL allow the developer to manually override the current time to simulate prediction deadlines and match kickoff times
+5. WHERE the deployment environment is set to "test", THE Predictor_System SHALL allow the developer to manually record match results to trigger score calculations and verify leaderboard updates
+6. WHERE the deployment environment is set to "test", THE Predictor_System SHALL display a scoring breakdown for each Player showing base points, odds multiplier, team multiplier, and total points per match
+7. THE Predictor_System SHALL NOT enable test mode in Internal_Deployment or External_Deployment environments
+
+### Requirement 15: Multi-Group Support
+
+**User Story:** As a user, I want to run the predictor for multiple independent groups of friends on the same instance, so that different friend circles can each have their own competition without interfering with each other.
+
+#### Acceptance Criteria
+
+1. THE Predictor_System SHALL support multiple independent groups on a single deployment, each identified by a unique URL path slug (e.g., `/friends1/`, `/work-buddies/`)
+2. WHEN a Player accesses the system via a group URL (e.g., `/friends1/leaderboard`), THE Predictor_System SHALL scope all displayed data (players, predictions, scores, leaderboard) to that group only
+3. THE Predictor_System SHALL ensure complete data isolation between groups: predictions, scores, odds multipliers, and leaderboards in one group SHALL NOT be visible to or affected by another group
+4. THE Predictor_System SHALL enforce the maximum player limit (50) independently per group, not globally across all groups
+5. THE Predictor_System SHALL allow the same email address to register as a Player in multiple different groups independently
+6. WHEN a Player navigates to a group slug that does not yet exist, THE Predictor_System SHALL create the group on-demand when the first Player registers under that slug
+7. THE Predictor_System SHALL validate group slugs to contain only lowercase alphanumeric characters and hyphens, with a length between 3 and 30 characters
+8. THE Predictor_System SHALL provide a landing page at the root URL (`/`) that allows users to enter or select a group slug to navigate to their group
+
+### Requirement 16: Admin Match Management
+
+**User Story:** As an administrator, I want a dedicated admin page to record match results and manage knockout team assignments, so that scores are calculated and the tournament bracket progresses correctly.
+
+#### Acceptance Criteria
+
+1. THE Predictor_System SHALL provide an admin page at `/[groupSlug]/admin` accessible only to Players whose email matches a configured admin email address (set via environment variable `ADMIN_EMAILS`, comma-separated)
+2. IF a non-admin Player attempts to access the admin page, THEN THE Predictor_System SHALL display an "Access denied" message and redirect to the dashboard
+3. THE Predictor_System SHALL display on the admin page a list of all matches grouped by stage and round, with their current status (upcoming, in progress, completed)
+4. WHEN an admin navigates to the admin page, THE Predictor_System SHALL display all matches with inline score input fields (home and away) allowing the admin to enter or update results for multiple matches at once
+5. WHEN an admin clicks the "Save All Results" button, THE Predictor_System SHALL store all new or modified results in batch, trigger the scoring engine to calculate points for all Players in the group for each updated match, and update the leaderboard
+6. WHEN an admin submits a match result for a match that already has a result recorded, THE Predictor_System SHALL overwrite the previous result, recalculate all scores for that match, and update the leaderboard (idempotent correction)
+7. THE Predictor_System SHALL display a knockout bracket management section on the admin page showing all knockout match slots and their assigned teams (or "TBD" if not yet assigned)
+8. WHEN all Group_Stage matches in a group (A through L) have results recorded, THE Predictor_System SHALL display a prompt on the admin page allowing the admin to confirm and assign the qualified teams to their respective Round of 32 match slots
+9. WHEN an admin confirms team assignments for a knockout round, THE Predictor_System SHALL update the corresponding Match records with the confirmed home and away teams, making those matches available for Player predictions
+10. FOR each subsequent knockout round (Round of 16, Quarter Finals, Semi Finals, Third Place, Final), WHEN all matches in the preceding round have results recorded, THE Predictor_System SHALL display a prompt allowing the admin to confirm the advancing teams for the next round
+11. THE Predictor_System SHALL NOT allow Players to submit predictions for a Knockout_Stage match until both teams have been confirmed by the admin
+12. THE Predictor_System SHALL display on the admin page a scoring summary showing, for each completed match, the number of Players who scored points and the average points awarded

@@ -1,0 +1,74 @@
+import { resolveGroup } from "@/lib/groups/group-service";
+import { notFound } from "next/navigation";
+import { PlayerSwitcher } from "./player-switcher";
+import { TimeOverrideBar } from "./time-override-bar";
+import { isTestMode } from "@/lib/test-mode/test-mode";
+
+export default async function GroupLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ groupSlug: string }>;
+}) {
+  const { groupSlug } = await params;
+
+  let group;
+  try {
+    group = await resolveGroup(groupSlug);
+  } catch {
+    notFound();
+  }
+
+  const testMode = isTestMode();
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <nav className="bg-white shadow-sm border-b">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <a
+              href={`/${groupSlug}`}
+              className="font-bold text-lg text-blue-600"
+            >
+              WCP 2026
+            </a>
+            <div className="hidden sm:flex items-center gap-4 text-sm">
+              <a
+                href={`/${groupSlug}/predict`}
+                className="text-gray-600 hover:text-gray-900"
+              >
+                Predict
+              </a>
+              <a
+                href={`/${groupSlug}/teams`}
+                className="text-gray-600 hover:text-gray-900"
+              >
+                Teams
+              </a>
+              <a
+                href={`/${groupSlug}/leaderboard`}
+                className="text-gray-600 hover:text-gray-900"
+              >
+                Leaderboard
+              </a>
+              {testMode && (
+                <a
+                  href={`/${groupSlug}/admin`}
+                  className="text-red-600 hover:text-red-800"
+                >
+                  Admin
+                </a>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            {testMode && <PlayerSwitcher groupSlug={groupSlug} />}
+          </div>
+        </div>
+      </nav>
+      {testMode && <TimeOverrideBar />}
+      <main className="max-w-6xl mx-auto px-4 py-6">{children}</main>
+    </div>
+  );
+}

@@ -1,0 +1,320 @@
+"use client";
+
+import { useState } from "react";
+
+export interface MatchData {
+  id: string;
+  matchNumber: number;
+  homeTeamName: string;
+  awayTeamName: string;
+  homeTeamCode: string | null;
+  awayTeamCode: string | null;
+  stage: string;
+  knockoutRound: string | null;
+  groupLetter: string | null;
+  venue: string;
+  kickoffTime: string;
+  status: string;
+  homeScore: number | null;
+  awayScore: number | null;
+  teamsConfirmed: boolean;
+  predictionOpen: boolean;
+  existingPrediction: {
+    homeScore: number;
+    awayScore: number;
+    penaltyWinner: string | null;
+  } | null;
+}
+
+interface Props {
+  matches: MatchData[];
+  groupSlug: string;
+}
+
+interface PredictionEntry {
+  homeScore: string;
+  awayScore: string;
+  penaltyWinner: string | null;
+}
+
+export function BatchPredictionForm({ matches, groupSlug }: Props) {
+  // Initialize state from existing predictions
+  const initialState: Record<string, PredictionEntry> = {};
+  for (const match of matches) {
+    if (match.existingPrediction) {
+      initialState[match.id] = {
+        homeScore: String(match.existingPrediction.homeScore),
+        awayScore: String(match.existingPrediction.awayScore),
+        penaltyWinner: match.existingPrediction.penaltyWinner,
+      };
+    } else {
+      initialState[match.id] = { homeScore: "", awayScore: "", penaltyWinner: null };
+    }
+  }
+
+  const [predictions, setPredictions] = useState<Record<string, PredictionEntry>>(initialState);
+  const [saving, setSaving] = useState(false);
+  const [result, setResult] = useState<{ success: number; failed: number } | null>(null);
+
+  function updatePrediction(matchId: string, field: keyof PredictionEntry, value: string | null) {
+    setPredictions((prev) => {
+      const entry = { ...prev[matchId], [field]: value };
+      // Auto-clear penalty winner if scores are unequal
+      if (field === "homeScore" || field === "awayScore") {
+        const h = field === "homeScore" ? value : entry.homeScore;
+        const a = field === "awayScore" ? value : entry.awayScore;
+        if (h !== "" && a !== "" && h !== a) {
+          entry.penaltyWinner = null;
+        }
+      }
+      return { ...prev, [matchId]: entry };
+    });
+    setResult(null);
+  }
+
+  async function handleSubmit() {
+    setSaving(true);
+    setResult(null);
+
+    let success = 0;
+    let failed = 0;
+
+    for (const match of matches) {
+      const pred = predictions[match.id];
+      if (!pred || pred.homeScore === "" || pred.awayScore === "") continue;
+      if (!match.predictionOpen || !match.teamsConfirmed) continue;
+
+      const homeScore = parseInt(pred.homeScore, 10);
+      const awayScore = parseInt(pred.awayScore, 10);
+
+      if (isNaN(homeScore) || isNaN(awayScore)) continue;
+      if (homeScore < 0 || homeScore > 20 || awayScore < 0 || awayScore > 20) continue;
+
+      // Skip if unchanged from existing prediction
+      if (
+        match.existingPrediction &&
+        match.existingPrediction.homeScore === homeScore &&
+        match.existingPrediction.awayScore === awayScore &&
+        match.existingPrediction.penaltyWinner === pred.penaltyWinner
+      ) {
+        continue;
+      }
+
+      // For knockout with equal scores, penalty winner is required
+      if (match.stage === "knockout" && homeScore === awayScore && !pred.penaltyWinner) {
+        failed++;
+        continue;
+      }
+
+      const endpoint =
+        match.stage === "group"
+          ? `/api/${groupSlug}/predictions/group`
+          : `/api/${groupSlug}/predictions/knockout`;
+
+      const body: Record<string, unknown> = { matchId: match.id, homeScore, awayScore };
+      if (match.stage === "knockout") {
+        body.penaltyWinner = homeScore === awayScore ? pred.penaltyWinner : null;
+      }
+
+      try {
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (res.ok) {
+          success++;
+        } else {
+          failed++;
+        }
+      } catch {
+        failed++;
+      }
+    }
+
+    setSaving(false);
+    setResult({ success, failed });
+  }
+
+  const hasChanges = matches.some((match) => {
+    const pred = predictions[match.id];
+    if (!pred || pred.homeScore === "" || pred.awayScore === "") return false;
+    if (!match.predictionOpen || !match.teamsConfirmed) return false;
+    if (!match.existingPrediction) return true;
+    return (
+      match.existingPrediction.homeScore !== parseInt(pred.homeScore, 10) ||
+      match.existingPrediction.awayScore !== parseInt(pred.awayScore, 10) ||
+      match.existingPrediction.penaltyWinner !== pred.penaltyWinner
+    );
+  });
+
+  return (
+    <div>
+      <div className="space-y-1">
+        {matches.map((match) => {
+          const pred = predictions[match.id];
+          const isKnockout = match.stage === "knockout";
+          const scoresEqual =
+            pred.homeScore !== "" &&
+            pred.awayScore !== "" &&
+            pred.homeScore === pred.awayScore;
+          const canPredict = match.predictionOpen && match.teamsConfirmed;
+          const isCompleted = match.status === "completed";
+          const hasPrediction = pred.homeScore !== "" && pred.awayScore !== "";
+          const missingPrediction = canPredict && !hasPrediction;
+          const missingPenalty = canPredict && isKnockout && scoresEqual && !pred.penaltyWinner;
+
+          return (
+            <div
+              key={match.id}
+              className={`p-3 rounded border ${
+                missingPrediction || missingPenalty
+                  ? "border-amber-300 bg-amber-50"
+                  : isCompleted
+                    ? "bg-gray-50 border-gray-200"
+                    : "bg-white border-gray-200"
+              }`}
+            >
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Match info */}
+                <div className="flex-1 min-w-[200px]">
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs text-gray-400">#{match.matchNumber}</span>
+                    <span className="text-xs text-gray-400">
+                      {match.groupLetter ? `Grp ${match.groupLetter}` : match.knockoutRound?.replace(/_/g, " ")}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="font-medium text-sm w-[120px] text-right truncate">
+                      {match.homeTeamName}
+                    </span>
+
+                    {/* Score inputs */}
+                    {canPredict ? (
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="number"
+                          min="0"
+                          max="20"
+                          value={pred.homeScore}
+                          onChange={(e) => updatePrediction(match.id, "homeScore", e.target.value)}
+                          className="w-10 h-8 text-center border rounded text-sm"
+                          placeholder="-"
+                        />
+                        <span className="text-gray-400 text-xs">-</span>
+                        <input
+                          type="number"
+                          min="0"
+                          max="20"
+                          value={pred.awayScore}
+                          onChange={(e) => updatePrediction(match.id, "awayScore", e.target.value)}
+                          className="w-10 h-8 text-center border rounded text-sm"
+                          placeholder="-"
+                        />
+                      </div>
+                    ) : isCompleted ? (
+                      <div className="flex items-center gap-1">
+                        <span className="w-10 h-8 flex items-center justify-center text-sm font-bold">
+                          {match.homeScore}
+                        </span>
+                        <span className="text-gray-400 text-xs">-</span>
+                        <span className="w-10 h-8 flex items-center justify-center text-sm font-bold">
+                          {match.awayScore}
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-gray-400 px-2">
+                        {!match.teamsConfirmed ? "TBD" : "Closed"}
+                      </span>
+                    )}
+
+                    <span className="font-medium text-sm w-[120px] truncate">
+                      {match.awayTeamName}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Penalty winner (knockout only, equal scores) */}
+                {isKnockout && canPredict && scoresEqual && (
+                  <div className="flex items-center gap-1 text-xs">
+                    <span className="text-gray-500">Pen:</span>
+                    <button
+                      type="button"
+                      onClick={() => updatePrediction(match.id, "penaltyWinner", "home")}
+                      className={`px-2 py-1 rounded ${
+                        pred.penaltyWinner === "home"
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-100 hover:bg-gray-200"
+                      }`}
+                    >
+                      {match.homeTeamCode || "H"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updatePrediction(match.id, "penaltyWinner", "away")}
+                      className={`px-2 py-1 rounded ${
+                        pred.penaltyWinner === "away"
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-100 hover:bg-gray-200"
+                      }`}
+                    >
+                      {match.awayTeamCode || "A"}
+                    </button>
+                  </div>
+                )}
+
+                {/* Status indicators */}
+                {(missingPrediction || missingPenalty) && (
+                  <span className="text-amber-600 text-xs" title={missingPenalty ? "Penalty winner selection is missing" : "No prediction submitted for this match"}>
+                    ℹ️ {missingPenalty ? "Pick pen winner" : "Missing"}
+                  </span>
+                )}
+
+                {/* Show existing prediction badge */}
+                {match.existingPrediction && canPredict && (
+                  <span className="text-xs text-green-600">✓</span>
+                )}
+              </div>
+
+              {/* Kickoff time */}
+              <div className="text-xs text-gray-400 mt-1">
+                {new Date(match.kickoffTime).toLocaleDateString("en-US", {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "2-digit",
+                })}{" "}
+                ET · {match.venue}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Submit button */}
+      <div className="sticky bottom-0 bg-white border-t p-4 mt-4 -mx-4 flex items-center justify-between">
+        <div>
+          {result && (
+            <span className={`text-sm ${result.failed > 0 ? "text-amber-600" : "text-green-600"}`}>
+              {result.success > 0 && `${result.success} saved`}
+              {result.success > 0 && result.failed > 0 && ", "}
+              {result.failed > 0 && `${result.failed} failed`}
+            </span>
+          )}
+        </div>
+        <button
+          onClick={handleSubmit}
+          disabled={saving || !hasChanges}
+          className={`px-6 py-2 rounded font-medium ${
+            saving || !hasChanges
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          }`}
+        >
+          {saving ? "Saving..." : "Save All Predictions"}
+        </button>
+      </div>
+    </div>
+  );
+}

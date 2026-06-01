@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Group {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  createdAt DateTime @default(now())
+
+  players Player[]
+}
+
+model Player {
+  id             String   @id @default(cuid())
+  groupId        String
+  name           String
+  email          String
+  favoriteTeamId String?
+  minnowTeamId   String?
+  createdAt      DateTime @default(now())
+
+  group               Group               @relation(fields: [groupId], references: [id])
+  favoriteTeam        Team?               @relation("FavoriteTeam", fields: [favoriteTeamId], references: [id])
+  minnowTeam          Team?               @relation("MinnowTeam", fields: [minnowTeamId], references: [id])
+  sessions            Session[]
+  groupPredictions    GroupPrediction[]
+  knockoutPredictions KnockoutPrediction[]
+  matchScores         MatchScore[]
+
+  @@unique([groupId, email])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  playerId  String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  player Player @relation(fields: [playerId], references: [id])
+}
+
+model Team {
+  id            String @id @default(cuid())
+  name          String
+  code          String @unique
+  groupLetter   String
+  confederation String
+  fifaRanking   Int
+
+  homeMatches    Match[]  @relation("HomeTeam")
+  awayMatches    Match[]  @relation("AwayTeam")
+  favoritedBy    Player[] @relation("FavoriteTeam")
+  minnowedBy     Player[] @relation("MinnowTeam")
+}
+
+model Match {
+  id            String   @id @default(cuid())
+  matchNumber   Int      @unique
+  homeTeamId    String?
+  awayTeamId    String?
+  groupLetter   String?
+  stage         String
+  knockoutRound String?
+  venue         String
+  kickoffTime   DateTime
+  status        String   @default("upcoming")
+  homeScore     Int?
+  awayScore     Int?
+  penaltyWinner String?
+  homeSlotLabel String?
+  awaySlotLabel String?
+
+  homeTeam            Team?               @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam            Team?               @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  groupPredictions    GroupPrediction[]
+  knockoutPredictions KnockoutPrediction[]
+  matchScores         MatchScore[]
+}
+
+model GroupPrediction {
+  id          String   @id @default(cuid())
+  playerId    String
+  matchId     String
+  homeScore   Int
+  awayScore   Int
+  submittedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  player Player @relation(fields: [playerId], references: [id])
+  match  Match  @relation(fields: [matchId], references: [id])
+
+  @@unique([playerId, matchId])
+}
+
+model KnockoutPrediction {
+  id            String   @id @default(cuid())
+  playerId      String
+  matchId       String
+  homeScore     Int
+  awayScore     Int
+  penaltyWinner String?
+  submittedAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  player Player @relation(fields: [playerId], references: [id])
+  match  Match  @relation(fields: [matchId], references: [id])
+
+  @@unique([playerId, matchId])
+}
+
+model MatchScore {
+  id                String  @id @default(cuid())
+  playerId          String
+  matchId           String
+  basePoints        Int
+  oddsMultiplier    Float
+  teamMultiplier    Int
+  totalPoints       Float
+  correctResult     Boolean
+  correctExactScore Boolean
+
+  player Player @relation(fields: [playerId], references: [id])
+  match  Match  @relation(fields: [matchId], references: [id])
+
+  @@unique([playerId, matchId])
+}
