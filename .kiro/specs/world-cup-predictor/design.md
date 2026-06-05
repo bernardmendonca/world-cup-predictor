@@ -21,6 +21,7 @@ The application consists of:
 4. **Environment-based configuration** — A single `.env` file controls deployment mode, auth provider, database URL, and feature flags.
 5. **Single-instance constraint** — SQLite requires a single server instance (not serverless or multi-instance) to avoid write contention. This is perfectly adequate for 20-50 concurrent users and simplifies the deployment topology.
 6. **URL-based multi-group isolation** — All routes are prefixed with a group slug (e.g., `/friends1/leaderboard`, `/work-buddies/predict/knockout`). The group slug is a dynamic Next.js route segment (`/[groupSlug]/...`). All data (players, predictions, scores, leaderboard) is scoped to the group. This allows a single deployment to serve multiple independent friend groups without any data leakage between them. Groups are created on-demand when the first player registers under a given slug. The 50-player limit applies per group, not globally.
+7. **Dark theme by default with toggle** — The UI defaults to a dark theme using Tailwind CSS `class` strategy (`darkMode: "class"`). A `ThemeProvider` client component manages the `dark` class on `<html>` and persists the user's preference in `localStorage`. A theme toggle (☀️/🌙) is always visible in the navigation header. All components use `dark:` Tailwind variants for full theme support.
 
 ## Architecture
 
@@ -241,7 +242,7 @@ interface OddsMultipliers {
 
 ### 4. Team Selection Module
 
-Manages favorite and minnow team selections with deadline enforcement.
+Manages favorite and minnow team selections with deadline enforcement. The selection UI is displayed at the top of the Predictions page rather than on a separate page, since team selection is the first thing players do and is most important for scoring context. When the selection deadline has passed, the selections are displayed in read-only mode.
 
 ```typescript
 interface TeamSelectionService {

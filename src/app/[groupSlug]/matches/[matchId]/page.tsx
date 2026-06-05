@@ -90,15 +90,15 @@ export default async function MatchDetailPage({
       <div className="mb-6">
         <a
           href={`/${resolvedParams.groupSlug}/matches`}
-          className="text-sm text-blue-600 hover:underline"
+          className="text-sm text-blue-600 hover:underline dark:text-blue-400"
         >
           ← Back to matches
         </a>
       </div>
 
-      <div className="bg-white rounded border p-6 mb-6">
+      <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-6 mb-6">
         <div className="text-center">
-          <div className="text-xs text-gray-400 mb-2">
+          <div className="text-xs text-gray-400 dark:text-gray-500 mb-2">
             Match #{match.matchNumber} ·{" "}
             {match.stage === "group"
               ? `Group ${match.groupLetter}`
@@ -106,7 +106,7 @@ export default async function MatchDetailPage({
           </div>
           <div className="text-2xl font-bold mb-2">
             <span>{match.homeTeam?.name || match.homeSlotLabel || "TBD"}</span>
-            <span className="mx-4 text-gray-400">
+            <span className="mx-4 text-gray-400 dark:text-gray-500">
               {match.status === "completed"
                 ? `${match.homeScore} - ${match.awayScore}`
                 : "vs"}
@@ -114,12 +114,12 @@ export default async function MatchDetailPage({
             <span>{match.awayTeam?.name || match.awaySlotLabel || "TBD"}</span>
           </div>
           {match.penaltyWinner && (
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
               Penalties: {match.penaltyWinner === "home" ? match.homeTeam?.name : match.awayTeam?.name} wins
             </div>
           )}
-          <div className="text-sm text-gray-500 mt-2">{match.venue}</div>
-          <div className="text-xs text-gray-400 mt-2 space-x-4">
+          <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">{match.venue}</div>
+          <div className="text-xs text-gray-400 dark:text-gray-500 mt-2 space-x-4">
             <span>🇺🇸 {tz.eastern}</span>
             <span>🇬🇧 {tz.uk}</span>
             <span>🇮🇳 {tz.ist}</span>
@@ -129,38 +129,38 @@ export default async function MatchDetailPage({
 
       {/* Odds Multipliers - Task 11.2 */}
       {predictionsClosed && oddsMultipliers ? (
-        <div className="bg-white rounded border p-4 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 mb-6">
           <h2 className="font-semibold mb-2">Odds Multipliers</h2>
           <div className="grid grid-cols-3 gap-4 text-center text-sm">
             <div>
-              <div className="text-gray-500">Home Win</div>
+              <div className="text-gray-500 dark:text-gray-400">Home Win</div>
               <div className="font-bold text-lg">{oddsMultipliers.homeWin.toFixed(2)}x</div>
             </div>
             <div>
-              <div className="text-gray-500">Draw</div>
+              <div className="text-gray-500 dark:text-gray-400">Draw</div>
               <div className="font-bold text-lg">{oddsMultipliers.draw.toFixed(2)}x</div>
             </div>
             <div>
-              <div className="text-gray-500">Away Win</div>
+              <div className="text-gray-500 dark:text-gray-400">Away Win</div>
               <div className="font-bold text-lg">{oddsMultipliers.awayWin.toFixed(2)}x</div>
             </div>
           </div>
         </div>
       ) : !predictionsClosed ? (
-        <div className="bg-gray-50 rounded border p-4 mb-6 text-center text-sm text-gray-500">
+        <div className="bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 mb-6 text-center text-sm text-gray-500 dark:text-gray-400">
           Odds multipliers hidden until prediction deadline
         </div>
       ) : null}
 
       {/* Predictions */}
       {predictionsClosed && predictions.length > 0 && (
-        <div className="bg-white rounded border p-4 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 mb-6">
           <h2 className="font-semibold mb-3">Predictions</h2>
           <div className="space-y-1">
             {predictions.map((pred, i) => (
               <div
                 key={i}
-                className="flex justify-between items-center py-1 border-b last:border-0"
+                className="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-700 last:border-0"
               >
                 <span className="text-sm">{pred.playerName}</span>
                 <span className="font-mono text-sm">
@@ -186,11 +186,11 @@ export default async function MatchDetailPage({
 
       {/* Scores */}
       {scores.length > 0 && (
-        <div className="bg-white rounded border p-4">
+        <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4">
           <h2 className="font-semibold mb-3">Scores</h2>
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-gray-500 border-b">
+              <tr className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
                 <th className="py-1">Player</th>
                 <th className="py-1 text-right">Base</th>
                 <th className="py-1 text-right">Odds</th>
@@ -202,7 +202,7 @@ export default async function MatchDetailPage({
               {scores
                 .filter((s) => s.player.groupId === group.id)
                 .map((score) => (
-                  <tr key={score.id} className="border-b last:border-0">
+                  <tr key={score.id} className="border-b border-gray-200 dark:border-gray-700 last:border-0">
                     <td className="py-1">{score.player.name}</td>
                     <td className="py-1 text-right">{score.basePoints}</td>
                     <td className="py-1 text-right">

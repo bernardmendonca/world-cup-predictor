@@ -24,6 +24,12 @@ export interface MatchData {
     awayScore: number;
     penaltyWinner: string | null;
   } | null;
+  participantScores: {
+    totalPoints: number;
+    basePoints: number;
+    oddsMultiplier: number;
+    teamMultiplier: number;
+  } | null;
 }
 
 interface Props {
@@ -169,18 +175,18 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
               key={match.id}
               className={`p-3 rounded border ${
                 missingPrediction || missingPenalty
-                  ? "border-amber-300 bg-amber-50"
+                  ? "border-amber-300 bg-amber-50 dark:border-amber-600 dark:bg-amber-950"
                   : isCompleted
-                    ? "bg-gray-50 border-gray-200"
-                    : "bg-white border-gray-200"
+                    ? "bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+                    : "bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700"
               }`}
             >
               <div className="flex items-center gap-2 flex-wrap">
                 {/* Match info */}
                 <div className="flex-1 min-w-[200px]">
                   <div className="flex items-center gap-1">
-                    <span className="text-xs text-gray-400">#{match.matchNumber}</span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-gray-400 dark:text-gray-500">#{match.matchNumber}</span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500">
                       {match.groupLetter ? `Grp ${match.groupLetter}` : match.knockoutRound?.replace(/_/g, " ")}
                     </span>
                   </div>
@@ -198,17 +204,17 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
                           max="20"
                           value={pred.homeScore}
                           onChange={(e) => updatePrediction(match.id, "homeScore", e.target.value)}
-                          className="w-10 h-8 text-center border rounded text-sm"
+                          className="w-10 h-8 text-center border rounded text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                           placeholder="-"
                         />
-                        <span className="text-gray-400 text-xs">-</span>
+                        <span className="text-gray-400 dark:text-gray-500 text-xs">-</span>
                         <input
                           type="number"
                           min="0"
                           max="20"
                           value={pred.awayScore}
                           onChange={(e) => updatePrediction(match.id, "awayScore", e.target.value)}
-                          className="w-10 h-8 text-center border rounded text-sm"
+                          className="w-10 h-8 text-center border rounded text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                           placeholder="-"
                         />
                       </div>
@@ -217,13 +223,13 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
                         <span className="w-10 h-8 flex items-center justify-center text-sm font-bold">
                           {match.homeScore}
                         </span>
-                        <span className="text-gray-400 text-xs">-</span>
+                        <span className="text-gray-400 dark:text-gray-500 text-xs">-</span>
                         <span className="w-10 h-8 flex items-center justify-center text-sm font-bold">
                           {match.awayScore}
                         </span>
                       </div>
                     ) : (
-                      <span className="text-xs text-gray-400 px-2">
+                      <span className="text-xs text-gray-400 dark:text-gray-500 px-2">
                         {!match.teamsConfirmed ? "TBD" : "Closed"}
                       </span>
                     )}
@@ -237,14 +243,14 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
                 {/* Penalty winner (knockout only, equal scores) */}
                 {isKnockout && canPredict && scoresEqual && (
                   <div className="flex items-center gap-1 text-xs">
-                    <span className="text-gray-500">Pen:</span>
+                    <span className="text-gray-500 dark:text-gray-400">Pen:</span>
                     <button
                       type="button"
                       onClick={() => updatePrediction(match.id, "penaltyWinner", "home")}
                       className={`px-2 py-1 rounded ${
                         pred.penaltyWinner === "home"
                           ? "bg-blue-600 text-white"
-                          : "bg-gray-100 hover:bg-gray-200"
+                          : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
                       }`}
                     >
                       {match.homeTeamCode || "H"}
@@ -255,7 +261,7 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
                       className={`px-2 py-1 rounded ${
                         pred.penaltyWinner === "away"
                           ? "bg-blue-600 text-white"
-                          : "bg-gray-100 hover:bg-gray-200"
+                          : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
                       }`}
                     >
                       {match.awayTeamCode || "A"}
@@ -265,19 +271,19 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
 
                 {/* Status indicators */}
                 {(missingPrediction || missingPenalty) && (
-                  <span className="text-amber-600 text-xs" title={missingPenalty ? "Penalty winner selection is missing" : "No prediction submitted for this match"}>
+                  <span className="text-amber-600 dark:text-amber-400 text-xs" title={missingPenalty ? "Penalty winner selection is missing" : "No prediction submitted for this match"}>
                     ℹ️ {missingPenalty ? "Pick pen winner" : "Missing"}
                   </span>
                 )}
 
                 {/* Show existing prediction badge */}
                 {match.existingPrediction && canPredict && (
-                  <span className="text-xs text-green-600">✓</span>
+                  <span className="text-xs text-green-600 dark:text-green-400">✓</span>
                 )}
               </div>
 
               {/* Kickoff time */}
-              <div className="text-xs text-gray-400 mt-1">
+              <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                 {new Date(match.kickoffTime).toLocaleDateString("en-US", {
                   weekday: "short",
                   month: "short",
@@ -287,16 +293,31 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
                 })}{" "}
                 ET · {match.venue}
               </div>
+
+              {/* Per-match score for the logged-in player (visible once admin records results) */}
+              {match.participantScores && (
+                <div className="mt-1 flex items-center gap-3 text-xs">
+                  <span className="text-gray-500 dark:text-gray-400">Your score:</span>
+                  <span className="text-gray-500 dark:text-gray-400">
+                    Base {match.participantScores.basePoints} ×
+                    Odds {match.participantScores.oddsMultiplier.toFixed(2)} ×
+                    Team {match.participantScores.teamMultiplier}
+                  </span>
+                  <span className="font-bold text-gray-700 dark:text-gray-200">
+                    = {match.participantScores.totalPoints.toFixed(2)} pts
+                  </span>
+                </div>
+              )}
             </div>
           );
         })}
       </div>
 
       {/* Submit button */}
-      <div className="sticky bottom-0 bg-white border-t p-4 mt-4 -mx-4 flex items-center justify-between">
+      <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 mt-4 -mx-4 flex items-center justify-between">
         <div>
           {result && (
-            <span className={`text-sm ${result.failed > 0 ? "text-amber-600" : "text-green-600"}`}>
+            <span className={`text-sm ${result.failed > 0 ? "text-amber-600 dark:text-amber-400" : "text-green-600 dark:text-green-400"}`}>
               {result.success > 0 && `${result.success} saved`}
               {result.success > 0 && result.failed > 0 && ", "}
               {result.failed > 0 && `${result.failed} failed`}
@@ -308,7 +329,7 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
           disabled={saving || !hasChanges}
           className={`px-6 py-2 rounded font-medium ${
             saving || !hasChanges
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
               : "bg-blue-600 text-white hover:bg-blue-700"
           }`}
         >

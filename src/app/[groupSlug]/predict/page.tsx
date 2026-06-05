@@ -5,7 +5,9 @@ import { isPredictionOpen } from "@/lib/utils/time";
 import { applyTimeOverride } from "@/lib/utils/apply-time-override";
 import { notFound } from "next/navigation";
 import { BatchPredictionForm } from "./batch-prediction-form";
+import { TeamSelectionSection } from "./team-selection-section";
 import type { MatchData } from "./batch-prediction-form";
+import { getPlayerSelections, isTeamSelectionOpen } from "@/lib/predictions/team-selection";
 
 export default async function PredictPage({
   params,
@@ -29,6 +31,13 @@ export default async function PredictPage({
   if (!player) {
     return <div className="text-center py-8 text-gray-500">Please log in to make predictions.</div>;
   }
+
+  // Fetch team selection data
+  const teams = await prisma.team.findMany({
+    orderBy: [{ groupLetter: "asc" }, { fifaRanking: "asc" }],
+  });
+  const selections = await getPlayerSelections(player.id);
+  const selectionOpen = await isTeamSelectionOpen();
 
   const stageFilter = resolvedSearchParams.stage || null; // null = all
   const roundFilter = resolvedSearchParams.round;
@@ -57,6 +66,24 @@ export default async function PredictPage({
   });
 
   // Build match data for the client component
+  const completedMatchIds = matches.filter((m) => m.status === "completed").map((m) => m.id);
+  const matchScores = completedMatchIds.length > 0
+    ? await prisma.matchScore.findMany({
+        where: { matchId: { in: completedMatchIds }, playerId: player.id },
+      })
+    : [];
+
+  // Map player's score by matchId
+  const playerScoreByMatch: Record<string, { totalPoints: number; basePoints: number; oddsMultiplier: number; teamMultiplier: number }> = {};
+  for (const score of matchScores) {
+    playerScoreByMatch[score.matchId] = {
+      totalPoints: score.totalPoints,
+      basePoints: score.basePoints,
+      oddsMultiplier: score.oddsMultiplier,
+      teamMultiplier: score.teamMultiplier,
+    };
+  }
+
   const matchData = matches.map((match) => {
     const gp = groupPredictions.find((p) => p.matchId === match.id);
     const kp = knockoutPredictions.find((p) => p.matchId === match.id);
@@ -86,6 +113,7 @@ export default async function PredictPage({
             penaltyWinner: "penaltyWinner" in prediction ? prediction.penaltyWinner : null,
           }
         : null,
+      participantScores: playerScoreByMatch[match.id] || null,
     };
   }) as MatchData[];
 
@@ -96,58 +124,66 @@ export default async function PredictPage({
     <div>
       <h1 className="text-2xl font-bold mb-2">Predictions</h1>
 
+      {/* Team Selection Section */}
+      <TeamSelectionSection
+        teams={teams}
+        selections={selections}
+        selectionOpen={selectionOpen}
+        groupSlug={resolvedParams.groupSlug}
+      />
+
       <div className="flex gap-2 mb-4 flex-wrap">
         <a
           href={`/${resolvedParams.groupSlug}/predict`}
-          className={`px-3 py-1 rounded text-sm ${!stageFilter && !roundFilter ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${!stageFilter && !roundFilter ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           All
         </a>
         <a
           href={`/${resolvedParams.groupSlug}/predict?stage=group`}
-          className={`px-3 py-1 rounded text-sm ${stageFilter === "group" && !roundFilter ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${stageFilter === "group" && !roundFilter ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           Group Stage
         </a>
         <a
           href={`/${resolvedParams.groupSlug}/predict?stage=knockout&round=round_of_32`}
-          className={`px-3 py-1 rounded text-sm ${roundFilter === "round_of_32" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${roundFilter === "round_of_32" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           Round of 32
         </a>
         <a
           href={`/${resolvedParams.groupSlug}/predict?stage=knockout&round=round_of_16`}
-          className={`px-3 py-1 rounded text-sm ${roundFilter === "round_of_16" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${roundFilter === "round_of_16" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           Round of 16
         </a>
         <a
           href={`/${resolvedParams.groupSlug}/predict?stage=knockout&round=quarter_finals`}
-          className={`px-3 py-1 rounded text-sm ${roundFilter === "quarter_finals" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${roundFilter === "quarter_finals" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           QF
         </a>
         <a
           href={`/${resolvedParams.groupSlug}/predict?stage=knockout&round=semi_finals`}
-          className={`px-3 py-1 rounded text-sm ${roundFilter === "semi_finals" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${roundFilter === "semi_finals" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           SF
         </a>
         <a
           href={`/${resolvedParams.groupSlug}/predict?stage=knockout&round=third_place`}
-          className={`px-3 py-1 rounded text-sm ${roundFilter === "third_place" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${roundFilter === "third_place" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           3rd
         </a>
         <a
           href={`/${resolvedParams.groupSlug}/predict?stage=knockout&round=final`}
-          className={`px-3 py-1 rounded text-sm ${roundFilter === "final" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${roundFilter === "final" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           Final
         </a>
       </div>
 
-      <p className="text-sm text-gray-500 mb-4">
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
         {predictedCount} of {predictableCount} predictions submitted
       </p>
 

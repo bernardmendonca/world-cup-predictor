@@ -28,19 +28,19 @@ export default async function MatchesPage({
       <div className="flex gap-2 mb-4">
         <a
           href={`/${resolvedParams.groupSlug}/matches`}
-          className={`px-3 py-1 rounded text-sm ${!stageFilter ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${!stageFilter ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           All
         </a>
         <a
           href={`/${resolvedParams.groupSlug}/matches?stage=group`}
-          className={`px-3 py-1 rounded text-sm ${stageFilter === "group" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${stageFilter === "group" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           Group Stage
         </a>
         <a
           href={`/${resolvedParams.groupSlug}/matches?stage=knockout`}
-          className={`px-3 py-1 rounded text-sm ${stageFilter === "knockout" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
+          className={`px-3 py-1 rounded text-sm ${stageFilter === "knockout" ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
         >
           Knockout
         </a>
@@ -53,17 +53,17 @@ export default async function MatchesPage({
             <a
               key={match.id}
               href={`/${resolvedParams.groupSlug}/matches/${match.id}`}
-              className="block p-3 bg-white rounded border hover:border-blue-300"
+              className="block p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600"
             >
               <div className="flex justify-between items-center">
                 <div>
-                  <span className="text-xs text-gray-400 mr-2">
+                  <span className="text-xs text-gray-400 dark:text-gray-500 mr-2">
                     #{match.matchNumber}
                   </span>
                   <span className="font-medium">
                     {match.homeTeam?.name || match.homeSlotLabel || "TBD"}
                   </span>
-                  <span className="text-gray-400 mx-2">
+                  <span className="text-gray-400 dark:text-gray-500 mx-2">
                     {match.status === "completed"
                       ? `${match.homeScore} - ${match.awayScore}`
                       : "vs"}
@@ -72,7 +72,7 @@ export default async function MatchesPage({
                     {match.awayTeam?.name || match.awaySlotLabel || "TBD"}
                   </span>
                   {match.penaltyWinner && (
-                    <span className="text-xs text-gray-500 ml-1">
+                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
                       (pen)
                     </span>
                   )}
@@ -80,21 +80,21 @@ export default async function MatchesPage({
                 <span
                   className={`text-xs px-2 py-0.5 rounded ${
                     match.status === "completed"
-                      ? "bg-green-100 text-green-700"
+                      ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
                       : match.status === "in_progress"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-gray-100 text-gray-600"
+                        ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
+                        : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
                   }`}
                 >
                   {match.status}
                 </span>
               </div>
-              <div className="text-xs text-gray-500 mt-1 flex gap-4">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex gap-4">
                 <span>🇺🇸 {tz.eastern}</span>
                 <span>🇬🇧 {tz.uk}</span>
                 <span>🇮🇳 {tz.ist}</span>
               </div>
-              <div className="text-xs text-gray-400 mt-0.5">
+              <div className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                 {match.venue} ·{" "}
                 {match.stage === "group"
                   ? `Group ${match.groupLetter}`

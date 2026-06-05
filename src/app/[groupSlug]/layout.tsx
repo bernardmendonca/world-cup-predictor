@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { PlayerSwitcher } from "./player-switcher";
 import { TimeOverrideBar } from "./time-override-bar";
 import { isTestMode } from "@/lib/test-mode/test-mode";
+import { ThemeToggle } from "../theme-toggle";
 
 export default async function GroupLayout({
   children,
@@ -23,39 +24,39 @@ export default async function GroupLayout({
   const testMode = isTestMode();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm border-b">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <a
               href={`/${groupSlug}`}
-              className="font-bold text-lg text-blue-600"
+              className="font-bold text-lg text-blue-600 dark:text-blue-400"
             >
               WCP 2026
             </a>
             <div className="hidden sm:flex items-center gap-4 text-sm">
               <a
                 href={`/${groupSlug}/predict`}
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
               >
                 Predict
               </a>
               <a
                 href={`/${groupSlug}/teams`}
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
               >
                 Teams
               </a>
               <a
                 href={`/${groupSlug}/leaderboard`}
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
               >
                 Leaderboard
               </a>
               {testMode && (
                 <a
                   href={`/${groupSlug}/admin`}
-                  className="text-red-600 hover:text-red-800"
+                  className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                 >
                   Admin
                 </a>
@@ -63,6 +64,7 @@ export default async function GroupLayout({
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             {testMode && <PlayerSwitcher groupSlug={groupSlug} />}
           </div>
         </div>

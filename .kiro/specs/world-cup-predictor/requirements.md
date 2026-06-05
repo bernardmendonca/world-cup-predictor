@@ -113,6 +113,8 @@ A football World Cup predictor game designed for small groups of friends and col
 4. IF a Player attempts to select or change their Favorite_Team after the Team_Selection_Deadline, THEN THE Predictor_System SHALL display a message indicating that the selection window has closed
 5. WHEN a Match involves a Player's Favorite_Team, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
 6. THE Predictor_System SHALL apply the Favorite_Team multiplier to both Group_Stage and Knockout_Stage matches
+7. THE Predictor_System SHALL display the Favorite_Team selection UI at the top of the Predictions page, allowing Players to select their team in the same context where they make match predictions
+8. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Favorite_Team selection at the top of the Predictions page in a read-only state
 
 ### Requirement 7: Minnow Team Selection
 
@@ -127,6 +129,8 @@ A football World Cup predictor game designed for small groups of friends and col
 5. WHEN a Match involves a Player's Minnow_Team, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
 6. THE Predictor_System SHALL apply the Minnow_Team multiplier to both Group_Stage and Knockout_Stage matches
 7. THE Predictor_System SHALL allow a Player to select the same team as both Favorite_Team and Minnow_Team, resulting in a 4x multiplier for matches involving that team
+8. THE Predictor_System SHALL display the Minnow_Team selection UI at the top of the Predictions page alongside the Favorite_Team selection
+9. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Minnow_Team selection at the top of the Predictions page in a read-only state
 
 ### Requirement 8: Odds Multiplier Calculation
 
@@ -212,6 +216,7 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 3. THE Predictor_System SHALL display the Prediction_Deadline for each upcoming Match where the current time is before the Prediction_Deadline
 4. WHEN a Match is complete, THE Predictor_System SHALL provide a match detail view showing each Player's predicted score, the actual result, and the points awarded for that Match
 5. THE Predictor_System SHALL categorize each Match with a status of Upcoming, In Progress, or Completed
+6. WHEN a Match is complete and scores have been calculated, THE Predictor_System SHALL display the logged-in Player's own scoring breakdown (base points, odds multiplier, team multiplier, total points) inline on the Predictions page for that Match
 
 ### Requirement 11: Missing Prediction Awareness
 
@@ -240,6 +245,7 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 5. THE Predictor_System SHALL store all prediction and scoring data persistently across server restarts
 6. THE Predictor_System SHALL use a single codebase with environment-based configuration to switch between Internal_Deployment and External_Deployment
 7. THE Predictor_System SHALL be runnable locally on a developer's machine with a single setup command for testing and development purposes, without requiring external cloud services or paid infrastructure
+8. THE Predictor_System SHALL default to a dark theme and provide a toggle in the page header for switching between dark and light themes, with the preference persisted in the browser's local storage
 
 ### Requirement 13: Points Stacking for Favorite and Minnow Teams
 

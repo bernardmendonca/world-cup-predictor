@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { isTestMode, getTestGroupSlug, ensureTestData } from "@/lib/test-mode/test-mode";
+import { ThemeToggle } from "./theme-toggle";
 
 export const dynamic = "force-dynamic";
 
@@ -11,8 +12,11 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-8">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <h1 className="text-4xl font-bold mb-4">World Cup Predictor 2026</h1>
-      <p className="text-lg text-gray-600 mb-8">
+      <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
         Predict match scores and compete with friends
       </p>
 
@@ -26,7 +30,7 @@ export default async function Home() {
       )}
 
       <form action={handleGroupSubmit} className="flex flex-col items-center gap-4">
-        <label htmlFor="groupSlug" className="text-sm text-gray-500">
+        <label htmlFor="groupSlug" className="text-sm text-gray-500 dark:text-gray-400">
           Enter your group slug to get started
         </label>
         <div className="flex gap-2">
@@ -37,7 +41,7 @@ export default async function Home() {
             placeholder="my-group"
             pattern="[a-z0-9][a-z0-9-]{1,28}[a-z0-9]"
             required
-            className="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="submit"

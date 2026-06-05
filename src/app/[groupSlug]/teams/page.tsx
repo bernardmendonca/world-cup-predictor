@@ -43,26 +43,26 @@ export default async function TeamsPage({
   return (
     <div>
       <h1 className="text-2xl font-bold mb-2">Team Selection</h1>
-      <p className="text-sm text-gray-500 mb-6">
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
         Choose your favorite team (2x multiplier) and minnow team (3x multiplier)
         for matches involving them.
         {!selectionOpen && (
-          <span className="text-red-600 ml-2">Selection window is closed.</span>
+          <span className="text-red-600 dark:text-red-400 ml-2">Selection window is closed.</span>
         )}
       </p>
 
       {selections.favoriteTeamId || selections.minnowTeamId ? (
-        <div className="bg-blue-50 rounded border p-4 mb-6">
+        <div className="bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-800 p-4 mb-6">
           <h2 className="font-semibold mb-2">Your Selections</h2>
           <div className="text-sm space-y-1">
             <div>
-              <span className="text-gray-600">Favorite: </span>
+              <span className="text-gray-600 dark:text-gray-400">Favorite: </span>
               <span className="font-medium">
                 {teams.find((t) => t.id === selections.favoriteTeamId)?.name || "Not selected"}
               </span>
             </div>
             <div>
-              <span className="text-gray-600">Minnow: </span>
+              <span className="text-gray-600 dark:text-gray-400">Minnow: </span>
               <span className="font-medium">
                 {teams.find((t) => t.id === selections.minnowTeamId)?.name || "Not selected"}
               </span>
@@ -73,16 +73,16 @@ export default async function TeamsPage({
 
       {selectionOpen && (
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <form action={handleFavorite} className="bg-white rounded border p-4">
+          <form action={handleFavorite} className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4">
             <h2 className="font-semibold mb-2">Select Favorite Team</h2>
-            <p className="text-xs text-gray-500 mb-3">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
               2x multiplier when your favorite team is playing
             </p>
             <input type="hidden" name="groupSlug" value={resolvedParams.groupSlug} />
             <select
               name="teamId"
               defaultValue={selections.favoriteTeamId || ""}
-              className="w-full px-3 py-2 border rounded mb-3"
+              className="w-full px-3 py-2 border rounded mb-3 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
               required
             >
               <option value="">Choose a team...</option>
@@ -100,16 +100,16 @@ export default async function TeamsPage({
             </button>
           </form>
 
-          <form action={handleMinnow} className="bg-white rounded border p-4">
+          <form action={handleMinnow} className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4">
             <h2 className="font-semibold mb-2">Select Minnow Team</h2>
-            <p className="text-xs text-gray-500 mb-3">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
               3x multiplier when your minnow team is playing
             </p>
             <input type="hidden" name="groupSlug" value={resolvedParams.groupSlug} />
             <select
               name="teamId"
               defaultValue={selections.minnowTeamId || ""}
-              className="w-full px-3 py-2 border rounded mb-3"
+              className="w-full px-3 py-2 border rounded mb-3 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
               required
             >
               <option value="">Choose a team...</option>
@@ -132,8 +132,8 @@ export default async function TeamsPage({
       <h2 className="text-lg font-semibold mb-3">All Teams</h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {Object.entries(teamsByGroup).map(([letter, groupTeams]) => (
-          <div key={letter} className="bg-white rounded border p-3">
-            <h3 className="font-semibold text-sm text-gray-500 mb-2">
+          <div key={letter} className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-3">
+            <h3 className="font-semibold text-sm text-gray-500 dark:text-gray-400 mb-2">
               Group {letter}
             </h3>
             <div className="space-y-1">
@@ -142,16 +142,16 @@ export default async function TeamsPage({
                   key={team.id}
                   className={`text-sm flex justify-between ${
                     team.id === selections.favoriteTeamId
-                      ? "text-blue-600 font-medium"
+                      ? "text-blue-600 dark:text-blue-400 font-medium"
                       : team.id === selections.minnowTeamId
-                        ? "text-green-600 font-medium"
+                        ? "text-green-600 dark:text-green-400 font-medium"
                         : ""
                   }`}
                 >
                   <span>
                     {team.name} ({team.code})
                   </span>
-                  <span className="text-gray-400">#{team.fifaRanking}</span>
+                  <span className="text-gray-400 dark:text-gray-500">#{team.fifaRanking}</span>
                 </div>
               ))}
             </div>

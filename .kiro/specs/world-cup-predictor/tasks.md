@@ -229,13 +229,14 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
   - [x] 9.3 Implement server-rendered pages
     - Create landing page (`/`) showing a group selector or list of groups, with option to enter a group slug
     - Create group dashboard (`/[groupSlug]`) that redirects to the predict page
-    - Create batch prediction page (`/[groupSlug]/predict`) as the primary view with inline score inputs for all matches, "All" filter as default, stage/round filter tabs, "Save All Predictions" button, and missing prediction highlighting
-    - Create batch prediction client component with inline score inputs, penalty winner toggle for knockout draws, change tracking, and batch submit
+    - Create batch prediction page (`/[groupSlug]/predict`) as the primary view with team selection section at the top (favorite/minnow), inline score inputs for all matches, "All" filter as default, stage/round filter tabs, "Save All Predictions" button, missing prediction highlighting, and the logged-in player's scoring breakdown shown inline for completed matches
+    - Create batch prediction client component with inline score inputs, penalty winner toggle for knockout draws, change tracking, per-match player score display, and batch submit
+    - Create team selection section on predict page showing favorite/minnow selections with edit capability when open, read-only display when closed
     - Create match detail page (`/[groupSlug]/matches/[matchId]`) showing all predictions and scores after deadline (linked from completed matches)
-    - Create team selection page (`/[groupSlug]/teams`) for favorite/minnow selection
+    - Create team selection page (`/[groupSlug]/teams`) for favorite/minnow selection (legacy, still accessible)
     - Create leaderboard page (`/[groupSlug]/leaderboard`) with ranked table (group-scoped)
     - Navigation: WCP 2026 | Predict | Teams | Leaderboard | Admin (test mode only)
-    - _Requirements: 2.1, 4.2, 4.3, 6.1, 7.1, 8.4, 8.5, 9.1, 9.3, 10.1, 10.2, 10.3, 10.4, 10.5, 15.1, 15.2, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7_
+    - _Requirements: 2.1, 4.2, 4.3, 6.1, 6.7, 6.8, 7.1, 7.8, 7.9, 8.4, 8.5, 9.1, 9.3, 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 15.1, 15.2, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7_
 
   - [x] 9.4 Implement admin page
     - Create admin page at `/[groupSlug]/admin` with admin-only access check
@@ -274,6 +275,14 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Reveal odds multipliers after deadline passes
     - Show countdown timers for upcoming deadlines
     - _Requirements: 8.4, 8.5, 10.3_
+
+  - [x] 11.3 Implement dark theme with toggle
+    - Configure Tailwind CSS `darkMode: "class"` strategy
+    - Create `ThemeProvider` client component managing `dark` class on `<html>` with localStorage persistence
+    - Create `ThemeToggle` component (☀️/🌙) placed in navigation header and landing page
+    - Default to dark theme on first visit
+    - Add `dark:` variants to all pages: landing, predict, leaderboard, teams, matches, match detail, admin
+    - _Requirements: 12.8_
 
   - [x]* 11.3 Write integration tests for end-to-end flows
     - Test full prediction → result → scoring → leaderboard flow within a single group
