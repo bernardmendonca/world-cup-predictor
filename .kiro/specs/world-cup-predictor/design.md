@@ -2,26 +2,28 @@
 
 ## Overview
 
-The World Cup Predictor is a full-stack web application for small groups (20-50 players) to compete by predicting match outcomes during the FIFA World Cup. The system supports two deployment modes from a single codebase: an internal AWS deployment with HERE SSO authentication, and an external low-cost deployment with email-based magic link authentication.
+The World Cup Predictor is a full-stack web application for small groups (20-50 players) to compete by predicting match outcomes during the FIFA World Cup. The system uses invite link authentication — admins create players and share unique URLs that grant instant access for the full tournament duration.
 
 A single deployed instance supports multiple independent groups, each identified by a URL path slug (e.g., `/friends1/`, `/work-buddies/`). Each group has its own players, predictions, scores, and leaderboard, completely isolated from other groups. This allows one deployment to serve several friend circles or teams without interference.
 
 The application consists of:
 - A server-side rendered web application with a lightweight frontend
-- A relational database for persistent storage
-- An authentication layer that switches between SSO and email verification based on environment configuration
+- A PostgreSQL database for persistent storage (Railway deployment) or SQLite for local development
+- An invite link authentication system where each player has a unique token-based URL
 - A scoring engine that calculates points using base scores, odds multipliers, and team multipliers
 - A group isolation layer that scopes all data by a URL-based group slug
+- An admin panel for player management, result recording, and knockout bracket progression
 
 ### Key Design Decisions
 
-1. **Next.js with TypeScript** — Provides server-side rendering, API routes, and a single deployable artifact. Well-suited for both AWS (single EC2 instance) and low-cost platforms (Railway, Render, Fly.io).
-2. **SQLite everywhere** — SQLite is used as the sole database across all environments (local, internal AWS, and external). It's a single file, requires no separate database server, and works identically across all environments. Only the file path changes via the `DATABASE_URL` environment variable (e.g., `file:./data/predictor.db` locally, `file:/home/ec2-user/app/data/predictor.db` on AWS, `file:/data/predictor.db` on Railway). This eliminates database configuration drift between environments and simplifies deployment.
-3. **Server-side rendering with minimal client JS** — The app is read-heavy with simple forms. SSR reduces complexity and improves performance for the 20-50 user scale.
-4. **Environment-based configuration** — A single `.env` file controls deployment mode, auth provider, database URL, and feature flags.
-5. **Single-instance constraint** — SQLite requires a single server instance (not serverless or multi-instance) to avoid write contention. This is perfectly adequate for 20-50 concurrent users and simplifies the deployment topology.
-6. **URL-based multi-group isolation** — All routes are prefixed with a group slug (e.g., `/friends1/leaderboard`, `/work-buddies/predict/knockout`). The group slug is a dynamic Next.js route segment (`/[groupSlug]/...`). All data (players, predictions, scores, leaderboard) is scoped to the group. This allows a single deployment to serve multiple independent friend groups without any data leakage between them. Groups are created on-demand when the first player registers under a given slug. The 50-player limit applies per group, not globally.
+1. **Next.js with TypeScript** — Provides server-side rendering, API routes, and a single deployable artifact. Well-suited for Railway deployment.
+2. **PostgreSQL for production, SQLite for local dev** — PostgreSQL is used on Railway (provided as a managed plugin). SQLite is used for local development for zero-config simplicity. Prisma ORM abstracts the difference.
+3. **Invite link authentication** — Each player gets a unique invite URL containing a permanent token. Clicking it creates a 60-day session cookie. No passwords, no OAuth providers, no email services needed. Admins create players and distribute links manually (WhatsApp, text, email).
+4. **Server-side rendering with minimal client JS** — The app is read-heavy with simple forms. SSR reduces complexity and improves performance for the 20-50 user scale.
+5. **Environment-based configuration** — A single `.env` file controls deployment mode, database URL, admin access, and feature flags.
+6. **URL-based multi-group isolation** — All routes are prefixed with a group slug (e.g., `/friends1/leaderboard`, `/work-buddies/predict/knockout`). The group slug is a dynamic Next.js route segment (`/[groupSlug]/...`). All data (players, predictions, scores, leaderboard) is scoped to the group. This allows a single deployment to serve multiple independent friend groups without any data leakage between them. Groups are created on-demand. The 50-player limit applies per group, not globally.
 7. **Dark theme by default with toggle** — The UI defaults to a dark theme using Tailwind CSS `class` strategy (`darkMode: "class"`). A `ThemeProvider` client component manages the `dark` class on `<html>` and persists the user's preference in `localStorage`. A theme toggle (☀️/🌙) is always visible in the navigation header. All components use `dark:` Tailwind variants for full theme support.
+8. **Admin bootstrap via ADMIN_SECRET** — Before any players exist, the admin accesses the admin panel using a `?adminKey=SECRET` query parameter. Once the admin creates themselves as a player and logs in via their invite link, subsequent admin access is governed by `ADMIN_EMAILS`.
 
 ## Architecture
 
@@ -34,50 +36,44 @@ graph TB
     subgraph Application["Next.js Application"]
         Pages["Pages / SSR (/[groupSlug]/...)"]
         API["API Routes (/api/[groupSlug]/...)"]
-        Auth[Auth Middleware]
-        GroupResolver[Group Resolver Middleware]
+        Auth[Auth Middleware - Session Cookie]
+        GroupResolver[Group Resolver]
         Scoring[Scoring Engine]
+        AdminPanel[Admin Panel - Player Management]
     end
 
-    subgraph AuthProviders["Auth Providers"]
-        SSO[HERE SSO - Internal]
-        Email[Email Magic Link - External]
+    subgraph AuthFlow["Authentication"]
+        InviteLink[Invite Link /join/token]
+        SessionCookie[Session Cookie - 60 days]
     end
 
     subgraph DataLayer["Data Layer"]
         Prisma[Prisma ORM]
-        SQLite[SQLite File]
+        PostgreSQL[PostgreSQL - Railway]
     end
 
     Browser --> Pages
     Browser --> API
+    Browser --> InviteLink
+    InviteLink --> SessionCookie
     Pages --> GroupResolver
     API --> GroupResolver
     GroupResolver --> Auth
-    Auth --> SSO
-    Auth --> Email
     API --> Scoring
     Scoring --> Prisma
     Pages --> Prisma
-    Prisma --> SQLite
+    AdminPanel --> Prisma
+    Prisma --> PostgreSQL
 ```
 
 ### Deployment Architecture
 
 ```mermaid
 graph LR
-    subgraph Internal["Internal Deployment (AWS)"]
-        EC2[EC2 Instance - t3.micro]
-        EBS[EBS Volume - SQLite File]
-        SES[SES for emails]
-        EC2 --> EBS
-    end
-
-    subgraph External["External Deployment"]
-        Platform[Railway / Render / Fly.io]
-        PersistentDisk[Persistent Disk Volume - SQLite File]
-        Resend[Resend - Free Tier Email]
-        Platform --> PersistentDisk
+    subgraph Railway["Railway Deployment"]
+        Service[Next.js Service]
+        PG[PostgreSQL Plugin]
+        Service --> PG
     end
 
     subgraph Local["Local Development"]
@@ -88,8 +84,8 @@ graph LR
 
 **Deployment details:**
 - **Local**: SQLite file stored in the project folder at `./data/predictor.db`. Zero configuration needed.
-- **Internal (AWS)**: Single EC2 instance (t3.micro is sufficient for 50 users) running the Next.js app directly with the SQLite file on the instance's EBS volume at `/home/ec2-user/app/data/predictor.db`. Use PM2 or systemd to keep the process running. No load balancer, no containers, no EFS — just SSH in, deploy, and run.
-- **External**: Railway, Render, or Fly.io with a persistent disk volume for the `.db` file at `/data/predictor.db`. These platforms support persistent filesystem storage, unlike serverless platforms.
+- **Production (Railway)**: Next.js service with a PostgreSQL plugin. Build command: `npx prisma generate && npm run build`. Start command: `npx prisma migrate deploy && npm run start`. The internal Postgres hostname is only available at runtime, so migrations run at startup, not build time.
+- **Environment variables on Railway**: `DATABASE_URL` (auto-linked from Postgres plugin), `DEPLOYMENT_MODE`, `ADMIN_EMAILS`, `ADMIN_SECRET`, `SESSION_DURATION_DAYS`, `MAX_PLAYERS_PER_GROUP`.
 
 ## Components and Interfaces
 
@@ -120,42 +116,47 @@ interface Group {
 
 ### 1. Authentication Module
 
-Handles player registration and session management with provider switching. Players are scoped to a group — the same email can register in multiple groups independently.
+Handles player session management via invite link tokens. Players are scoped to a group — the same email can exist in multiple groups independently. Admin creates players, each getting a unique invite token.
 
 ```typescript
 interface AuthConfig {
-  provider: 'sso' | 'email';
-  ssoClientId?: string;
-  ssoClientSecret?: string;
-  ssoIssuerUrl?: string;
-  emailFromAddress?: string;
-  emailServiceApiKey?: string;
-  sessionDurationDays: number; // default: 7
+  adminEmails: string[];
+  adminSecret?: string;        // ADMIN_SECRET env var for bootstrap access
+  sessionDurationDays: number; // default: 60 (full tournament)
   maxPlayersPerGroup: number;  // default: 50
 }
 
 interface AuthService {
-  initiateLogin(groupId: string, email: string): Promise<LoginResult>;
-  verifyCallback(token: string): Promise<Session>;
-  getSession(sessionToken: string): Promise<Session | null>;
+  createSession(playerId: string): Promise<string>; // returns session token
+  validateSession(token: string): Promise<Session | null>;
   logout(sessionToken: string): Promise<void>;
+  isAdmin(email: string): boolean;
 }
 
 interface Session {
   id: string;
   playerId: string;
   playerName: string;
+  playerEmail: string;
   groupId: string;
   groupSlug: string;
   expiresAt: Date;
 }
-
-interface LoginResult {
-  type: 'redirect' | 'email_sent';
-  redirectUrl?: string;
-  message?: string;
-}
 ```
+
+**Authentication flow:**
+1. Admin creates a player via admin panel → player record created with auto-generated `inviteToken`
+2. Admin copies invite URL (`/{groupSlug}/join/{token}`) and shares it with the player
+3. Player clicks invite link → system looks up player by token, creates a session, sets cookie (60 days)
+4. Player is redirected to the predictions page, logged in for the entire tournament
+5. If cookie expires, player clicks their invite link again to get a new session
+
+**Bootstrap flow (first-time setup):**
+1. Admin sets `ADMIN_SECRET` env var on Railway
+2. Admin visits `/{groupSlug}/admin?adminKey=SECRET` to access admin panel without a session
+3. Admin creates themselves as the first player (using their `ADMIN_EMAILS` email)
+4. Admin clicks their own invite link to log in
+5. Subsequent admin access works normally via session + `ADMIN_EMAILS` check
 
 ### 2. Prediction Module
 
@@ -320,11 +321,15 @@ type KnockoutRound = 'round_of_32' | 'round_of_16' | 'quarter_finals' | 'semi_fi
 
 ### 7. Admin Module
 
-Provides admin-only functionality for recording match results and managing knockout bracket progression. Admin access is determined by the `ADMIN_EMAILS` environment variable.
+Provides admin-only functionality for managing players, recording match results, and managing knockout bracket progression. Admin access is determined by the `ADMIN_EMAILS` environment variable or the `ADMIN_SECRET` bootstrap mechanism.
 
 ```typescript
 interface AdminService {
   isAdmin(email: string): boolean;
+
+  // Player management
+  createPlayer(groupId: string, name: string, email: string): Promise<Player>;
+  getPlayers(groupId: string): Promise<Player[]>;
 
   // Match result recording
   recordMatchResult(groupId: string, matchId: string, homeScore: number, awayScore: number, penaltyWinner?: 'home' | 'away'): Promise<AdminResultResponse>;
@@ -364,11 +369,13 @@ interface PendingAssignment {
 ```
 
 **Admin workflow:**
-1. Group stage matches complete → admin enters scores inline for all completed matches on the admin page, clicks "Save All Results" to batch-process them
-2. Once all 6 matches in a group are done, the admin switches to the "Assign Knockout Teams" tab and assigns teams to R32 slots in batch
-3. Once all R32 matches have results, admin assigns R16 teams, and so on through the bracket
-4. At each step, the system shows what's pending and what's ready for assignment
-5. Both result recording and team assignment support batch operations with a single submit button
+1. Bootstrap: Admin accesses admin panel via `?adminKey=SECRET`, creates themselves as first player, logs in via invite link
+2. Player management: Admin creates all players in the Players tab, copies and shares invite links
+3. Group stage matches complete → admin enters scores inline on the Record Results tab, clicks "Save All Results" to batch-process them
+4. Once all 6 matches in a group are done, the admin switches to the "Assign Knockout Teams" tab and assigns teams to R32 slots in batch
+5. Once all R32 matches have results, admin assigns R16 teams, and so on through the bracket
+6. At each step, the system shows what's pending and what's ready for assignment
+7. Both result recording and team assignment support batch operations with a single submit button
 
 interface Team {
   id: string;
@@ -401,6 +408,7 @@ erDiagram
         string groupId FK
         string name
         string email
+        string inviteToken UK
         string favoriteTeamId FK
         string minnowTeamId FK
         datetime createdAt
@@ -502,6 +510,7 @@ model Player {
   groupId        String
   name           String
   email          String
+  inviteToken    String   @unique @default(cuid())  // unique invite link token
   favoriteTeamId String?
   minnowTeamId   String?
   createdAt      DateTime @default(now())
@@ -737,12 +746,12 @@ This is the same rule as group stage (Property 6), applied per-match.
 
 | Error Condition | Handling Strategy |
 |----------------|-------------------|
-| SSO provider unavailable | Display "Authentication service temporarily unavailable" with retry option |
-| Magic link expired (>15 min) | Display "Link expired" with option to request new link |
-| Magic link already used | Display "Link already used" with option to request new link |
-| Max players reached (50) | Display "Game is full" message, reject registration |
+| Invalid invite token | Display "not found" page (404) |
+| Invite token for wrong group | Display "not found" page (404) |
+| Session cookie expired | Redirect to login page; player can re-use their invite link |
+| Max players reached (50) | Display "Game is full" message, reject player creation |
 | Invalid session token | Redirect to login page |
-| Session expired | Redirect to login page with "Session expired" message |
+| Admin access without credentials | Display "Access denied" or "Please log in" message |
 
 ### Prediction Errors
 

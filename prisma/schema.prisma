@@ -21,6 +21,7 @@ model Player {
   groupId        String
   name           String
   email          String
+  inviteToken    String   @unique @default(cuid())
   favoriteTeamId String?
   minnowTeamId   String?
   createdAt      DateTime @default(now())

@@ -20,9 +20,21 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Skip join/invite token pages — these handle their own auth
+  if (segments.length >= 2 && segments[1] === "join") {
+    return NextResponse.next();
+  }
+
   // In test mode, bypass auth entirely
   const deploymentMode = process.env.DEPLOYMENT_MODE || "test";
   if (deploymentMode === "test") {
+    return NextResponse.next();
+  }
+
+  // Allow admin bootstrap access via adminKey query param
+  const adminKey = request.nextUrl.searchParams.get("adminKey");
+  const adminSecret = process.env.ADMIN_SECRET;
+  if (adminKey && adminSecret && adminKey === adminSecret) {
     return NextResponse.next();
   }
 

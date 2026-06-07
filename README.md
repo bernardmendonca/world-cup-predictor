@@ -45,9 +45,10 @@ cp .env.example .env
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `DEPLOYMENT_MODE` | `test`, `internal`, or `external` | `test` |
-| `DATABASE_URL` | SQLite file path | `file:./data/predictor.db` |
-| `AUTH_PROVIDER` | `sso` or `email` | `email` |
+| `DATABASE_URL` | Database connection string | `file:./data/predictor.db` |
+| `AUTH_PROVIDER` | `sso` or `email` (legacy, not needed for invite links) | `email` |
 | `ADMIN_EMAILS` | Comma-separated admin email addresses | `admin@example.com` |
+| `ADMIN_SECRET` | Secret key for bootstrap admin access | — |
 | `SESSION_DURATION_DAYS` | Session lifetime in days | `7` |
 | `MAX_PLAYERS_PER_GROUP` | Max players allowed per group | `50` |
 | `SSO_CLIENT_ID` | OAuth client ID (internal mode) | — |
@@ -121,11 +122,11 @@ The same email can register in multiple groups independently.
 
 ### Who is an admin?
 
-Anyone whose email is listed in the `ADMIN_EMAILS` environment variable. In test mode, all players have admin access.
+Anyone whose email is listed in the `ADMIN_EMAILS` environment variable. In test mode, all players have admin access. Admins are also regular participants — they can predict and appear on the leaderboard.
 
 ### Accessing the admin panel
 
-Navigate to `/{groupSlug}/admin` (e.g., `/friends1/admin`).
+Navigate to `/{groupSlug}/admin` (e.g., `/friends1/admin`). For first-time setup before any players exist, use `/{groupSlug}/admin?adminKey=YOUR_ADMIN_SECRET`.
 
 ### Recording match results
 
@@ -148,11 +149,13 @@ Once teams are assigned, players can submit predictions for that match (up to 2 
 
 ### Recommended workflow
 
-1. **Before tournament**: Share the group URL with friends, everyone registers
-2. **Group stage**: Players predict all 72 matches. Admin records results as matches finish.
-3. **After group stage**: Admin assigns R32 teams based on final standings
-4. **Knockout rounds**: Players predict each round's matches. Admin records results and assigns next round's teams.
-5. **Final**: Crown the leaderboard winner!
+1. **Initial setup**: Access admin panel via `?adminKey=...`, create yourself as a player, log in via your invite link
+2. **Add players**: Create all players in the admin panel, share invite links via WhatsApp/text
+3. **Before tournament**: Everyone clicks their link and submits predictions for group stage matches
+4. **Group stage**: Admin records results as matches finish
+5. **After group stage**: Admin assigns R32 teams based on final standings
+6. **Knockout rounds**: Players predict each round's matches. Admin records results and assigns next round's teams.
+7. **Final**: Crown the leaderboard winner!
 
 ## Scoring Rules
 
@@ -230,10 +233,9 @@ provider = "postgresql"
 | `DEPLOYMENT_MODE` | `external` |
 | `AUTH_PROVIDER` | `email` |
 | `ADMIN_EMAILS` | Comma-separated list of admin email addresses |
+| `ADMIN_SECRET` | A random string for bootstrap access (run `openssl rand -base64 32`) |
 | `SESSION_DURATION_DAYS` | `7` |
 | `MAX_PLAYERS_PER_GROUP` | `50` |
-| `EMAIL_FROM_ADDRESS` | Your sender address |
-| `EMAIL_SERVICE_API_KEY` | Your email service API key |
 
 5. Set the **Build Command**:
 
@@ -262,6 +264,48 @@ This loads all 104 World Cup 2026 fixtures and 48 teams.
 ### Custom Domain
 
 In your service → **Settings** → **Networking** → **Generate Domain** (or add your own custom domain).
+
+## Authentication (Invite Links)
+
+This app uses a simple token-based invite link system — no passwords, no OAuth, no email service needed.
+
+### How it works
+
+1. The admin creates players in the admin panel (name + email)
+2. Each player gets a unique invite URL: `https://your-app.up.railway.app/{group}/join/{token}`
+3. When a player clicks their link, they're instantly logged in with a session cookie that lasts 60 days (the whole tournament)
+4. No re-authentication needed — they stay logged in
+
+### Bootstrap (first-time setup)
+
+Before any players exist, you need a way to access the admin panel. Use the `ADMIN_SECRET` environment variable:
+
+1. Set `ADMIN_SECRET` to a random string on Railway:
+   ```
+   ADMIN_SECRET=your-random-secret-here
+   ```
+   Generate one with: `openssl rand -base64 32`
+
+2. Access the admin panel via: `https://your-app.up.railway.app/{group-slug}/admin?adminKey=your-random-secret-here`
+
+3. Create yourself as the first player (use the email from `ADMIN_EMAILS`)
+
+4. Click "Copy Invite Link" next to your name, open it in a new tab — you're now logged in as yourself
+
+5. From now on, you can access the admin panel normally (because your email is in `ADMIN_EMAILS`)
+
+### Inviting players
+
+1. Go to the admin panel → Players tab
+2. Enter name and email → click "Add Player"
+3. Click "Copy Invite Link" next to their name
+4. Share the link via WhatsApp, text, or email
+
+### Being both admin and participant
+
+You are a regular player and an admin simultaneously:
+- Your player record has predictions, scores, and a leaderboard position like everyone else
+- Your email in `ADMIN_EMAILS` grants you access to the admin panel on top of that
 
 ## Admin Access
 

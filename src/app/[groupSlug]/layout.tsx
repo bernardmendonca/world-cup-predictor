@@ -4,6 +4,8 @@ import { PlayerSwitcher } from "./player-switcher";
 import { TimeOverrideBar } from "./time-override-bar";
 import { isTestMode } from "@/lib/test-mode/test-mode";
 import { ThemeToggle } from "../theme-toggle";
+import { getCurrentPlayer } from "@/lib/auth/get-session";
+import { isAdmin } from "@/lib/auth/auth-service";
 
 export default async function GroupLayout({
   children,
@@ -22,6 +24,8 @@ export default async function GroupLayout({
   }
 
   const testMode = isTestMode();
+  const player = await getCurrentPlayer(groupSlug);
+  const showAdmin = testMode || (player && isAdmin(player.email));
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -53,7 +57,7 @@ export default async function GroupLayout({
               >
                 Leaderboard
               </a>
-              {testMode && (
+              {showAdmin && (
                 <a
                   href={`/${groupSlug}/admin`}
                   className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
@@ -66,6 +70,11 @@ export default async function GroupLayout({
           <div className="flex items-center gap-3">
             <ThemeToggle />
             {testMode && <PlayerSwitcher groupSlug={groupSlug} />}
+            {!testMode && player && (
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                {player.name}
+              </span>
+            )}
           </div>
         </div>
       </nav>

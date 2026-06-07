@@ -2,7 +2,7 @@
 
 ## Overview
 
-Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prisma ORM, and SQLite. The application supports multiple independent groups on a single deployment, identified by a URL path slug (e.g., `/friends1/`, `/work-buddies/`). Each group has its own players, predictions, scores, and leaderboard. The implementation follows an incremental approach: project setup and data layer first, then group isolation, core scoring logic, predictions, team selections, leaderboard, match schedule UI, authentication, and finally local test mode. Each step builds on the previous and integrates fully before moving to the next.
+Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prisma ORM, and PostgreSQL (Railway) / SQLite (local dev). The application supports multiple independent groups on a single deployment, identified by a URL path slug (e.g., `/friends1/`, `/work-buddies/`). Each group has its own players, predictions, scores, and leaderboard. Authentication is handled via unique invite links — admins create players and share personalized URLs. The implementation follows an incremental approach: project setup and data layer first, then group isolation, core scoring logic, predictions, team selections, leaderboard, match schedule UI, authentication, and finally local test mode. Each step builds on the previous and integrates fully before moving to the next.
 
 ## Tasks
 
@@ -190,22 +190,30 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
   - Ensure all tests pass, ask the user if questions arise.
 
 - [x] 8. Authentication module
-  - [x] 8.1 Implement authentication service with provider switching
-    - Create `src/lib/auth/auth-service.ts` with provider factory pattern
-    - Implement SSO provider (`src/lib/auth/sso-provider.ts`): OAuth2 flow with HERE SSO (redirect + callback)
-    - Implement email provider (`src/lib/auth/email-provider.ts`): magic link generation, single-use token, 15-minute expiry
-    - Implement session management: create session (7-day duration), validate session, logout
+  - [x] 8.1 Implement invite link authentication
+    - Add `inviteToken` field (unique, auto-generated) to Player model
+    - Create `/{groupSlug}/join/[token]` page route that validates the token, creates a 60-day session, sets cookie, and redirects to predict page
+    - Update middleware to allow `/join/` routes without authentication
+    - Update middleware to allow `?adminKey=ADMIN_SECRET` bootstrap access
     - Sessions include `groupId` and `groupSlug` — player is authenticated within a specific group context
-    - Enforce max 50 players per group (not globally)
-    - Same email can register in multiple groups independently
-    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 15.2, 15.4_
+    - Same email can exist in multiple groups independently
+    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.7, 1.8, 15.2, 15.4_
 
-  - [x] 8.2 Implement auth middleware for Next.js
+  - [x] 8.2 Implement admin player management
+    - Create `/api/[groupSlug]/admin/players` API route (GET: list players, POST: create player)
+    - Support auth via session (admin email check) or `ADMIN_SECRET` header for bootstrap
+    - Auto-generate `inviteToken` on player creation
+    - Create `PlayerManagement` client component with create form and player list with "Copy Invite Link" buttons
+    - Add "Players" tab as default section in admin page
+    - _Requirements: 1.6, 16.3, 16.4_
+
+  - [x] 8.3 Implement auth middleware for Next.js
     - Create `src/middleware.ts` for session validation on protected routes
-    - Create auth API routes: `/api/[groupSlug]/auth/login`, `/api/[groupSlug]/auth/callback`, `/api/[groupSlug]/auth/verify`, `/api/[groupSlug]/auth/logout`
+    - Allow `/join/` routes and `?adminKey=` bootstrap without session
     - Validate that the session's group matches the URL group slug (prevent cross-group access)
     - Handle session expiry with redirect to login
-    - _Requirements: 1.4, 1.6, 15.2_
+    - Show Admin link in nav for admin users (not just test mode)
+    - _Requirements: 1.5, 15.2_
 
 - [x] 9. API routes and pages
   - [x] 9.1 Implement prediction API routes
@@ -239,11 +247,12 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - _Requirements: 2.1, 4.2, 4.3, 6.1, 6.7, 6.8, 7.1, 7.8, 7.9, 8.4, 8.5, 9.1, 9.3, 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 15.1, 15.2, 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7_
 
   - [x] 9.4 Implement admin page
-    - Create admin page at `/[groupSlug]/admin` with admin-only access check
-    - Display all matches with inline score input fields for batch result entry, with "Save All Results" button
+    - Create admin page at `/[groupSlug]/admin` with admin-only access check (or `?adminKey=` bootstrap)
+    - Default to "Players" tab showing create player form + player list with copy invite link buttons
+    - Display all matches with inline score input fields for batch result entry in "Record Results" tab, with "Save All Results" button
     - For knockout matches with equal scores, show inline penalty winner toggle buttons
     - Create "Assign Knockout Teams" tab showing unassigned knockout slots with team dropdowns and "Assign All Teams" button
-    - Both sections support batch operations — enter multiple results or assignments and submit once
+    - All three sections support batch operations — enter multiple items and submit once
     - Green highlight on matches with recorded results, counter showing "X of Y results recorded"
     - Scores are calculated automatically when results are saved
     - _Requirements: 16.1, 16.2, 16.3, 16.4, 16.5, 16.6, 16.7, 16.8, 16.9, 16.10, 16.11, 16.12_
@@ -298,6 +307,31 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
 
 - [x] 12. Final checkpoint
   - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 13. Railway deployment and PostgreSQL migration
+  - [x] 13.1 Switch database from SQLite to PostgreSQL for production
+    - Update `prisma/schema.prisma` datasource provider to `postgresql`
+    - Generate PostgreSQL migration via `prisma migrate diff`
+    - Add `migration_lock.toml` for PostgreSQL provider
+    - Update README with deployment instructions
+    - _Requirements: 12.3, 12.5_
+
+  - [x] 13.2 Configure Railway deployment
+    - Build command: `npx prisma generate && npm run build` (no DB connection needed)
+    - Start command: `npx prisma migrate deploy && npm run start` (migrations run at runtime when internal Postgres is reachable)
+    - Document all Railway environment variables
+    - Seed database via Railway shell after first deploy
+    - _Requirements: 12.3, 12.5_
+
+  - [x] 13.3 Implement invite link authentication system
+    - Add `inviteToken` field to Player model with unique constraint
+    - Create `/{groupSlug}/join/[token]` route for token-based login
+    - Create admin player management API (`/api/[groupSlug]/admin/players`)
+    - Create `PlayerManagement` UI component with create form and copy link buttons
+    - Update admin page with Players tab as default view
+    - Update middleware for join routes and admin bootstrap
+    - Update layout to show Admin link for admin users in non-test mode
+    - _Requirements: 1.1, 1.2, 1.4, 1.6, 1.7, 16.3, 16.4_
 
 ## Notes
 
