@@ -13,9 +13,10 @@ interface PlayerData {
 interface Props {
   players: PlayerData[];
   groupSlug: string;
+  adminKey?: string;
 }
 
-export function PlayerManagement({ players: initialPlayers, groupSlug }: Props) {
+export function PlayerManagement({ players: initialPlayers, groupSlug, adminKey }: Props) {
   const [players, setPlayers] = useState<PlayerData[]>(initialPlayers);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -55,9 +56,13 @@ export function PlayerManagement({ players: initialPlayers, groupSlug }: Props) 
     setSuccess(null);
 
     try {
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (adminKey) {
+        headers["x-admin-secret"] = adminKey;
+      }
       const res = await fetch(`/api/${groupSlug}/admin/players`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ name, email }),
       });
 

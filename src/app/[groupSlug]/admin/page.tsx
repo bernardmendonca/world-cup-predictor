@@ -137,6 +137,7 @@ export default async function AdminPage({
         <PlayerManagement
           players={players.map((p) => ({ ...p, createdAt: p.createdAt.toISOString() }))}
           groupSlug={resolvedParams.groupSlug}
+          adminKey={bootstrapAccess ? resolvedSearchParams.adminKey : undefined}
         />
       ) : (
         <AdminBatchForm
