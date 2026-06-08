@@ -26,8 +26,10 @@ export async function GET(
   // Create a session for this player
   const sessionToken = await createSession(player.id);
 
-  // Redirect to the predict page with the session cookie set
-  const redirectUrl = new URL(`/${groupSlug}/predict`, request.url);
+  // Build the redirect URL using the original request's host (preserves the public Railway domain)
+  const host = request.headers.get("host") || request.nextUrl.host;
+  const protocol = request.headers.get("x-forwarded-proto") || "https";
+  const redirectUrl = `${protocol}://${host}/${groupSlug}/predict`;
   const response = NextResponse.redirect(redirectUrl);
 
   response.cookies.set("session_token", sessionToken, {
