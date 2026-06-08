@@ -4,8 +4,7 @@ import { resolveGroup } from "@/lib/groups/group-service";
 import { isPredictionOpen } from "@/lib/utils/time";
 import { applyTimeOverride } from "@/lib/utils/apply-time-override";
 import { notFound } from "next/navigation";
-import { BatchPredictionForm } from "./batch-prediction-form";
-import { TeamSelectionSection } from "./team-selection-section";
+import { PredictClient } from "./predict-client";
 import type { MatchData } from "./batch-prediction-form";
 import { getPlayerSelections, isTeamSelectionOpen } from "@/lib/predictions/team-selection";
 
@@ -124,14 +123,6 @@ export default async function PredictPage({
     <div>
       <h1 className="text-2xl font-bold mb-2">Predictions</h1>
 
-      {/* Team Selection Section */}
-      <TeamSelectionSection
-        teams={teams}
-        selections={selections}
-        selectionOpen={selectionOpen}
-        groupSlug={resolvedParams.groupSlug}
-      />
-
       <div className="flex gap-2 mb-4 flex-wrap">
         <a
           href={`/${resolvedParams.groupSlug}/predict`}
@@ -187,9 +178,12 @@ export default async function PredictPage({
         {predictedCount} of {predictableCount} predictions submitted
       </p>
 
-      <BatchPredictionForm
-        matches={matchData}
+      <PredictClient
+        teams={teams.map((t) => ({ id: t.id, name: t.name, code: t.code, fifaRanking: t.fifaRanking, groupLetter: t.groupLetter }))}
+        selections={selections}
+        selectionOpen={selectionOpen}
         groupSlug={resolvedParams.groupSlug}
+        matches={matchData}
       />
     </div>
   );

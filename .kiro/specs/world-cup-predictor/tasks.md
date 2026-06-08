@@ -333,6 +333,24 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Update layout to show Admin link for admin users in non-test mode
     - _Requirements: 1.1, 1.2, 1.4, 1.6, 1.7, 16.3, 16.4_
 
+  - [x] 13.4 Refactor team selection UX
+    - Remove team selection forms from the Teams page (Teams page now shows read-only team list)
+    - Sort team dropdowns by FIFA ranking, showing rank number in each option
+    - Filter minnow team dropdown to only show teams with FIFA ranking ≥ 44 (14 teams)
+    - Integrate team selection save into the "Save All Predictions" batch button (removed individual save buttons)
+    - Highlight team selection section with amber border and info message when selections are missing
+    - Create `PredictClient` wrapper component to share state between `TeamSelectionSection` and `BatchPredictionForm`
+    - _Requirements: 6.7, 6.9, 6.10, 7.1, 7.8, 7.10, 7.11_
+
+  - [x] 13.5 Refactor leaderboard with stage breakdown and sortable columns
+    - Update leaderboard service to calculate group stage points and knockout points separately
+    - Replace leaderboard page with columns: Rank, Player, Group, Knockout, Total
+    - Create `LeaderboardTable` client component with click-to-sort on all columns
+    - Default sort by total points descending, toggle asc/desc on click
+    - Display sort indicator arrows on active column
+    - Remove `correctPredictions` and `exactScores` columns
+    - _Requirements: 9.1, 9.3, 9.4, 9.5_
+
 ## Notes
 
 - Tasks marked with `*` are optional and can be skipped for faster MVP

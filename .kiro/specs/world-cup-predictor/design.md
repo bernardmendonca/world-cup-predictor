@@ -243,7 +243,7 @@ interface OddsMultipliers {
 
 ### 4. Team Selection Module
 
-Manages favorite and minnow team selections with deadline enforcement. The selection UI is displayed at the top of the Predictions page rather than on a separate page, since team selection is the first thing players do and is most important for scoring context. When the selection deadline has passed, the selections are displayed in read-only mode.
+Manages favorite and minnow team selections with deadline enforcement. The selection UI is displayed at the top of the Predictions page as dropdown menus sorted by FIFA ranking. The minnow dropdown is filtered to only show teams with FIFA ranking ≥ 44 (the 14 lowest-ranked teams). Both selections are saved as part of the "Save All Predictions" batch operation — no separate save buttons. When selections are missing and the window is open, the section is highlighted with an amber border and informational message.
 
 ```typescript
 interface TeamSelectionService {
@@ -265,25 +265,28 @@ interface SelectionResult {
 }
 ```
 
+**Minnow team eligibility:** Only teams with FIFA ranking ≥ 44 are eligible for minnow selection. This restricts the pool to the 14 lowest-ranked teams in the tournament, ensuring the minnow bonus rewards picking true underdogs.
+
 ### 5. Leaderboard Module
 
-Aggregates scores and provides ranked player standings, scoped to a group.
+Aggregates scores and provides ranked player standings, scoped to a group. Points are broken down by group stage and knockout stage.
 
 ```typescript
 interface LeaderboardService {
   getLeaderboard(groupId: string): Promise<LeaderboardEntry[]>;
-  getPlayerRank(groupId: string, playerId: string): Promise<number>;
 }
 
 interface LeaderboardEntry {
   rank: number;
   playerId: string;
   playerName: string;
-  totalPoints: number;
-  correctPredictions: number;  // count of predictions earning points
-  exactScores: number;         // count of correct exact scores (tiebreaker)
+  groupStagePoints: number;   // sum of points from group stage matches
+  knockoutPoints: number;     // sum of points from all knockout stage matches
+  totalPoints: number;        // groupStagePoints + knockoutPoints
 }
 ```
+
+**Sorting:** The leaderboard is a client-sortable table. Default sort is by total points descending, with player name as tiebreaker. Users can click any column header to sort by that column (ascending/descending toggle).
 
 ### 6. Match Schedule Module
 
@@ -681,8 +684,8 @@ This is the same rule as group stage (Property 6), applied per-match.
 
 *For any* set of players with scores, the leaderboard SHALL be ordered such that:
 - Players with higher total points appear before players with lower total points
-- Among players with equal total points, those with more correct exact score predictions appear first
-- Among players with equal total points AND equal exact scores, alphabetical order of name determines position
+- Among players with equal total points, alphabetical order of name determines position
+- Total points equals group stage points plus knockout points
 
 **Validates: Requirements 9.1, 9.4**
 

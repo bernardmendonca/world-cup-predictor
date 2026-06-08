@@ -35,6 +35,15 @@ export interface MatchData {
 interface Props {
   matches: MatchData[];
   groupSlug: string;
+  teamSelections?: {
+    favoriteTeamId: string | null;
+    minnowTeamId: string | null;
+  };
+  initialTeamSelections?: {
+    favoriteTeamId: string | null;
+    minnowTeamId: string | null;
+  };
+  selectionOpen?: boolean;
 }
 
 interface PredictionEntry {
@@ -43,7 +52,7 @@ interface PredictionEntry {
   penaltyWinner: string | null;
 }
 
-export function BatchPredictionForm({ matches, groupSlug }: Props) {
+export function BatchPredictionForm({ matches, groupSlug, teamSelections, initialTeamSelections, selectionOpen }: Props) {
   // Initialize state from existing predictions
   const initialState: Record<string, PredictionEntry> = {};
   for (const match of matches) {
@@ -60,7 +69,10 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
 
   const [predictions, setPredictions] = useState<Record<string, PredictionEntry>>(initialState);
   const [saving, setSaving] = useState(false);
-  const [result, setResult] = useState<{ success: number; failed: number } | null>(null);
+  const [result, setResult] = useState<{ success: number; failed: number; teamsSaved?: boolean } | null>(null);
+
+  // Use teamSelections prop directly (updated by parent via state)
+  const currentTeamSelections = teamSelections || { favoriteTeamId: null, minnowTeamId: null };
 
   function updatePrediction(matchId: string, field: keyof PredictionEntry, value: string | null) {
     setPredictions((prev) => {
@@ -84,7 +96,43 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
 
     let success = 0;
     let failed = 0;
+    let teamsSaved = false;
 
+    // Save team selections if changed
+    if (selectionOpen && currentTeamSelections) {
+      const initial = initialTeamSelections || { favoriteTeamId: null, minnowTeamId: null };
+      const favoriteChanged = currentTeamSelections.favoriteTeamId !== initial.favoriteTeamId;
+      const minnowChanged = currentTeamSelections.minnowTeamId !== initial.minnowTeamId;
+
+      if (favoriteChanged || minnowChanged) {
+        try {
+          const body: Record<string, string> = {};
+          if (favoriteChanged && currentTeamSelections.favoriteTeamId) {
+            body.favoriteTeamId = currentTeamSelections.favoriteTeamId;
+          }
+          if (minnowChanged && currentTeamSelections.minnowTeamId) {
+            body.minnowTeamId = currentTeamSelections.minnowTeamId;
+          }
+
+          if (Object.keys(body).length > 0) {
+            const res = await fetch(`/api/${groupSlug}/teams/selection`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body),
+            });
+            if (res.ok) {
+              teamsSaved = true;
+            } else {
+              failed++;
+            }
+          }
+        } catch {
+          failed++;
+        }
+      }
+    }
+
+    // Save match predictions
     for (const match of matches) {
       const pred = predictions[match.id];
       if (!pred || pred.homeScore === "" || pred.awayScore === "") continue;
@@ -139,10 +187,15 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
     }
 
     setSaving(false);
-    setResult({ success, failed });
+    setResult({ success, failed, teamsSaved });
   }
 
-  const hasChanges = matches.some((match) => {
+  const teamSelectionsChanged = selectionOpen && currentTeamSelections && initialTeamSelections && (
+    currentTeamSelections.favoriteTeamId !== initialTeamSelections.favoriteTeamId ||
+    currentTeamSelections.minnowTeamId !== initialTeamSelections.minnowTeamId
+  );
+
+  const hasChanges = teamSelectionsChanged || matches.some((match) => {
     const pred = predictions[match.id];
     if (!pred || pred.homeScore === "" || pred.awayScore === "") return false;
     if (!match.predictionOpen || !match.teamsConfirmed) return false;
@@ -318,9 +371,12 @@ export function BatchPredictionForm({ matches, groupSlug }: Props) {
         <div>
           {result && (
             <span className={`text-sm ${result.failed > 0 ? "text-amber-600 dark:text-amber-400" : "text-green-600 dark:text-green-400"}`}>
-              {result.success > 0 && `${result.success} saved`}
-              {result.success > 0 && result.failed > 0 && ", "}
+              {result.teamsSaved && "Teams saved"}
+              {result.teamsSaved && result.success > 0 && ", "}
+              {result.success > 0 && `${result.success} predictions saved`}
+              {(result.teamsSaved || result.success > 0) && result.failed > 0 && ", "}
               {result.failed > 0 && `${result.failed} failed`}
+              {!result.teamsSaved && result.success === 0 && result.failed === 0 && "No changes to save"}
             </span>
           )}
         </div>

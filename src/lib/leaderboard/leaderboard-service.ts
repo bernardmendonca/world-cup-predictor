@@ -1,41 +1,55 @@
 import { prisma } from "../db";
-import type { LeaderboardEntry } from "../types";
+
+export interface LeaderboardEntry {
+  rank: number;
+  playerId: string;
+  playerName: string;
+  groupStagePoints: number;
+  knockoutPoints: number;
+  totalPoints: number;
+}
 
 /**
  * Get the leaderboard for a group, ordered by:
  * 1. Total points (descending)
- * 2. Number of correct exact scores (descending)
- * 3. Player name (alphabetical)
+ * 2. Player name (alphabetical)
  */
 export async function getLeaderboard(groupId: string): Promise<LeaderboardEntry[]> {
   const players = await prisma.player.findMany({
     where: { groupId },
     include: {
-      matchScores: true,
+      matchScores: {
+        include: {
+          match: {
+            select: { stage: true },
+          },
+        },
+      },
     },
   });
 
   const entries: LeaderboardEntry[] = players.map((player) => {
-    const totalPoints = player.matchScores.reduce((sum, s) => sum + s.totalPoints, 0);
-    const correctPredictions = player.matchScores.filter(
-      (s) => s.correctResult || s.correctExactScore
-    ).length;
-    const exactScores = player.matchScores.filter((s) => s.correctExactScore).length;
+    const groupStagePoints = player.matchScores
+      .filter((s) => s.match.stage === "group")
+      .reduce((sum, s) => sum + s.totalPoints, 0);
+    const knockoutPoints = player.matchScores
+      .filter((s) => s.match.stage === "knockout")
+      .reduce((sum, s) => sum + s.totalPoints, 0);
+    const totalPoints = groupStagePoints + knockoutPoints;
 
     return {
       rank: 0,
       playerId: player.id,
       playerName: player.name,
+      groupStagePoints: Math.round(groupStagePoints * 100) / 100,
+      knockoutPoints: Math.round(knockoutPoints * 100) / 100,
       totalPoints: Math.round(totalPoints * 100) / 100,
-      correctPredictions,
-      exactScores,
     };
   });
 
-  // Sort: points desc, exact scores desc, name asc
+  // Sort: total points desc, name asc
   entries.sort((a, b) => {
     if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
-    if (b.exactScores !== a.exactScores) return b.exactScores - a.exactScores;
     return a.playerName.localeCompare(b.playerName);
   });
 

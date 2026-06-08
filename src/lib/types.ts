@@ -108,9 +108,9 @@ export interface LeaderboardEntry {
   rank: number;
   playerId: string;
   playerName: string;
+  groupStagePoints: number;
+  knockoutPoints: number;
   totalPoints: number;
-  correctPredictions: number;
-  exactScores: number;
 }
 
 // ===== Time Zone Display =====

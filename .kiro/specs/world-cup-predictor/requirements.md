@@ -109,30 +109,34 @@ A football World Cup predictor game designed for small groups of friends and col
 
 #### Acceptance Criteria
 
-1. THE Predictor_System SHALL allow each Player to select exactly one Favorite_Team from the list of participating World Cup teams
+1. THE Predictor_System SHALL allow each Player to select exactly one Favorite_Team from the list of all 48 participating World Cup teams
 2. WHILE the current time is before the Team_Selection_Deadline, THE Predictor_System SHALL allow Players to submit or modify their Favorite_Team selection
 3. WHEN the current time reaches or passes the Team_Selection_Deadline, THE Predictor_System SHALL lock all Favorite_Team selections and reject any new or modified submissions for the remainder of the tournament
 4. IF a Player attempts to select or change their Favorite_Team after the Team_Selection_Deadline, THEN THE Predictor_System SHALL display a message indicating that the selection window has closed
 5. WHEN a Match involves a Player's Favorite_Team, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
 6. THE Predictor_System SHALL apply the Favorite_Team multiplier to both Group_Stage and Knockout_Stage matches
-7. THE Predictor_System SHALL display the Favorite_Team selection UI at the top of the Predictions page, allowing Players to select their team in the same context where they make match predictions
-8. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Favorite_Team selection at the top of the Predictions page in a read-only state
+7. THE Predictor_System SHALL display the Favorite_Team selection dropdown on the Predictions page sorted by FIFA ranking, showing the team name, code, and ranking for each option
+8. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Favorite_Team selection on the Predictions page in a read-only state
+9. THE Predictor_System SHALL save team selections (both favorite and minnow) as part of the "Save All Predictions" batch operation, not via separate individual save buttons
+10. WHEN a Player has not yet selected a Favorite_Team and the selection window is open, THE Predictor_System SHALL visually highlight the team selection section with an amber/warning indicator and an informational message
 
 ### Requirement 7: Minnow Team Selection
 
-**User Story:** As a player, I want to select a minnow team, so that I earn double points on all matches involving that underdog team throughout the tournament.
+**User Story:** As a player, I want to select a minnow team from the lower-ranked teams, so that I earn double points on all matches involving that underdog team throughout the tournament.
 
 #### Acceptance Criteria
 
-1. THE Predictor_System SHALL allow each Player to select exactly one Minnow_Team from the list of participating World Cup teams
+1. THE Predictor_System SHALL allow each Player to select exactly one Minnow_Team from teams with a FIFA ranking of 44 or higher (i.e., only the 14 lowest-ranked teams in the tournament are eligible)
 2. WHILE the current time is before the Team_Selection_Deadline, THE Predictor_System SHALL allow Players to submit or modify their Minnow_Team selection
 3. WHEN the current time reaches or passes the Team_Selection_Deadline, THE Predictor_System SHALL lock all Minnow_Team selections and reject any new or modified submissions for the remainder of the tournament
 4. IF a Player attempts to select or change their Minnow_Team after the Team_Selection_Deadline, THEN THE Predictor_System SHALL display a message indicating that the selection window has closed
 5. WHEN a Match involves a Player's Minnow_Team, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
 6. THE Predictor_System SHALL apply the Minnow_Team multiplier to both Group_Stage and Knockout_Stage matches
-7. THE Predictor_System SHALL allow a Player to select the same team as both Favorite_Team and Minnow_Team, resulting in a 4x multiplier for matches involving that team
-8. THE Predictor_System SHALL display the Minnow_Team selection UI at the top of the Predictions page alongside the Favorite_Team selection
-9. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Minnow_Team selection at the top of the Predictions page in a read-only state
+7. THE Predictor_System SHALL allow a Player to select the same team as both Favorite_Team and Minnow_Team (if that team qualifies for both), resulting in a 4x multiplier for matches involving that team
+8. THE Predictor_System SHALL display the Minnow_Team selection dropdown on the Predictions page sorted by FIFA ranking, showing the team name, code, and ranking for each option
+9. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Minnow_Team selection on the Predictions page in a read-only state
+10. THE Predictor_System SHALL save team selections (both favorite and minnow) as part of the "Save All Predictions" batch operation, not via separate individual save buttons
+11. WHEN a Player has not yet selected a Minnow_Team and the selection window is open, THE Predictor_System SHALL visually highlight the team selection section with an amber/warning indicator and an informational message
 
 ### Requirement 8: Odds Multiplier Calculation
 
@@ -198,14 +202,15 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 
 ### Requirement 9: Leaderboard
 
-**User Story:** As a player, I want to see a leaderboard showing all players' total points, so that I can track my ranking and compete with others.
+**User Story:** As a player, I want to see a leaderboard showing all players' points broken down by stage, so that I can track my ranking and compare group stage vs knockout performance.
 
 #### Acceptance Criteria
 
-1. THE Predictor_System SHALL display a leaderboard showing all Players ranked by total accumulated points in descending order
+1. THE Predictor_System SHALL display a leaderboard showing all Players with columns for: Rank, Player Name, Group Stage Points, Knockout Points, and Total Points
 2. WHEN a Match result is recorded and scores are calculated, THE Predictor_System SHALL update the leaderboard within 5 minutes
-3. THE Predictor_System SHALL display each Player's total points, rank position, and number of predictions where the Player earned points (including both Correct_Result and Correct_Exact_Score predictions) on the leaderboard
-4. WHEN two or more Players have the same total points, THE Predictor_System SHALL rank them first by the number of Correct_Exact_Score predictions (descending), then by alphabetical order of Player name as a secondary tiebreaker
+3. THE Predictor_System SHALL allow sorting the leaderboard by any column (Rank, Player Name, Group Stage Points, Knockout Points, Total Points) in ascending or descending order
+4. THE Predictor_System SHALL default to sorting by Total Points descending, with Player Name ascending as a tiebreaker
+5. THE Predictor_System SHALL display a sort indicator (arrow) on the currently active sort column
 
 ### Requirement 10: Match Schedule and Results
 

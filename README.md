@@ -199,6 +199,10 @@ Calculated per match from prediction distribution: `2 - (predictions_for_outcome
 | Favorite OR minnow in match | 2x |
 | Both favorite AND minnow in match | 4x |
 
+**Favorite team**: Any of the 48 participating teams. **Minnow team**: Only teams with FIFA ranking ≥ 44 (the 14 lowest-ranked teams in the tournament).
+
+Both selections are made on the Predict page and saved with the "Save All Predictions" button.
+
 ### Final Score
 
 ```
@@ -390,7 +394,7 @@ npx vitest run src/__tests__/properties/base-points.property.test.ts
 | Deadlines | 6 | Group, knockout, team selection — all 2h before kickoff |
 | Prediction persistence | 2 | Last-write-wins semantics |
 | Penalty winner validation | 3 | Required when equal scores, null when unequal |
-| Leaderboard ordering | 4 | Points desc → exact scores desc → name asc |
+| Leaderboard ordering | 4 | Points desc → name asc |
 | Timezone conversion | 2 | Three timezone outputs represent same instant |
 | Match status | 3 | completed/in_progress/upcoming derivation |
 | Group isolation | 5 | Leaderboard, odds, player limits scoped per group |
