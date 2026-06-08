@@ -21,19 +21,6 @@ export default async function JoinPage({
     notFound();
   }
 
-  // Create a session for this player
-  const sessionToken = await createSession(player.id);
-
-  // Set the session cookie
-  const cookieStore = await cookies();
-  cookieStore.set("session_token", sessionToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 60 * 24 * 60 * 60, // 60 days — lasts the whole tournament
-    path: "/",
-  });
-
-  // Redirect to the predict page
-  redirect(`/${groupSlug}/predict`);
+  // Redirect to the API route handler that sets the cookie
+  redirect(`/api/${groupSlug}/auth/join?token=${token}`);
 }

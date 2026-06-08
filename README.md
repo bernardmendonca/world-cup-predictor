@@ -2,6 +2,27 @@
 
 A football World Cup predictor game for small groups of friends (20-50 players). Predict match scores, earn points with odds multipliers, and compete on the leaderboard.
 
+## Table of Contents
+
+- [Features](#features)
+- [Quick Start (Test Mode)](#quick-start-test-mode)
+- [Environment Configuration](#environment-configuration)
+- [Deployment Modes](#deployment-modes)
+  - [Test Mode](#test-mode-deployment_modetest)
+  - [Internal Mode](#internal-mode-deployment_modeinternal)
+  - [External Mode](#external-mode-deployment_modeexternal)
+- [Multi-Group Support](#multi-group-support)
+- [Admin Guide](#admin-guide)
+- [Scoring Rules](#scoring-rules)
+- [Deploying on Railway](#deploying-on-railway)
+- [Authentication (Invite Links)](#authentication-invite-links)
+- [Admin Access](#admin-access)
+- [Database](#database)
+- [Running Tests](#running-tests)
+- [Project Structure](#project-structure)
+- [Tech Stack](#tech-stack)
+- [License](#license)
+
 ## Features
 
 - Batch prediction page — enter scores for all matches inline with one submit button
