@@ -183,7 +183,7 @@ function ResultsSection({
           return (
             <div
               key={match.id}
-              className={`p-3 rounded border ${isCompleted ? "bg-green-50 border-green-200" : "bg-white border-gray-200"}`}
+              className={`p-3 rounded border ${isCompleted ? "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800" : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"}`}
             >
               <div className="flex items-center gap-2 flex-wrap">
                 <div className="flex-1 min-w-[200px]">
@@ -205,7 +205,7 @@ function ResultsSection({
                         max="20"
                         value={entry.homeScore}
                         onChange={(e) => updateResult(match.id, "homeScore", e.target.value)}
-                        className="w-10 h-8 text-center border rounded text-sm"
+                        className="w-10 h-8 text-center border rounded text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                         placeholder="-"
                       />
                       <span className="text-gray-400 text-xs">-</span>
@@ -215,7 +215,7 @@ function ResultsSection({
                         max="20"
                         value={entry.awayScore}
                         onChange={(e) => updateResult(match.id, "awayScore", e.target.value)}
-                        className="w-10 h-8 text-center border rounded text-sm"
+                        className="w-10 h-8 text-center border rounded text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                         placeholder="-"
                       />
                     </div>
@@ -232,7 +232,7 @@ function ResultsSection({
                       type="button"
                       onClick={() => updateResult(match.id, "penaltyWinner", "home")}
                       className={`px-2 py-1 rounded ${
-                        entry.penaltyWinner === "home" ? "bg-red-600 text-white" : "bg-gray-100 hover:bg-gray-200"
+                        entry.penaltyWinner === "home" ? "bg-red-600 text-white" : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
                       }`}
                     >
                       {match.homeTeamCode || "H"}
@@ -241,7 +241,7 @@ function ResultsSection({
                       type="button"
                       onClick={() => updateResult(match.id, "penaltyWinner", "away")}
                       className={`px-2 py-1 rounded ${
-                        entry.penaltyWinner === "away" ? "bg-red-600 text-white" : "bg-gray-100 hover:bg-gray-200"
+                        entry.penaltyWinner === "away" ? "bg-red-600 text-white" : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
                       }`}
                     >
                       {match.awayTeamCode || "A"}
@@ -262,7 +262,7 @@ function ResultsSection({
         })}
       </div>
 
-      <div className="sticky bottom-0 bg-white border-t p-4 mt-4 -mx-4 flex items-center justify-between">
+      <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 mt-4 -mx-4 flex items-center justify-between">
         <div>
           {outcome && (
             <span className={`text-sm ${outcome.failed > 0 ? "text-amber-600" : "text-green-600"}`}>
@@ -365,7 +365,7 @@ function KnockoutAssignSection({
         {unassigned.map((match) => {
           const entry = assignments[match.id];
           return (
-            <div key={match.id} className="p-3 bg-white rounded border">
+            <div key={match.id} className="p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-1 mb-2">
                 <span className="text-xs text-gray-400">#{match.matchNumber}</span>
                 <span className="text-xs text-gray-400">
@@ -379,7 +379,7 @@ function KnockoutAssignSection({
                 <select
                   value={entry.homeTeamId}
                   onChange={(e) => updateAssignment(match.id, "homeTeamId", e.target.value)}
-                  className="px-2 py-1 border rounded text-sm"
+                  className="px-2 py-1 border rounded text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                 >
                   <option value="">Home team...</option>
                   {teams.map((t) => (
@@ -391,7 +391,7 @@ function KnockoutAssignSection({
                 <select
                   value={entry.awayTeamId}
                   onChange={(e) => updateAssignment(match.id, "awayTeamId", e.target.value)}
-                  className="px-2 py-1 border rounded text-sm"
+                  className="px-2 py-1 border rounded text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                 >
                   <option value="">Away team...</option>
                   {teams.map((t) => (
@@ -406,7 +406,7 @@ function KnockoutAssignSection({
         })}
       </div>
 
-      <div className="sticky bottom-0 bg-white border-t p-4 mt-4 -mx-4 flex items-center justify-between">
+      <div className="sticky bottom-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 mt-4 -mx-4 flex items-center justify-between">
         <div>
           {outcome && (
             <span className={`text-sm ${outcome.failed > 0 ? "text-amber-600" : "text-green-600"}`}>

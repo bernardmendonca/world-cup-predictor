@@ -207,10 +207,29 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
     );
   });
 
+  // Compute stage/round labels for dividers
+  function getStageLabel(match: MatchData): string {
+    if (match.stage === "group") return "group";
+    return match.knockoutRound || "knockout";
+  }
+
+  function getStageLabelDisplay(key: string): string {
+    switch (key) {
+      case "group": return "Group Stage";
+      case "round_of_32": return "Round of 32";
+      case "round_of_16": return "Round of 16";
+      case "quarter_finals": return "Quarter Finals";
+      case "semi_finals": return "Semi Finals";
+      case "third_place": return "Third Place";
+      case "final": return "Final";
+      default: return key;
+    }
+  }
+
   return (
     <div>
       <div className="space-y-1">
-        {matches.map((match) => {
+        {matches.map((match, index) => {
           const pred = predictions[match.id];
           const isKnockout = match.stage === "knockout";
           const scoresEqual =
@@ -223,9 +242,23 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
           const missingPrediction = canPredict && !hasPrediction;
           const missingPenalty = canPredict && isKnockout && scoresEqual && !pred.penaltyWinner;
 
+          // Determine if we need a stage divider before this match
+          const currentLabel = getStageLabel(match);
+          const prevLabel = index > 0 ? getStageLabel(matches[index - 1]) : null;
+          const showDivider = index === 0 || currentLabel !== prevLabel;
+
           return (
+            <div key={match.id}>
+              {showDivider && (
+                <div className={`${index > 0 ? "mt-6" : ""} mb-2 flex items-center gap-3`}>
+                  <div className="h-px flex-1 bg-gray-300 dark:bg-gray-600"></div>
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    {getStageLabelDisplay(currentLabel)}
+                  </span>
+                  <div className="h-px flex-1 bg-gray-300 dark:bg-gray-600"></div>
+                </div>
+              )}
             <div
-              key={match.id}
               className={`p-3 rounded border ${
                 missingPrediction || missingPenalty
                   ? "border-amber-300 bg-amber-50 dark:border-amber-600 dark:bg-amber-950"
@@ -361,6 +394,7 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                   </span>
                 </div>
               )}
+            </div>
             </div>
           );
         })}

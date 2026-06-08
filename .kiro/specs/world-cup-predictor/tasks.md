@@ -351,6 +351,11 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Remove `correctPredictions` and `exactScores` columns
     - _Requirements: 9.1, 9.3, 9.4, 9.5_
 
+  - [x] 13.6 Dark mode fixes and predict page stage dividers
+    - Fix admin page Record Results and Assign Knockout Teams sections: add dark mode variants to match rows, sticky bars, inputs, selects, and penalty buttons
+    - Add stage/round dividers to the Predictions page match list: horizontal line with label between Group Stage, Round of 32, Round of 16, Quarter Finals, Semi Finals, Third Place, and Final
+    - _Requirements: 12.8_
+
 ## Notes
 
 - Tasks marked with `*` are optional and can be skipped for faster MVP
