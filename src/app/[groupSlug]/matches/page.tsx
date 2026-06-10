@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db";
 import { formatTimeZones } from "@/lib/utils/timezone";
+import { isPredictionOpen } from "@/lib/utils/time";
 import { applyTimeOverride } from "@/lib/utils/apply-time-override";
 
 export default async function MatchesPage({
@@ -49,12 +50,10 @@ export default async function MatchesPage({
       <div className="space-y-2">
         {matches.map((match) => {
           const tz = formatTimeZones(match.kickoffTime);
-          return (
-            <a
-              key={match.id}
-              href={`/${resolvedParams.groupSlug}/matches/${match.id}`}
-              className="block p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600"
-            >
+          const predictionLocked = !isPredictionOpen(match.kickoffTime);
+
+          const rowContent = (
+            <>
               <div className="flex justify-between items-center">
                 <div>
                   <span className="text-xs text-gray-400 dark:text-gray-500 mr-2">
@@ -100,7 +99,28 @@ export default async function MatchesPage({
                   ? `Group ${match.groupLetter}`
                   : match.knockoutRound}
               </div>
-            </a>
+            </>
+          );
+
+          if (predictionLocked) {
+            return (
+              <a
+                key={match.id}
+                href={`/${resolvedParams.groupSlug}/matches/${match.id}`}
+                className="block p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600"
+              >
+                {rowContent}
+              </a>
+            );
+          }
+
+          return (
+            <div
+              key={match.id}
+              className="block p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 opacity-75"
+            >
+              {rowContent}
+            </div>
           );
         })}
       </div>

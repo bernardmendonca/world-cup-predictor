@@ -31,6 +31,7 @@ A football World Cup predictor game for small groups of friends (20-50 players).
 - Odds multiplier rewarding less popular correct predictions
 - Favorite and minnow team bonuses (2x each, stackable to 4x)
 - Multi-group support — run multiple independent competitions on one instance
+- Match prediction comparison — see everyone's predictions and scores for completed matches
 - Admin panel for recording results and managing the knockout bracket
 - Local test mode with dummy players and time simulation
 
@@ -179,6 +180,17 @@ Once teams are assigned, players can submit predictions for that match (up to 2 
 7. **Final**: Crown the leaderboard winner!
 
 ## Scoring Rules
+
+### Match Prediction Comparison
+
+After the prediction deadline passes for a match, participants can click on it from the Matches page to see everyone's predictions and odds. Once the admin records the final score, the page shows a full comparison table:
+
+- Each player's predicted score (color-coded by accuracy)
+- Accuracy badge: ✓ Exact, ~ Result, ✗ Wrong
+- Points earned per player
+- Collapsible detailed breakdown (base × odds × team)
+
+Matches with open predictions are not clickable — they become accessible only once locked.
 
 ### Base Points
 | Prediction | Points |

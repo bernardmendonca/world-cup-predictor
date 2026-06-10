@@ -240,7 +240,7 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Create batch prediction page (`/[groupSlug]/predict`) as the primary view with team selection section at the top (favorite/minnow), inline score inputs for all matches, "All" filter as default, stage/round filter tabs, "Save All Predictions" button, missing prediction highlighting, and the logged-in player's scoring breakdown shown inline for completed matches
     - Create batch prediction client component with inline score inputs, penalty winner toggle for knockout draws, change tracking, per-match player score display, and batch submit
     - Create team selection section on predict page showing favorite/minnow selections with edit capability when open, read-only display when closed
-    - Create match detail page (`/[groupSlug]/matches/[matchId]`) showing all predictions and scores after deadline (linked from completed matches)
+    - Create match detail page (`/[groupSlug]/matches/[matchId]`) as an informational view showing predictions and odds after deadline, plus a comparison table with scores for completed matches (linked from locked matches only)
     - Create team selection page (`/[groupSlug]/teams`) for favorite/minnow selection (legacy, still accessible)
     - Create leaderboard page (`/[groupSlug]/leaderboard`) with ranked table (group-scoped)
     - Navigation: WCP 2026 | Predict | Teams | Leaderboard | Admin (test mode only)
@@ -355,6 +355,20 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Fix admin page Record Results and Assign Knockout Teams sections: add dark mode variants to match rows, sticky bars, inputs, selects, and penalty buttons
     - Add stage/round dividers to the Predictions page match list: horizontal line with label between Group Stage, Round of 32, Round of 16, Quarter Finals, Semi Finals, Third Place, and Final
     - _Requirements: 12.8_
+
+- [x] 14. Match Prediction Comparison Feature
+  - [x] 14.1 Implement match list conditional clickability
+    - Match rows on the matches list page are only clickable after the prediction deadline has passed
+    - Rows for matches with open predictions are rendered as non-clickable static content with reduced opacity
+    - _Requirements: 17.1, 17.2_
+
+  - [x] 14.2 Implement match detail page two-state comparison view
+    - Page is informational only — no submit/save actions (all predictions are made on the predict page)
+    - State 1 (locked, not scored): show all group participants' predictions and odds multipliers
+    - State 2 (completed): show unified "Predictions vs Result" comparison table with accuracy badges, points earned, and collapsible detailed breakdown
+    - Players who didn't submit a prediction appear as "No prediction" with 0 points
+    - Comparison sorted by accuracy (Exact → Result → Wrong → None), then by points descending
+    - _Requirements: 17.3, 17.4, 17.5, 17.6, 17.7, 17.8_
 
 ## Notes
 

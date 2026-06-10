@@ -296,6 +296,21 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 7. THE Predictor_System SHALL validate group slugs to contain only lowercase alphanumeric characters and hyphens, with a length between 3 and 30 characters
 8. THE Predictor_System SHALL provide a landing page at the root URL (`/`) that allows users to enter or select a group slug to navigate to their group
 
+### Requirement 17: Match Prediction Comparison
+
+**User Story:** As a participant, I want to see every other participant's prediction and score for completed matches within my group, so that I can compare prediction patterns and understand how others performed.
+
+#### Acceptance Criteria
+
+1. THE Predictor_System SHALL make match rows on the matches list page clickable ONLY after the Prediction_Deadline for that match has passed (predictions are locked)
+2. WHILE the Prediction_Deadline for a match has NOT passed, THE Predictor_System SHALL render the match row as non-clickable static content on the matches list page
+3. WHEN a Player navigates to a locked (but not yet completed) match detail page, THE Predictor_System SHALL display all group participants' predictions and the odds multipliers, but SHALL NOT display points scored
+4. WHEN a Player navigates to a completed match detail page (admin has recorded final scores), THE Predictor_System SHALL display a "Predictions vs Result" comparison table showing each participant's prediction, accuracy indicator (Exact/Result/Wrong), and total points earned
+5. THE Predictor_System SHALL scope the comparison view to players within the same group only — participants in one group SHALL NOT see predictions or scores from another group
+6. FOR completed matches, THE Predictor_System SHALL display participants who did not submit a prediction as "No prediction" with 0 points
+7. THE Predictor_System SHALL sort the comparison table by accuracy (Exact first, then Result, then Wrong, then No prediction), with points as secondary sort within each accuracy tier
+8. THE Predictor_System SHALL provide a collapsible detailed points breakdown showing base points, odds multiplier, team multiplier, and total for each participant
+
 ### Requirement 16: Admin Match Management
 
 **User Story:** As an administrator, I want a dedicated admin page to manage players, record match results, and manage knockout team assignments, so that players can be invited, scores are calculated, and the tournament bracket progresses correctly.

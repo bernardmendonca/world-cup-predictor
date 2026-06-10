@@ -292,7 +292,7 @@ interface LeaderboardEntry {
 
 ### 6. Match Schedule Module
 
-Manages the tournament schedule, match statuses, and time zone display.
+Manages the tournament schedule, match statuses, time zone display, and per-match prediction comparison.
 
 ```typescript
 interface MatchService {
@@ -323,6 +323,18 @@ interface Match {
 
 type KnockoutRound = 'round_of_32' | 'round_of_16' | 'quarter_finals' | 'semi_finals' | 'third_place' | 'final';
 ```
+
+**Match detail page states:**
+
+The match detail page (`/[groupSlug]/matches/[matchId]`) is purely informational — no submit or save actions. All predictions are made on the batch predict page. The page is only accessible (clickable from the matches list) after the prediction deadline passes.
+
+| State | Clickable from list? | Shows predictions? | Shows odds? | Shows comparison + points? |
+|-------|---------------------|-------------------|-------------|---------------------------|
+| Predictions open | No (row not clickable) | — | — | — |
+| Locked (not scored) | Yes | Yes (all group participants) | Yes | No |
+| Completed (admin scored) | Yes | Yes (in comparison table) | Yes | Yes (with accuracy badges + points breakdown) |
+
+For completed matches, the comparison table merges predictions and scores into a single view showing each participant's predicted score, a color-coded accuracy badge (✓ Exact / ~ Result / ✗ Wrong), and their total points. Players who didn't submit a prediction appear as "No prediction" with 0 points. A collapsible section shows the detailed points breakdown (base × odds × team).
 
 ### 7. Admin Module
 
