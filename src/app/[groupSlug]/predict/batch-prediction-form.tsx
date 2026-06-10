@@ -44,6 +44,8 @@ interface Props {
     minnowTeamId: string | null;
   };
   selectionOpen?: boolean;
+  predictableCount: number;
+  predictedCount: number;
 }
 
 interface PredictionEntry {
@@ -52,7 +54,7 @@ interface PredictionEntry {
   penaltyWinner: string | null;
 }
 
-export function BatchPredictionForm({ matches, groupSlug, teamSelections, initialTeamSelections, selectionOpen }: Props) {
+export function BatchPredictionForm({ matches, groupSlug, teamSelections, initialTeamSelections, selectionOpen, predictableCount, predictedCount }: Props) {
   // Initialize state from existing predictions
   const initialState: Record<string, PredictionEntry> = {};
   for (const match of matches) {
@@ -70,6 +72,7 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
   const [predictions, setPredictions] = useState<Record<string, PredictionEntry>>(initialState);
   const [saving, setSaving] = useState(false);
   const [result, setResult] = useState<{ success: number; failed: number; teamsSaved?: boolean } | null>(null);
+  const [savedCount, setSavedCount] = useState(predictedCount);
 
   // Use teamSelections prop directly (updated by parent via state)
   const currentTeamSelections = teamSelections || { favoriteTeamId: null, minnowTeamId: null };
@@ -188,6 +191,9 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
 
     setSaving(false);
     setResult({ success, failed, teamsSaved });
+    if (success > 0) {
+      setSavedCount((prev) => prev + success);
+    }
   }
 
   const teamSelectionsChanged = selectionOpen && currentTeamSelections && initialTeamSelections && (
@@ -228,6 +234,9 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
 
   return (
     <div>
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        {savedCount} of {predictableCount} predictions submitted
+      </p>
       <div className="space-y-1">
         {matches.map((match, index) => {
           const pred = predictions[match.id];

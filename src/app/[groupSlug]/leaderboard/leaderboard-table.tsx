@@ -6,12 +6,14 @@ interface LeaderboardEntry {
   rank: number;
   playerId: string;
   playerName: string;
+  favoriteTeam: string | null;
+  minnowTeam: string | null;
   groupStagePoints: number;
   knockoutPoints: number;
   totalPoints: number;
 }
 
-type SortColumn = "rank" | "playerName" | "groupStagePoints" | "knockoutPoints" | "totalPoints";
+type SortColumn = "rank" | "playerName" | "favoriteTeam" | "minnowTeam" | "groupStagePoints" | "knockoutPoints" | "totalPoints";
 type SortDirection = "asc" | "desc";
 
 interface Props {
@@ -27,8 +29,8 @@ export function LeaderboardTable({ entries }: Props) {
       setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
     } else {
       setSortColumn(column);
-      // Default direction: desc for points, asc for rank/name
-      setSortDirection(column === "playerName" || column === "rank" ? "asc" : "desc");
+      // Default direction: desc for points, asc for rank/name/teams
+      setSortDirection(column === "playerName" || column === "rank" || column === "favoriteTeam" || column === "minnowTeam" ? "asc" : "desc");
     }
   }
 
@@ -40,6 +42,12 @@ export function LeaderboardTable({ entries }: Props) {
         break;
       case "playerName":
         cmp = a.playerName.localeCompare(b.playerName);
+        break;
+      case "favoriteTeam":
+        cmp = (a.favoriteTeam || "ZZZ").localeCompare(b.favoriteTeam || "ZZZ");
+        break;
+      case "minnowTeam":
+        cmp = (a.minnowTeam || "ZZZ").localeCompare(b.minnowTeam || "ZZZ");
         break;
       case "groupStagePoints":
         cmp = a.groupStagePoints - b.groupStagePoints;
@@ -77,6 +85,18 @@ export function LeaderboardTable({ entries }: Props) {
               Player<SortIndicator column="playerName" />
             </th>
             <th
+              className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
+              onClick={() => handleSort("favoriteTeam")}
+            >
+              Fav<SortIndicator column="favoriteTeam" />
+            </th>
+            <th
+              className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
+              onClick={() => handleSort("minnowTeam")}
+            >
+              Minnow<SortIndicator column="minnowTeam" />
+            </th>
+            <th
               className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 text-right cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
               onClick={() => handleSort("groupStagePoints")}
             >
@@ -104,6 +124,12 @@ export function LeaderboardTable({ entries }: Props) {
               </td>
               <td className="px-4 py-3 font-medium dark:text-gray-100">
                 {entry.playerName}
+              </td>
+              <td className="px-4 py-3 text-sm text-blue-600 dark:text-blue-400">
+                {entry.favoriteTeam || "—"}
+              </td>
+              <td className="px-4 py-3 text-sm text-green-600 dark:text-green-400">
+                {entry.minnowTeam || "—"}
               </td>
               <td className="px-4 py-3 text-right text-gray-600 dark:text-gray-400">
                 {entry.groupStagePoints.toFixed(2)}

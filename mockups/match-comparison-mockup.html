@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match Detail - Comparison Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+</head>
+<body class="bg-gray-100 p-6 font-sans">
+  <div class="max-w-2xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="text-sm text-blue-600">← Back to matches</div>
+
+    <!-- Match Card (existing) -->
+    <div class="bg-white rounded border border-gray-200 p-6">
+      <div class="text-center">
+        <div class="text-xs text-gray-400 mb-2">Match #7 · Group B</div>
+        <div class="text-2xl font-bold mb-2">
+          <span>Spain</span>
+          <span class="mx-4 text-gray-400">2 - 1</span>
+          <span>Ecuador</span>
+        </div>
+        <div class="text-sm text-gray-500 mt-2">MetLife Stadium, New Jersey</div>
+        <div class="text-xs text-gray-400 mt-2 space-x-4">
+          <span>🇺🇸 3:00 PM ET</span>
+          <span>🇬🇧 8:00 PM BST</span>
+          <span>🇮🇳 12:30 AM IST</span>
+        </div>
+        <div class="mt-3">
+          <span class="inline-block px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded-full font-medium">
+            ✓ Completed
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Odds Multipliers (existing) -->
+    <div class="bg-white rounded border border-gray-200 p-4">
+      <h2 class="font-semibold mb-2">Odds Multipliers</h2>
+      <div class="grid grid-cols-3 gap-4 text-center text-sm">
+        <div>
+          <div class="text-gray-500">Home Win</div>
+          <div class="font-bold text-lg">1.25x</div>
+        </div>
+        <div>
+          <div class="text-gray-500">Draw</div>
+          <div class="font-bold text-lg">3.00x</div>
+        </div>
+        <div>
+          <div class="text-gray-500">Away Win</div>
+          <div class="font-bold text-lg">2.50x</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- NEW SECTION: Prediction Comparison Table  -->
+    <!-- Only visible when match.status === "completed" -->
+    <!-- Replaces the separate "Predictions" + "Scores" sections -->
+    <!-- ========================================= -->
+    <div class="bg-white rounded border border-gray-200 p-4">
+      <h2 class="font-semibold mb-1">Predictions vs Result</h2>
+      <p class="text-xs text-gray-400 mb-4">Compare everyone's predictions against the final score</p>
+
+      <!-- Actual result reminder row -->
+      <div class="bg-gray-50 rounded p-3 mb-4 flex justify-between items-center border border-gray-100">
+        <span class="text-sm font-medium text-gray-600">Actual Result</span>
+        <span class="font-mono font-bold text-lg">2 - 1</span>
+      </div>
+
+      <!-- Comparison table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-500 border-b border-gray-200">
+              <th class="py-2">Player</th>
+              <th class="py-2 text-center">Prediction</th>
+              <th class="py-2 text-center">Accuracy</th>
+              <th class="py-2 text-right">Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Player 1: Exact score match -->
+            <tr class="border-b border-gray-100">
+              <td class="py-3">
+                <span class="font-medium">Alice</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="font-mono bg-green-50 text-green-800 px-2 py-0.5 rounded">2 - 1</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="inline-flex items-center px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded-full font-medium">
+                  ✓ Exact
+                </span>
+              </td>
+              <td class="py-3 text-right font-bold text-green-700">12.50</td>
+            </tr>
+
+            <!-- Player 2: Correct result (home win), wrong score -->
+            <tr class="border-b border-gray-100">
+              <td class="py-3">
+                <span class="font-medium">Bob</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="font-mono bg-yellow-50 text-yellow-800 px-2 py-0.5 rounded">1 - 0</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="inline-flex items-center px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs rounded-full font-medium">
+                  ~ Result
+                </span>
+              </td>
+              <td class="py-3 text-right font-bold text-yellow-700">5.00</td>
+            </tr>
+
+            <!-- Player 3: Correct result, wrong score -->
+            <tr class="border-b border-gray-100">
+              <td class="py-3">
+                <span class="font-medium">Carol</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="font-mono bg-yellow-50 text-yellow-800 px-2 py-0.5 rounded">3 - 2</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="inline-flex items-center px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs rounded-full font-medium">
+                  ~ Result
+                </span>
+              </td>
+              <td class="py-3 text-right font-bold text-yellow-700">5.00</td>
+            </tr>
+
+            <!-- Player 4: Wrong result -->
+            <tr class="border-b border-gray-100">
+              <td class="py-3">
+                <span class="font-medium">Dave</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="font-mono bg-red-50 text-red-800 px-2 py-0.5 rounded">0 - 2</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="inline-flex items-center px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded-full font-medium">
+                  ✗ Wrong
+                </span>
+              </td>
+              <td class="py-3 text-right font-bold text-red-700">0.00</td>
+            </tr>
+
+            <!-- Player 5: Wrong result (draw) -->
+            <tr class="border-b border-gray-100">
+              <td class="py-3">
+                <span class="font-medium">Eve</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="font-mono bg-red-50 text-red-800 px-2 py-0.5 rounded">1 - 1</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="inline-flex items-center px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded-full font-medium">
+                  ✗ Wrong
+                </span>
+              </td>
+              <td class="py-3 text-right font-bold text-red-700">0.00</td>
+            </tr>
+
+            <!-- Player 6: No prediction submitted -->
+            <tr class="">
+              <td class="py-3">
+                <span class="font-medium text-gray-400">Frank</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="text-gray-400 text-xs italic">No prediction</span>
+              </td>
+              <td class="py-3 text-center">
+                <span class="text-gray-400">—</span>
+              </td>
+              <td class="py-3 text-right font-bold text-gray-400">0.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Points breakdown expandable (optional enhancement) -->
+      <details class="mt-4">
+        <summary class="text-xs text-gray-500 cursor-pointer hover:text-gray-700">
+          Show detailed points breakdown
+        </summary>
+        <div class="mt-3 overflow-x-auto">
+          <table class="w-full text-xs">
+            <thead>
+              <tr class="text-left text-gray-500 border-b border-gray-200">
+                <th class="py-1">Player</th>
+                <th class="py-1 text-right">Base</th>
+                <th class="py-1 text-right">Odds ×</th>
+                <th class="py-1 text-right">Team ×</th>
+                <th class="py-1 text-right font-bold">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-100">
+                <td class="py-1">Alice</td>
+                <td class="py-1 text-right">5</td>
+                <td class="py-1 text-right">1.25x</td>
+                <td class="py-1 text-right">2x</td>
+                <td class="py-1 text-right font-bold">12.50</td>
+              </tr>
+              <tr class="border-b border-gray-100">
+                <td class="py-1">Bob</td>
+                <td class="py-1 text-right">2</td>
+                <td class="py-1 text-right">1.25x</td>
+                <td class="py-1 text-right">2x</td>
+                <td class="py-1 text-right font-bold">5.00</td>
+              </tr>
+              <tr class="border-b border-gray-100">
+                <td class="py-1">Carol</td>
+                <td class="py-1 text-right">2</td>
+                <td class="py-1 text-right">1.25x</td>
+                <td class="py-1 text-right">2x</td>
+                <td class="py-1 text-right font-bold">5.00</td>
+              </tr>
+              <tr class="border-b border-gray-100">
+                <td class="py-1">Dave</td>
+                <td class="py-1 text-right">0</td>
+                <td class="py-1 text-right">—</td>
+                <td class="py-1 text-right">—</td>
+                <td class="py-1 text-right font-bold">0.00</td>
+              </tr>
+              <tr class="border-b border-gray-100">
+                <td class="py-1">Eve</td>
+                <td class="py-1 text-right">0</td>
+                <td class="py-1 text-right">—</td>
+                <td class="py-1 text-right">—</td>
+                <td class="py-1 text-right font-bold">0.00</td>
+              </tr>
+              <tr>
+                <td class="py-1 text-gray-400">Frank</td>
+                <td class="py-1 text-right text-gray-400">0</td>
+                <td class="py-1 text-right text-gray-400">—</td>
+                <td class="py-1 text-right text-gray-400">—</td>
+                <td class="py-1 text-right font-bold text-gray-400">0.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- Visual separator: what's below is the     -->
+    <!-- EXISTING page for reference               -->
+    <!-- ========================================= -->
+    <div class="border-t-4 border-dashed border-gray-300 pt-6 mt-8">
+      <p class="text-xs text-gray-400 text-center mb-4 italic">
+        ↓ Below shows what the page currently looks like (for reference) ↓
+      </p>
+
+      <!-- Existing "Predictions" section (currently shown after deadline) -->
+      <div class="bg-white rounded border border-gray-200 p-4 mb-6 opacity-50">
+        <h2 class="font-semibold mb-3">Predictions <span class="text-xs text-gray-400">(current - shown after kickoff)</span></h2>
+        <div class="space-y-1">
+          <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
+            <span class="text-sm">Alice</span>
+            <span class="font-mono text-sm">2 - 1</span>
+          </div>
+          <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
+            <span class="text-sm">Bob</span>
+            <span class="font-mono text-sm">1 - 0</span>
+          </div>
+          <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
+            <span class="text-sm">Carol</span>
+            <span class="font-mono text-sm">3 - 2</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Existing "Scores" section (currently shown when completed) -->
+      <div class="bg-white rounded border border-gray-200 p-4 opacity-50">
+        <h2 class="font-semibold mb-3">Scores <span class="text-xs text-gray-400">(current - shown when completed)</span></h2>
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-500 border-b border-gray-200">
+              <th class="py-1">Player</th>
+              <th class="py-1 text-right">Base</th>
+              <th class="py-1 text-right">Odds</th>
+              <th class="py-1 text-right">Team</th>
+              <th class="py-1 text-right font-bold">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-gray-200">
+              <td class="py-1">Alice</td>
+              <td class="py-1 text-right">5</td>
+              <td class="py-1 text-right">1.25x</td>
+              <td class="py-1 text-right">2x</td>
+              <td class="py-1 text-right font-bold">12.50</td>
+            </tr>
+            <tr class="border-b border-gray-200">
+              <td class="py-1">Bob</td>
+              <td class="py-1 text-right">2</td>
+              <td class="py-1 text-right">1.25x</td>
+              <td class="py-1 text-right">2x</td>
+              <td class="py-1 text-right font-bold">5.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Annotation -->
+    <div class="mt-8 bg-blue-50 border border-blue-200 rounded p-4 text-sm text-blue-800">
+      <h3 class="font-bold mb-2">📝 How this works:</h3>
+      <ul class="list-disc ml-4 space-y-1">
+        <li><strong>Before kickoff:</strong> No predictions visible, "Make Prediction" button shown</li>
+        <li><strong>After kickoff (current behavior):</strong> Bare predictions list appears (just name + score)</li>
+        <li><strong>After admin enters final scores (new):</strong> The full "Predictions vs Result" comparison table replaces the separate Predictions + Scores sections. Shows each player's prediction, color-coded accuracy, and points earned — all in one unified view.</li>
+      </ul>
+      <h3 class="font-bold mt-4 mb-2">Key rules:</h3>
+      <ul class="list-disc ml-4 space-y-1">
+        <li>Only players within the same group/slug can see each other</li>
+        <li>Comparison only visible for <code class="bg-blue-100 px-1 rounded">match.status === "completed"</code></li>
+        <li>No new database tables or queries needed — uses existing predictions + matchScores</li>
+        <li>Players who didn't submit a prediction show as "No prediction" with 0 points</li>
+      </ul>
+    </div>
+
+  </div>
+</body>
+</html>

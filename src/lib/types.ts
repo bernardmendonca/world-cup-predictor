@@ -108,6 +108,8 @@ export interface LeaderboardEntry {
   rank: number;
   playerId: string;
   playerName: string;
+  favoriteTeam: string | null;
+  minnowTeam: string | null;
   groupStagePoints: number;
   knockoutPoints: number;
   totalPoints: number;

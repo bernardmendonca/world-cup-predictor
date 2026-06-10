@@ -4,6 +4,8 @@ export interface LeaderboardEntry {
   rank: number;
   playerId: string;
   playerName: string;
+  favoriteTeam: string | null;
+  minnowTeam: string | null;
   groupStagePoints: number;
   knockoutPoints: number;
   totalPoints: number;
@@ -18,6 +20,8 @@ export async function getLeaderboard(groupId: string): Promise<LeaderboardEntry[
   const players = await prisma.player.findMany({
     where: { groupId },
     include: {
+      favoriteTeam: { select: { name: true, code: true } },
+      minnowTeam: { select: { name: true, code: true } },
       matchScores: {
         include: {
           match: {
@@ -41,6 +45,8 @@ export async function getLeaderboard(groupId: string): Promise<LeaderboardEntry[
       rank: 0,
       playerId: player.id,
       playerName: player.name,
+      favoriteTeam: player.favoriteTeam ? player.favoriteTeam.code : null,
+      minnowTeam: player.minnowTeam ? player.minnowTeam.code : null,
       groupStagePoints: Math.round(groupStagePoints * 100) / 100,
       knockoutPoints: Math.round(knockoutPoints * 100) / 100,
       totalPoints: Math.round(totalPoints * 100) / 100,

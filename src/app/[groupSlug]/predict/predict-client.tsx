@@ -18,9 +18,11 @@ interface Props {
   selectionOpen: boolean;
   groupSlug: string;
   matches: MatchData[];
+  predictableCount: number;
+  predictedCount: number;
 }
 
-export function PredictClient({ teams, selections, selectionOpen, groupSlug, matches }: Props) {
+export function PredictClient({ teams, selections, selectionOpen, groupSlug, matches, predictableCount, predictedCount }: Props) {
   const [teamSelections, setTeamSelections] = useState(selections);
 
   return (
@@ -38,6 +40,8 @@ export function PredictClient({ teams, selections, selectionOpen, groupSlug, mat
         teamSelections={teamSelections}
         initialTeamSelections={selections}
         selectionOpen={selectionOpen}
+        predictableCount={predictableCount}
+        predictedCount={predictedCount}
       />
     </>
   );

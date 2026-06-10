@@ -174,16 +174,14 @@ export default async function PredictPage({
         </a>
       </div>
 
-      <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-        {predictedCount} of {predictableCount} predictions submitted
-      </p>
-
       <PredictClient
         teams={teams.map((t) => ({ id: t.id, name: t.name, code: t.code, fifaRanking: t.fifaRanking, groupLetter: t.groupLetter }))}
         selections={selections}
         selectionOpen={selectionOpen}
         groupSlug={resolvedParams.groupSlug}
         matches={matchData}
+        predictableCount={predictableCount}
+        predictedCount={predictedCount}
       />
     </div>
   );

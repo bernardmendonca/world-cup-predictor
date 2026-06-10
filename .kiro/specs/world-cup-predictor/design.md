@@ -280,13 +280,15 @@ interface LeaderboardEntry {
   rank: number;
   playerId: string;
   playerName: string;
-  groupStagePoints: number;   // sum of points from group stage matches
-  knockoutPoints: number;     // sum of points from all knockout stage matches
-  totalPoints: number;        // groupStagePoints + knockoutPoints
+  favoriteTeam: string | null;   // team code (e.g., "BRA") or null if not selected
+  minnowTeam: string | null;     // team code (e.g., "NZL") or null if not selected
+  groupStagePoints: number;      // sum of points from group stage matches
+  knockoutPoints: number;        // sum of points from all knockout stage matches
+  totalPoints: number;           // groupStagePoints + knockoutPoints
 }
 ```
 
-**Sorting:** The leaderboard is a client-sortable table. Default sort is by total points descending, with player name as tiebreaker. Users can click any column header to sort by that column (ascending/descending toggle).
+**Sorting:** The leaderboard is a client-sortable table. Default sort is by total points descending, with player name as tiebreaker. Users can click any column header to sort by that column (ascending/descending toggle). Favorite and Minnow team columns show the FIFA 3-letter code (e.g., "BRA", "NZL") or "—" if not selected.
 
 ### 6. Match Schedule Module
 
