@@ -330,3 +330,17 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 10. FOR each subsequent knockout round (Round of 16, Quarter Finals, Semi Finals, Third Place, Final), WHEN all matches in the preceding round have results recorded, THE Predictor_System SHALL display a prompt allowing the admin to confirm the advancing teams for the next round
 11. THE Predictor_System SHALL NOT allow Players to submit predictions for a Knockout_Stage match until both teams have been confirmed by the admin
 12. THE Predictor_System SHALL display on the admin page a scoring summary showing, for each completed match, the number of Players who scored points and the average points awarded
+
+### Requirement 18: Admin Prediction Status Visibility
+
+**User Story:** As an administrator, I want to see which participants have not yet submitted predictions for each match, so that I can remind them before the deadline passes.
+
+#### Acceptance Criteria
+
+1. THE Predictor_System SHALL display a prediction status chip inline with each match row on the admin Record Results tab, showing the count of predictions submitted vs. total players (e.g., "8/12")
+2. WHEN all players have submitted predictions for a match and the deadline is still open, THE Predictor_System SHALL display a green chip with a checkmark (e.g., "✓ 12/12")
+3. WHEN some players have not submitted predictions for a match and the deadline is still open, THE Predictor_System SHALL display an amber chip showing the count AND an expanded list of missing player names below the match row
+4. WHEN no players have submitted predictions for a match and the deadline is still open, THE Predictor_System SHALL display a red chip showing "0/N" AND an expanded list of all player names below the match row
+5. THE missing player names list SHALL be expanded by default (no click required) when the prediction deadline is still open and predictions are incomplete, enabling admins to take a screenshot for sharing
+6. WHEN the prediction deadline for a match has passed, THE Predictor_System SHALL display only a static gray chip showing the final count (e.g., "10/12") without listing missing names, since reminders are no longer actionable
+7. THE prediction status SHALL be scoped to the current group only

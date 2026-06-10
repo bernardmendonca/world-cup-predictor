@@ -154,9 +154,11 @@ Navigate to `/{groupSlug}/admin` (e.g., `/friends1/admin`). For first-time setup
 
 1. Go to the admin panel (Record Results tab)
 2. All matches are listed with inline score inputs — enter home and away scores directly
-3. For knockout matches where you enter equal scores, penalty winner buttons appear inline
-4. Click "Save All Results" to batch-save all new/changed results at once
-5. Scores are calculated automatically for all players in the group
+3. Each match shows a prediction status chip (e.g., "8/12") so you know who's predicted
+4. If the deadline is still open and predictions are missing, the names of players who haven't predicted are shown below the match — take a screenshot and share in your group chat
+5. For knockout matches where you enter equal scores, penalty winner buttons appear inline
+6. Click "Save All Results" to batch-save all new/changed results at once
+7. Scores are calculated automatically for all players in the group
 
 Results are idempotent — change any score and re-save to correct mistakes. All player scores will be recalculated.
 

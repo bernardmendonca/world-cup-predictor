@@ -3,6 +3,7 @@ import { getCurrentPlayer } from "@/lib/auth/get-session";
 import { isAdmin } from "@/lib/auth/auth-service";
 import { isTestMode } from "@/lib/test-mode/test-mode";
 import { resolveGroup } from "@/lib/groups/group-service";
+import { isPredictionOpen } from "@/lib/utils/time";
 import { notFound } from "next/navigation";
 import { applyTimeOverride } from "@/lib/utils/apply-time-override";
 import { AdminBatchForm } from "./admin-batch-form";
@@ -75,26 +76,68 @@ export default async function AdminPage({
 
   const teams = await prisma.team.findMany({ orderBy: { name: "asc" } });
 
-  const matchData: AdminMatchData[] = matches.map((match) => ({
-    id: match.id,
-    matchNumber: match.matchNumber,
-    homeTeamName: match.homeTeam?.name || match.homeSlotLabel || "TBD",
-    awayTeamName: match.awayTeam?.name || match.awaySlotLabel || "TBD",
-    homeTeamCode: match.homeTeam?.code || null,
-    awayTeamCode: match.awayTeam?.code || null,
-    stage: match.stage,
-    knockoutRound: match.knockoutRound,
-    groupLetter: match.groupLetter,
-    kickoffTime: match.kickoffTime.toISOString(),
-    status: match.status,
-    existingHomeScore: match.homeScore,
-    existingAwayScore: match.awayScore,
-    existingPenaltyWinner: match.penaltyWinner,
-    homeTeamId: match.homeTeamId,
-    awayTeamId: match.awayTeamId,
-    homeSlotLabel: match.homeSlotLabel,
-    awaySlotLabel: match.awaySlotLabel,
-  }));
+  // Fetch prediction status per match for the admin view
+  const groupPredictions = await prisma.groupPrediction.findMany({
+    where: { player: { groupId: group.id } },
+    select: { matchId: true, playerId: true },
+  });
+  const knockoutPredictions = await prisma.knockoutPrediction.findMany({
+    where: { player: { groupId: group.id } },
+    select: { matchId: true, playerId: true },
+  });
+
+  // Build a map: matchId → set of playerIds who predicted
+  const predictionsByMatch: Record<string, Set<string>> = {};
+  for (const gp of groupPredictions) {
+    if (!predictionsByMatch[gp.matchId]) predictionsByMatch[gp.matchId] = new Set();
+    predictionsByMatch[gp.matchId].add(gp.playerId);
+  }
+  for (const kp of knockoutPredictions) {
+    if (!predictionsByMatch[kp.matchId]) predictionsByMatch[kp.matchId] = new Set();
+    predictionsByMatch[kp.matchId].add(kp.playerId);
+  }
+
+  const totalPlayers = players.length;
+  const playerNameMap: Record<string, string> = {};
+  for (const p of players) {
+    playerNameMap[p.id] = p.name;
+  }
+
+  const matchData: AdminMatchData[] = matches.map((match) => {
+    const predictedPlayerIds = predictionsByMatch[match.id] || new Set<string>();
+    const predictedCount = predictedPlayerIds.size;
+    const deadlineOpen = isPredictionOpen(match.kickoffTime);
+    const missingPlayerNames = deadlineOpen
+      ? players
+          .filter((p) => !predictedPlayerIds.has(p.id))
+          .map((p) => p.name)
+      : [];
+
+    return {
+      id: match.id,
+      matchNumber: match.matchNumber,
+      homeTeamName: match.homeTeam?.name || match.homeSlotLabel || "TBD",
+      awayTeamName: match.awayTeam?.name || match.awaySlotLabel || "TBD",
+      homeTeamCode: match.homeTeam?.code || null,
+      awayTeamCode: match.awayTeam?.code || null,
+      stage: match.stage,
+      knockoutRound: match.knockoutRound,
+      groupLetter: match.groupLetter,
+      kickoffTime: match.kickoffTime.toISOString(),
+      status: match.status,
+      existingHomeScore: match.homeScore,
+      existingAwayScore: match.awayScore,
+      existingPenaltyWinner: match.penaltyWinner,
+      homeTeamId: match.homeTeamId,
+      awayTeamId: match.awayTeamId,
+      homeSlotLabel: match.homeSlotLabel,
+      awaySlotLabel: match.awaySlotLabel,
+      predictedCount,
+      totalPlayers,
+      deadlineOpen,
+      missingPlayerNames,
+    };
+  });
 
   const teamList = teams.map((t) => ({ id: t.id, name: t.name, code: t.code }));
 

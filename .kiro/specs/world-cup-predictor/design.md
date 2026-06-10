@@ -394,6 +394,17 @@ interface PendingAssignment {
 6. At each step, the system shows what's pending and what's ready for assignment
 7. Both result recording and team assignment support batch operations with a single submit button
 
+**Prediction status visibility (Record Results tab):**
+
+Each match row on the Record Results tab displays an inline prediction status chip showing how many players have submitted predictions:
+
+| Deadline state | All predicted | Some missing | None predicted |
+|---------------|--------------|--------------|----------------|
+| Open | Green chip `✓ 12/12` | Amber chip `8/12` + missing names expanded | Red chip `0/12` + all names expanded |
+| Passed | Gray chip `✓ 12/12` (static) | Gray chip `10/12` (static) | Gray chip `0/12` (static) |
+
+When the deadline is still open and predictions are incomplete, the missing player names are shown expanded by default (no click needed) so the admin can screenshot and share in a group chat for reminders. Once the deadline passes, only the static count is shown since reminders are no longer actionable.
+
 interface Team {
   id: string;
   name: string;

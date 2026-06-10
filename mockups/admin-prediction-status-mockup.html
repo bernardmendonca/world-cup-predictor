@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Record Results with Prediction Status Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6 font-sans">
+  <div class="max-w-3xl mx-auto space-y-4">
+
+    <h1 class="text-2xl font-bold mb-2">Record Results</h1>
+    <p class="text-sm text-gray-500 mb-4">3 of 48 results recorded</p>
+
+    <!-- ============================================ -->
+    <!-- MATCH 1: Open deadline, everyone predicted   -->
+    <!-- Chip is green, no expansion needed           -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border bg-white border-gray-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#1</span>
+            <span class="text-xs text-gray-400">Grp A</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Morocco</span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Croatia</span>
+          </div>
+        </div>
+
+        <!-- Prediction status chip: All predicted → green, compact -->
+        <span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium whitespace-nowrap">
+          ✓ 12/12
+        </span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">
+        Sat, Jun 13 · group
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 2: Open deadline, some missing         -->
+    <!-- Chip is amber, expanded by default showing   -->
+    <!-- who hasn't predicted                         -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border bg-white border-gray-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#2</span>
+            <span class="text-xs text-gray-400">Grp A</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Argentina</span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Peru</span>
+          </div>
+        </div>
+
+        <!-- Prediction status chip: Missing predictions → amber -->
+        <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium whitespace-nowrap">
+          8/12
+        </span>
+      </div>
+
+      <!-- Missing names: expanded by default when not all predicted + deadline open -->
+      <div class="mt-2 text-xs text-amber-700 bg-amber-50 rounded px-2 py-1.5 border border-amber-100">
+        <span class="font-medium">Missing:</span> Bob, Dave, Eve, Frank
+      </div>
+
+      <div class="text-xs text-gray-400 mt-1">
+        Sat, Jun 13 · group
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 3: Open deadline, many missing         -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border bg-white border-gray-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#3</span>
+            <span class="text-xs text-gray-400">Grp B</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Spain</span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Ecuador</span>
+          </div>
+        </div>
+
+        <!-- Prediction status chip: Only 2 predicted → amber -->
+        <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium whitespace-nowrap">
+          2/12
+        </span>
+      </div>
+
+      <!-- Missing names: expanded by default -->
+      <div class="mt-2 text-xs text-amber-700 bg-amber-50 rounded px-2 py-1.5 border border-amber-100">
+        <span class="font-medium">Missing:</span> Alice, Bob, Carol, Dave, Eve, Frank, George, Helen, Ivan, Jack
+      </div>
+
+      <div class="text-xs text-gray-400 mt-1">
+        Sun, Jun 14 · group
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 4: Open deadline, nobody predicted     -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border bg-white border-gray-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#4</span>
+            <span class="text-xs text-gray-400">Grp B</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Portugal</span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Bolivia</span>
+          </div>
+        </div>
+
+        <!-- Nobody predicted → red chip -->
+        <span class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-medium whitespace-nowrap">
+          0/12
+        </span>
+      </div>
+
+      <!-- All missing: expanded -->
+      <div class="mt-2 text-xs text-red-700 bg-red-50 rounded px-2 py-1.5 border border-red-100">
+        <span class="font-medium">Missing:</span> Alice, Bob, Carol, Dave, Eve, Frank, George, Helen, Ivan, Jack, Kate, Leo
+      </div>
+
+      <div class="text-xs text-gray-400 mt-1">
+        Sun, Jun 14 · group
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 5: Deadline PASSED, completed match    -->
+    <!-- Only shows static count, no expansion        -->
+    <!-- (not actionable anymore)                     -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border bg-green-50 border-green-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#5</span>
+            <span class="text-xs text-gray-400">Grp C</span>
+            <span class="text-xs text-green-600">✓ recorded</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">USA</span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="2" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="0" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Chile</span>
+          </div>
+        </div>
+
+        <!-- Deadline passed → static count only, no names, no expansion -->
+        <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium whitespace-nowrap">
+          10/12
+        </span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">
+        Fri, Jun 12 · group
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 6: Deadline PASSED, completed, all     -->
+    <!-- predicted. Static green chip.                -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border bg-green-50 border-green-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#6</span>
+            <span class="text-xs text-gray-400">Grp C</span>
+            <span class="text-xs text-green-600">✓ recorded</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Brazil</span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="3" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Japan</span>
+          </div>
+        </div>
+
+        <!-- All predicted + deadline passed → static green -->
+        <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium whitespace-nowrap">
+          ✓ 12/12
+        </span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">
+        Fri, Jun 12 · group
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 7: Deadline PASSED but no result yet   -->
+    <!-- Static count only (not actionable)           -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border bg-white border-gray-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#7</span>
+            <span class="text-xs text-gray-400">Grp D</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">France</span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm" placeholder="-">
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Australia</span>
+          </div>
+        </div>
+
+        <!-- Deadline passed, no result yet → static count (gray) -->
+        <span class="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium whitespace-nowrap">
+          9/12
+        </span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">
+        Sat, Jun 13 · group
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- ANNOTATION                                   -->
+    <!-- ============================================ -->
+    <div class="mt-10 bg-blue-50 border border-blue-200 rounded p-4 text-sm text-blue-800">
+      <h3 class="font-bold mb-2">📝 Behavior rules:</h3>
+      <ul class="list-disc ml-4 space-y-1.5">
+        <li><strong>Deadline still open + all predicted:</strong> Green chip <code class="bg-blue-100 px-1 rounded">✓ 12/12</code> — no expansion needed</li>
+        <li><strong>Deadline still open + some missing:</strong> Amber chip <code class="bg-blue-100 px-1 rounded">8/12</code> with missing names expanded by default (screenshot-ready for WhatsApp)</li>
+        <li><strong>Deadline still open + nobody predicted:</strong> Red chip <code class="bg-blue-100 px-1 rounded">0/12</code> with all names expanded</li>
+        <li><strong>Deadline passed (locked/completed):</strong> Static gray chip showing count only — no names shown (not actionable anymore, reminders won't help)</li>
+      </ul>
+      <h3 class="font-bold mt-4 mb-2">Key points:</h3>
+      <ul class="list-disc ml-4 space-y-1.5">
+        <li>Missing names are <strong>always expanded</strong> when deadline is open and predictions are incomplete — zero clicks needed for screenshot</li>
+        <li>Chip is inline with each match row — visible at a glance while scrolling</li>
+        <li>No new tabs or pages — lives directly in the existing Record Results layout</li>
+        <li>Team selections (fav/minnow) are already visible on the leaderboard page — no duplication needed here</li>
+      </ul>
+    </div>
+
+  </div>
+</body>
+</html>

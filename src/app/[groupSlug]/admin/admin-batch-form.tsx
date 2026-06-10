@@ -21,6 +21,10 @@ export interface AdminMatchData {
   awayTeamId: string | null;
   homeSlotLabel: string | null;
   awaySlotLabel: string | null;
+  predictedCount: number;
+  totalPlayers: number;
+  deadlineOpen: boolean;
+  missingPlayerNames: string[];
 }
 
 interface TeamOption {
@@ -248,7 +252,30 @@ function ResultsSection({
                     </button>
                   </div>
                 )}
+
+                {/* Prediction status chip */}
+                {match.totalPlayers > 0 && (
+                  <PredictionStatusChip
+                    predictedCount={match.predictedCount}
+                    totalPlayers={match.totalPlayers}
+                    deadlineOpen={match.deadlineOpen}
+                    missingPlayerNames={match.missingPlayerNames}
+                  />
+                )}
               </div>
+
+              {/* Missing names expanded inline when deadline is open and predictions incomplete */}
+              {match.deadlineOpen && match.missingPlayerNames.length > 0 && (
+                <div className={`mt-2 text-xs rounded px-2 py-1.5 border ${
+                  match.predictedCount === 0
+                    ? "text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/30 border-red-100 dark:border-red-900"
+                    : "text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border-amber-100 dark:border-amber-900"
+                }`}>
+                  <span className="font-medium">Missing:</span>{" "}
+                  {match.missingPlayerNames.join(", ")}
+                </div>
+              )}
+
               <div className="text-xs text-gray-400 mt-1">
                 {new Date(match.kickoffTime).toLocaleDateString("en-US", {
                   weekday: "short",
@@ -429,5 +456,54 @@ function KnockoutAssignSection({
         </button>
       </div>
     </div>
+  );
+}
+
+
+function PredictionStatusChip({
+  predictedCount,
+  totalPlayers,
+  deadlineOpen,
+  missingPlayerNames,
+}: {
+  predictedCount: number;
+  totalPlayers: number;
+  deadlineOpen: boolean;
+  missingPlayerNames: string[];
+}) {
+  const allPredicted = predictedCount >= totalPlayers;
+
+  // Deadline passed: static gray chip (not actionable)
+  if (!deadlineOpen) {
+    return (
+      <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">
+        {allPredicted ? "✓ " : ""}{predictedCount}/{totalPlayers}
+      </span>
+    );
+  }
+
+  // Deadline open + all predicted: green chip
+  if (allPredicted) {
+    return (
+      <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 font-medium whitespace-nowrap">
+        ✓ {predictedCount}/{totalPlayers}
+      </span>
+    );
+  }
+
+  // Deadline open + none predicted: red chip
+  if (predictedCount === 0) {
+    return (
+      <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 font-medium whitespace-nowrap">
+        {predictedCount}/{totalPlayers}
+      </span>
+    );
+  }
+
+  // Deadline open + some missing: amber chip
+  return (
+    <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 font-medium whitespace-nowrap">
+      {predictedCount}/{totalPlayers}
+    </span>
   );
 }

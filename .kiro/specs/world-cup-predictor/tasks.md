@@ -370,6 +370,13 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Comparison sorted by accuracy (Exact → Result → Wrong → None), then by points descending
     - _Requirements: 17.3, 17.4, 17.5, 17.6, 17.7, 17.8_
 
+  - [x] 14.3 Implement admin prediction status visibility
+    - Add inline prediction status chip to each match row on the Record Results tab showing predicted count vs total players
+    - Green chip when all predicted (deadline open), amber when some missing, red when none predicted
+    - Missing player names expanded by default when deadline is open and predictions are incomplete (screenshot-friendly)
+    - Static gray chip with count only when deadline has passed (not actionable)
+    - _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7_
+
 ## Notes
 
 - Tasks marked with `*` are optional and can be skipped for faster MVP
