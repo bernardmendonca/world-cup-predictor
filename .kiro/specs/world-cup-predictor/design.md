@@ -207,6 +207,16 @@ interface PredictionResult {
 }
 ```
 
+**Batch prediction page UI states per match:**
+
+| State | Score inputs | Additional info |
+|-------|-------------|-----------------|
+| Deadline open, teams confirmed | Editable inputs (white) | Amber highlight if no prediction submitted |
+| Deadline passed (locked) | Disabled inputs (gray) showing saved prediction | "Result: X - Y" shown below if match is completed |
+| Teams not confirmed (knockout) | "TBD" text | Cannot predict until admin assigns teams |
+
+Participants always see their saved prediction values — the inputs transition from editable to disabled when the deadline passes, providing confidence that their data is preserved.
+
 ### 3. Scoring Engine
 
 Calculates points based on match results, odds multipliers, and team multipliers. The same scoring formula applies to both group and knockout stages. For knockout matches decided by penalties, the penalty winner prediction is factored into correctness.
@@ -789,7 +799,7 @@ This is the same rule as group stage (Property 6), applied per-match.
 |----------------|-------------------|
 | Score out of range (not 0-20) | Client-side validation + server rejection with message |
 | Non-integer score | Client-side validation + server rejection with message |
-| Prediction after deadline | Display "Predictions closed" with deadline time shown |
+| Prediction after deadline | Display prediction in read-only disabled inputs; reject any submission attempts server-side |
 | Knockout equal scores without penalty winner | Client-side validation + server rejection with message |
 | Database write failure | Return 500 with "Unable to save prediction, please try again" |
 

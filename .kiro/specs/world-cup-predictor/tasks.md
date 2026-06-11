@@ -377,6 +377,13 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Static gray chip with count only when deadline has passed (not actionable)
     - _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7_
 
+  - [x] 14.4 Fix prediction visibility after deadline on batch predict page
+    - Show participant's saved prediction as disabled (read-only) inputs after the deadline passes instead of "Closed" text
+    - Display actual match result as a separate "Result: X - Y" line for completed matches
+    - Preserve time override param in match detail links for test mode navigation
+    - Add `force-dynamic` to matches list page to prevent stale caching of deadline checks
+    - _Requirements: 2.6, 4.8_
+
 - [x] 15. Mobile responsive design
   - [x] 15.1 Add mobile navigation menu
     - Create `src/app/[groupSlug]/mobile-nav.tsx` client component with hamburger icon and dropdown menu

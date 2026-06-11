@@ -3,6 +3,8 @@ import { formatTimeZones } from "@/lib/utils/timezone";
 import { isPredictionOpen } from "@/lib/utils/time";
 import { applyTimeOverride } from "@/lib/utils/apply-time-override";
 
+export const dynamic = "force-dynamic";
+
 export default async function MatchesPage({
   params,
   searchParams,
@@ -104,10 +106,13 @@ export default async function MatchesPage({
           );
 
           if (predictionLocked) {
+            const detailHref = resolvedSearchParams.time
+              ? `/${resolvedParams.groupSlug}/matches/${match.id}?time=${resolvedSearchParams.time}`
+              : `/${resolvedParams.groupSlug}/matches/${match.id}`;
             return (
               <a
                 key={match.id}
-                href={`/${resolvedParams.groupSlug}/matches/${match.id}`}
+                href={detailHref}
                 className="block p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600"
               >
                 {rowContent}

@@ -313,20 +313,28 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                           placeholder="-"
                         />
                       </div>
-                    ) : isCompleted ? (
-                      <div className="flex items-center gap-1">
-                        <span className="w-10 h-8 flex items-center justify-center text-sm font-bold">
-                          {match.homeScore}
-                        </span>
-                        <span className="text-gray-400 dark:text-gray-500 text-xs">-</span>
-                        <span className="w-10 h-8 flex items-center justify-center text-sm font-bold">
-                          {match.awayScore}
-                        </span>
-                      </div>
-                    ) : (
+                    ) : !match.teamsConfirmed ? (
                       <span className="text-xs text-gray-400 dark:text-gray-500 px-2">
-                        {!match.teamsConfirmed ? "TBD" : "Closed"}
+                        TBD
                       </span>
+                    ) : (
+                      <div className="flex items-center gap-1">
+                        <input
+                          type="number"
+                          disabled
+                          value={pred.homeScore}
+                          className="w-10 h-8 text-center border rounded text-sm bg-gray-100 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                          placeholder="-"
+                        />
+                        <span className="text-gray-400 dark:text-gray-500 text-xs">-</span>
+                        <input
+                          type="number"
+                          disabled
+                          value={pred.awayScore}
+                          className="w-10 h-8 text-center border rounded text-sm bg-gray-100 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                          placeholder="-"
+                        />
+                      </div>
                     )}
 
                     <span className="font-medium text-sm w-[100px] sm:w-[120px] truncate">
@@ -388,6 +396,16 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                 })}{" "}
                 ET · {match.venue}
               </div>
+
+              {/* Actual result for completed matches */}
+              {isCompleted && match.homeScore !== null && match.awayScore !== null && (
+                <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                  <span className="font-medium">Result:</span>{" "}
+                  <span className="font-bold text-gray-700 dark:text-gray-200">
+                    {match.homeScore} - {match.awayScore}
+                  </span>
+                </div>
+              )}
 
               {/* Per-match score for the logged-in player (visible once admin records results) */}
               {match.participantScores && (

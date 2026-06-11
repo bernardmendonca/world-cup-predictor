@@ -26,6 +26,7 @@ A football World Cup predictor game for small groups of friends (20-50 players).
 ## Features
 
 - Batch prediction page — enter scores for all matches inline with one submit button
+- Predictions remain visible as read-only after deadline (never hidden)
 - Score predictions for all 104 matches (group + knockout stages)
 - Penalty winner prediction for knockout draws
 - Odds multiplier rewarding less popular correct predictions

@@ -54,7 +54,7 @@ A football World Cup predictor game designed for small groups of friends and col
 3. WHEN a Player submits a prediction for a Match they have already predicted, THE Predictor_System SHALL update the existing prediction with the new values
 4. WHILE the current time is before the Prediction_Deadline for a Match, THE Predictor_System SHALL allow Players to submit or modify predictions for that Match
 5. WHEN the current time reaches or passes the Prediction_Deadline for a Match, THE Predictor_System SHALL reject any new or modified predictions for that Match
-6. IF a Player attempts to submit a prediction after the Prediction_Deadline, THEN THE Predictor_System SHALL display a message indicating that predictions are closed for that Match
+6. IF a Player attempts to submit a prediction after the Prediction_Deadline, THEN THE Predictor_System SHALL reject the submission and continue to display the Player's previously saved prediction in a read-only (disabled) state on the batch prediction page
 7. IF a Player submits a score value that is not an integer or is outside the range of 0 to 20, THEN THE Predictor_System SHALL reject the submission and display a message indicating the valid score range
 
 ### Requirement 3: Group Stage Scoring
@@ -83,7 +83,7 @@ A football World Cup predictor game designed for small groups of friends and col
 5. WHEN a Player predicts unequal scores for a Knockout_Stage Match, THE Predictor_System SHALL disable and clear the penalty winner selection (the team with the higher predicted score is the implied winner)
 6. WHILE the current time is before the Prediction_Deadline for a Knockout_Stage Match, THE Predictor_System SHALL allow Players to submit or modify predictions for that Match
 7. WHEN the current time reaches or passes the Prediction_Deadline for a Knockout_Stage Match, THE Predictor_System SHALL reject any new or modified predictions for that Match
-8. IF a Player attempts to submit a prediction after the Prediction_Deadline, THEN THE Predictor_System SHALL display a message indicating that predictions are closed for that Match
+8. IF a Player attempts to submit a prediction after the Prediction_Deadline, THEN THE Predictor_System SHALL reject the submission and continue to display the Player's previously saved prediction in a read-only (disabled) state on the batch prediction page
 9. IF a Player submits a score value that is not an integer or is outside the range of 0 to 20, THEN THE Predictor_System SHALL reject the submission and display a message indicating the valid score range
 10. WHEN a Player submits a prediction for a Knockout_Stage Match they have already predicted, THE Predictor_System SHALL update the existing prediction with the new values
 
