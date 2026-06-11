@@ -116,7 +116,7 @@ export default async function PredictPage({
     };
   }) as MatchData[];
 
-  const predictableCount = matchData.filter((m) => m.predictionOpen && m.teamsConfirmed).length;
+  const predictableCount = matchData.filter((m) => m.teamsConfirmed).length;
   const predictedCount = matchData.filter((m) => m.existingPrediction !== null).length;
 
   return (

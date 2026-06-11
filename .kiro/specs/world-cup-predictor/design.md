@@ -810,7 +810,7 @@ The system provides visual cues to help players identify incomplete predictions:
 
 - **Row highlighting**: Matches without a prediction (or with an incomplete knockout prediction) are highlighted with a distinct background color and an (ℹ) info icon.
 - **Tooltip on hover/tap**: Explains what is missing — "No prediction submitted" or "Penalty winner selection is missing".
-- **Stage summary counter**: Each stage/round view shows "X of Y predictions submitted" at the top.
+- **Stage summary counter**: Each stage/round view shows "X of Y predictions submitted" at the top, where Y is the total number of matches with confirmed teams (regardless of deadline status).
 - **Scope**: Group stage matches are one set (all visible from day one). Each knockout round is a separate set (visible once teams are confirmed).
 - **Non-blocking**: Highlighting is informational only. Players can submit individual predictions without completing the full stage.
 - **Deadline-aware**: Only matches with open deadlines are highlighted. Past-deadline matches without predictions are not highlighted (nothing can be done).

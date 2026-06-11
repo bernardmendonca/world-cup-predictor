@@ -237,7 +237,7 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 4. THE Predictor_System SHALL apply missing prediction highlighting per stage: all Group_Stage matches are treated as one set from day one; each Knockout_Stage round (Round of 32, Round of 16, Quarter Finals, Semi Finals, Third Place, Final) is treated as a separate set once its matches are confirmed
 5. THE Predictor_System SHALL allow Players to submit predictions even when other matches in the same stage are incomplete — highlighting is informational only and does not block submission
 6. THE Predictor_System SHALL NOT highlight matches where the Prediction_Deadline has already passed (missed predictions cannot be recovered)
-7. THE Predictor_System SHALL display a summary count at the top of each stage view showing "X of Y predictions submitted" to give Players a quick overview of their completion status
+7. THE Predictor_System SHALL display a summary count at the top of each stage view showing "X of Y predictions submitted" where Y is the total number of matches with confirmed teams (not limited to matches with open deadlines)
 
 ### Requirement 12: Deployment Configuration
 
