@@ -334,6 +334,7 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                           className="w-10 h-8 text-center border rounded text-sm bg-gray-100 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400 cursor-not-allowed"
                           placeholder="-"
                         />
+                        <span className="text-xs text-red-400 dark:text-red-500 ml-1 whitespace-nowrap">Locked</span>
                       </div>
                     )}
 

@@ -52,7 +52,7 @@ export default async function MatchesPage({
       <div className="space-y-2">
         {matches.map((match) => {
           const tz = formatTimeZones(match.kickoffTime);
-          const predictionLocked = !isPredictionOpen(match.kickoffTime);
+          const predictionLocked = !isPredictionOpen(match.kickoffTime) || match.status === "completed";
 
           const rowContent = (
             <>
