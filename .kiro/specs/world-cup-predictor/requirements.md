@@ -310,6 +310,8 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 6. FOR completed matches, THE Predictor_System SHALL display participants who did not submit a prediction as "No prediction" with 0 points
 7. THE Predictor_System SHALL sort the comparison table by accuracy (Exact first, then Result, then Wrong, then No prediction), with points as secondary sort within each accuracy tier
 8. THE Predictor_System SHALL provide a collapsible detailed points breakdown showing base points, odds multiplier, team multiplier, and total for each participant
+9. THE Predictor_System SHALL display a "Compare" button on the right side of each locked match row on the batch prediction page, linking to the match detail page where the comparison view is shown
+10. THE "Compare" button SHALL only appear for matches where the prediction deadline has passed and teams are confirmed — it SHALL NOT appear for matches with open predictions
 
 ### Requirement 16: Admin Match Management
 

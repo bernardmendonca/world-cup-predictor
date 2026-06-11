@@ -187,7 +187,7 @@ Once teams are assigned, players can submit predictions for that match (up to 2 
 
 ### Match Prediction Comparison
 
-After the prediction deadline passes for a match, participants can click on it from the Matches page to see everyone's predictions and odds. Once the admin records the final score, the page shows a full comparison table:
+After the prediction deadline passes for a match, a "Compare" button appears on the predict page for that match. Clicking it takes you to the match detail page where you can see everyone's predictions and odds. Once the admin records the final score, the page shows a full comparison table:
 
 - Each player's predicted score (color-coded by accuracy)
 - Accuracy badge: ✓ Exact, ~ Result, ✗ Wrong

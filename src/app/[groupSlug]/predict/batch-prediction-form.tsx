@@ -318,23 +318,25 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                         TBD
                       </span>
                     ) : (
-                      <div className="flex items-center gap-1">
-                        <input
-                          type="number"
-                          disabled
-                          value={pred.homeScore}
-                          className="w-10 h-8 text-center border rounded text-sm bg-gray-100 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400 cursor-not-allowed"
-                          placeholder="-"
-                        />
-                        <span className="text-gray-400 dark:text-gray-500 text-xs">-</span>
-                        <input
-                          type="number"
-                          disabled
-                          value={pred.awayScore}
-                          className="w-10 h-8 text-center border rounded text-sm bg-gray-100 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400 cursor-not-allowed"
-                          placeholder="-"
-                        />
-                        <span className="text-xs text-red-400 dark:text-red-500 ml-1 whitespace-nowrap">Locked</span>
+                      <div className="flex flex-col items-center gap-0.5">
+                        <span className="text-[10px] text-gray-400 dark:text-gray-500">🔒</span>
+                        <div className="flex items-center gap-1">
+                          <input
+                            type="number"
+                            disabled
+                            value={pred.homeScore}
+                            className="w-10 h-8 text-center border rounded text-sm bg-gray-100 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                            placeholder="-"
+                          />
+                          <span className="text-gray-400 dark:text-gray-500 text-xs">-</span>
+                          <input
+                            type="number"
+                            disabled
+                            value={pred.awayScore}
+                            className="w-10 h-8 text-center border rounded text-sm bg-gray-100 dark:bg-gray-600 border-gray-200 dark:border-gray-500 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                            placeholder="-"
+                          />
+                        </div>
                       </div>
                     )}
 
@@ -383,6 +385,17 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                 {/* Show existing prediction badge */}
                 {match.existingPrediction && canPredict && (
                   <span className="text-xs text-green-600 dark:text-green-400">✓</span>
+                )}
+
+                {/* Compare button — only for locked matches */}
+                {!canPredict && match.teamsConfirmed && (
+                  <a
+                    href={`/${groupSlug}/matches/${match.id}`}
+                    className="flex items-center gap-1 px-2 py-1 text-xs text-blue-500 hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+                    title="Compare predictions"
+                  >
+                    👁 Compare
+                  </a>
                 )}
               </div>
 

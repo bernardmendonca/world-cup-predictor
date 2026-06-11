@@ -209,13 +209,14 @@ interface PredictionResult {
 
 **Batch prediction page UI states per match:**
 
-| State | Score inputs | Additional info |
-|-------|-------------|-----------------|
-| Deadline open, teams confirmed | Editable inputs (white) | Amber highlight if no prediction submitted |
-| Deadline passed (locked) | Disabled inputs (gray) showing saved prediction | "Result: X - Y" shown below if match is completed |
+| State | Score inputs | Right side |
+|-------|-------------|------------|
+| Deadline open, teams confirmed | Editable inputs (white) | Amber highlight if no prediction submitted; ✓ badge if predicted |
+| Deadline passed (locked) | Disabled inputs (gray) with 🔒 icon showing saved prediction | "👁 Compare" button linking to match detail page |
+| Completed (admin scored) | Disabled inputs (gray) with 🔒 icon showing saved prediction | "👁 Compare" button + "Result: X - Y" + score breakdown shown below |
 | Teams not confirmed (knockout) | "TBD" text | Cannot predict until admin assigns teams |
 
-Participants always see their saved prediction values — the inputs transition from editable to disabled when the deadline passes, providing confidence that their data is preserved.
+Participants always see their saved prediction values — the inputs transition from editable to disabled when the deadline passes, providing confidence that their data is preserved. The "Compare" button appears only for locked matches and links to the match detail page where participants can see all group members' predictions, odds multipliers, and (for completed matches) the full comparison table with scores.
 
 ### 3. Scoring Engine
 

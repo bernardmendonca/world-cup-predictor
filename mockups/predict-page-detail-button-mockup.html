@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Predict Page - Detail Button Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+</head>
+<body class="bg-gray-900 p-6 font-sans text-gray-100">
+  <div class="max-w-3xl mx-auto space-y-4">
+
+    <h1 class="text-2xl font-bold mb-2">Predictions</h1>
+    <p class="text-sm text-gray-400 mb-4">5 of 48 predictions submitted</p>
+
+    <!-- Stage divider -->
+    <div class="flex items-center gap-3">
+      <div class="h-px flex-1 bg-gray-600"></div>
+      <span class="text-xs font-semibold uppercase tracking-wide text-gray-400">Group Stage</span>
+      <div class="h-px flex-1 bg-gray-600"></div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 1: Prediction OPEN — editable inputs  -->
+    <!-- No detail button (deadline hasn't passed)   -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border border-amber-600 bg-amber-950">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-500">#3</span>
+            <span class="text-xs text-gray-500">Grp A</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Argentina</span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm bg-gray-700 border-gray-600 text-gray-100" placeholder="-">
+              <span class="text-gray-500 text-xs">-</span>
+              <input type="number" value="" class="w-10 h-8 text-center border rounded text-sm bg-gray-700 border-gray-600 text-gray-100" placeholder="-">
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Peru</span>
+          </div>
+        </div>
+        <span class="text-amber-400 text-xs">ℹ️ Missing</span>
+      </div>
+      <div class="text-xs text-gray-500 mt-1">
+        Sat, Jun 14, 3:00 PM ET · MetLife Stadium
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 2: Prediction OPEN — has prediction   -->
+    <!-- No detail button                            -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border border-gray-700 bg-gray-800">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-500">#4</span>
+            <span class="text-xs text-gray-500">Grp A</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Morocco</span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="2" class="w-10 h-8 text-center border rounded text-sm bg-gray-700 border-gray-600 text-gray-100" placeholder="-">
+              <span class="text-gray-500 text-xs">-</span>
+              <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm bg-gray-700 border-gray-600 text-gray-100" placeholder="-">
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Croatia</span>
+          </div>
+        </div>
+        <span class="text-xs text-green-400">✓</span>
+      </div>
+      <div class="text-xs text-gray-500 mt-1">
+        Sat, Jun 14, 6:00 PM ET · Hard Rock Stadium
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 3: LOCKED — disabled inputs + button  -->
+    <!-- Deadline passed, not yet completed          -->
+    <!-- Shows 🔒 icon + detail button on right      -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border border-gray-700 bg-gray-800">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-500">#1</span>
+            <span class="text-xs text-gray-500">Grp A</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Mexico</span>
+            <div class="flex flex-col items-center gap-0.5">
+              <span class="text-[10px] text-gray-500">🔒</span>
+              <div class="flex items-center gap-1">
+                <input type="number" disabled value="2" class="w-10 h-8 text-center border rounded text-sm bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed" placeholder="-">
+                <span class="text-gray-500 text-xs">-</span>
+                <input type="number" disabled value="0" class="w-10 h-8 text-center border rounded text-sm bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed" placeholder="-">
+              </div>
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">South Africa</span>
+          </div>
+        </div>
+
+        <!-- DETAIL BUTTON: Only appears when locked -->
+        <a href="#" class="flex items-center gap-1 px-2 py-1 text-xs text-blue-400 hover:text-blue-300 hover:bg-gray-700 rounded transition-colors" title="View all predictions">
+          👁 View
+        </a>
+      </div>
+      <div class="text-xs text-gray-500 mt-1">
+        Fri, Jun 12, 12:30 AM ET · Mexico City
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 4: COMPLETED — disabled inputs +      -->
+    <!-- actual result + score breakdown + button    -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border border-gray-700 bg-gray-800">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-500">#2</span>
+            <span class="text-xs text-gray-500">Grp B</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Spain</span>
+            <div class="flex flex-col items-center gap-0.5">
+              <span class="text-[10px] text-gray-500">🔒</span>
+              <div class="flex items-center gap-1">
+                <input type="number" disabled value="2" class="w-10 h-8 text-center border rounded text-sm bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed" placeholder="-">
+                <span class="text-gray-500 text-xs">-</span>
+                <input type="number" disabled value="1" class="w-10 h-8 text-center border rounded text-sm bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed" placeholder="-">
+              </div>
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Ecuador</span>
+          </div>
+        </div>
+
+        <!-- DETAIL BUTTON -->
+        <a href="#" class="flex items-center gap-1 px-2 py-1 text-xs text-blue-400 hover:text-blue-300 hover:bg-gray-700 rounded transition-colors" title="View all predictions">
+          👁 View
+        </a>
+      </div>
+
+      <!-- Actual result -->
+      <div class="mt-1 text-xs text-gray-400">
+        <span class="font-medium">Result:</span>
+        <span class="font-bold text-gray-200 ml-1">2 - 1</span>
+      </div>
+
+      <!-- Player's score breakdown -->
+      <div class="mt-1 flex items-center gap-3 text-xs">
+        <span class="text-gray-400">Your score:</span>
+        <span class="text-gray-400">
+          Base 4 × Odds 1.50 × Team 2
+        </span>
+        <span class="font-bold text-gray-200">
+          = 12.00 pts
+        </span>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 5: COMPLETED — wrong prediction       -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border border-gray-700 bg-gray-800">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-500">#5</span>
+            <span class="text-xs text-gray-500">Grp C</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">USA</span>
+            <div class="flex flex-col items-center gap-0.5">
+              <span class="text-[10px] text-gray-500">🔒</span>
+              <div class="flex items-center gap-1">
+                <input type="number" disabled value="3" class="w-10 h-8 text-center border rounded text-sm bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed" placeholder="-">
+                <span class="text-gray-500 text-xs">-</span>
+                <input type="number" disabled value="0" class="w-10 h-8 text-center border rounded text-sm bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed" placeholder="-">
+              </div>
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Chile</span>
+          </div>
+        </div>
+
+        <!-- DETAIL BUTTON -->
+        <a href="#" class="flex items-center gap-1 px-2 py-1 text-xs text-blue-400 hover:text-blue-300 hover:bg-gray-700 rounded transition-colors" title="View all predictions">
+          👁 View
+        </a>
+      </div>
+
+      <!-- Actual result -->
+      <div class="mt-1 text-xs text-gray-400">
+        <span class="font-medium">Result:</span>
+        <span class="font-bold text-gray-200 ml-1">1 - 1</span>
+      </div>
+
+      <!-- Player's score breakdown (0 points - wrong prediction) -->
+      <div class="mt-1 flex items-center gap-3 text-xs">
+        <span class="text-gray-400">Your score:</span>
+        <span class="text-gray-400">
+          Base 0 × Odds — × Team —
+        </span>
+        <span class="font-bold text-gray-200">
+          = 0.00 pts
+        </span>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MATCH 6: LOCKED — no prediction submitted   -->
+    <!-- Disabled empty inputs + button              -->
+    <!-- ============================================ -->
+    <div class="p-3 rounded border border-gray-700 bg-gray-800">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-500">#6</span>
+            <span class="text-xs text-gray-500">Grp C</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] text-right truncate">Brazil</span>
+            <div class="flex flex-col items-center gap-0.5">
+              <span class="text-[10px] text-gray-500">🔒</span>
+              <div class="flex items-center gap-1">
+                <input type="number" disabled value="" class="w-10 h-8 text-center border rounded text-sm bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed" placeholder="-">
+                <span class="text-gray-500 text-xs">-</span>
+                <input type="number" disabled value="" class="w-10 h-8 text-center border rounded text-sm bg-gray-600 border-gray-500 text-gray-400 cursor-not-allowed" placeholder="-">
+              </div>
+            </div>
+            <span class="font-medium text-sm w-[120px] truncate">Japan</span>
+          </div>
+        </div>
+
+        <!-- DETAIL BUTTON: still available even if they didn't predict -->
+        <a href="#" class="flex items-center gap-1 px-2 py-1 text-xs text-blue-400 hover:text-blue-300 hover:bg-gray-700 rounded transition-colors" title="View all predictions">
+          👁 View
+        </a>
+      </div>
+      <div class="text-xs text-gray-500 mt-1">
+        Fri, Jun 13, 9:00 PM ET · SoFi Stadium
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- ANNOTATION                                   -->
+    <!-- ============================================ -->
+    <div class="mt-10 bg-blue-950 border border-blue-800 rounded p-4 text-sm text-blue-300">
+      <h3 class="font-bold mb-2">📝 Behavior rules:</h3>
+      <ul class="list-disc ml-4 space-y-1.5">
+        <li><strong>Deadline open:</strong> Editable inputs, no "View" button (nothing to compare yet)</li>
+        <li><strong>Deadline passed (locked):</strong> Disabled inputs with 🔒 icon + "👁 View" button on the right → links to <code class="bg-blue-900 px-1 rounded">/matches/[matchId]</code> detail page</li>
+        <li><strong>Completed (admin scored):</strong> Same as locked + "Result: X - Y" line + "Your score" breakdown + "👁 View" button</li>
+      </ul>
+      <h3 class="font-bold mt-4 mb-2">Key points:</h3>
+      <ul class="list-disc ml-4 space-y-1.5">
+        <li>Button is small and on the far right — no accidental clicks on the row itself</li>
+        <li>The entire row is NOT clickable — only the explicit "👁 View" button navigates</li>
+        <li>Button appears for all locked matches (whether or not the player submitted a prediction)</li>
+        <li>Eliminates the need for a separate "Matches" nav link — comparison is reachable from the predict page</li>
+        <li>On the detail page they'll see: everyone's predictions, odds, and (if completed) the full comparison table with points</li>
+      </ul>
+    </div>
+
+  </div>
+</body>
+</html>

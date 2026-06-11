@@ -380,9 +380,11 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
   - [x] 14.4 Fix prediction visibility after deadline on batch predict page
     - Show participant's saved prediction as disabled (read-only) inputs after the deadline passes instead of "Closed" text
     - Display actual match result as a separate "Result: X - Y" line for completed matches
+    - Add "👁 Compare" button on the right side of each locked match row, linking to the match detail page
+    - Compare button only appears when prediction deadline has passed and teams are confirmed
     - Preserve time override param in match detail links for test mode navigation
     - Add `force-dynamic` to matches list page to prevent stale caching of deadline checks
-    - _Requirements: 2.6, 4.8_
+    - _Requirements: 2.6, 4.8, 17.9, 17.10_
 
 - [x] 15. Mobile responsive design
   - [x] 15.1 Add mobile navigation menu
