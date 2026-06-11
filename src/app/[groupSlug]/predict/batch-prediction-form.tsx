@@ -286,7 +286,7 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                     </span>
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className="font-medium text-sm w-[120px] text-right truncate">
+                    <span className="font-medium text-sm w-[100px] sm:w-[120px] text-right truncate">
                       {match.homeTeamName}
                     </span>
 
@@ -329,7 +329,7 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                       </span>
                     )}
 
-                    <span className="font-medium text-sm w-[120px] truncate">
+                    <span className="font-medium text-sm w-[100px] sm:w-[120px] truncate">
                       {match.awayTeamName}
                     </span>
                   </div>

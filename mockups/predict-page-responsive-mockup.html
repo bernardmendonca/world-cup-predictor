@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Predict Page - Responsive Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <style>
+    /* Smooth mobile menu transition */
+    .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .mobile-menu.open { max-height: 300px; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <!-- Left: Logo + Desktop nav links -->
+      <div class="flex items-center gap-6">
+        <a href="#" class="font-bold text-lg text-blue-600">WCP 2026</a>
+        <!-- Desktop nav (hidden on mobile) -->
+        <div class="hidden sm:flex items-center gap-4 text-sm">
+          <a href="#" class="text-blue-600 font-medium border-b-2 border-blue-600 pb-0.5">Predict</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Teams</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Leaderboard</a>
+          <a href="#" class="text-red-600 hover:text-red-800">Admin</a>
+        </div>
+      </div>
+
+      <!-- Right: Theme toggle + player name (desktop) / hamburger (mobile) -->
+      <div class="flex items-center gap-3">
+        <!-- Theme toggle placeholder -->
+        <button class="w-8 h-8 rounded border border-gray-200 flex items-center justify-center text-sm" title="Toggle theme">🌙</button>
+        <!-- Player name (desktop only) -->
+        <span class="hidden sm:inline text-sm text-gray-600">Ben</span>
+        <!-- Hamburger button (mobile only) -->
+        <button
+          onclick="document.getElementById('mobileMenu').classList.toggle('open')"
+          class="sm:hidden w-8 h-8 flex items-center justify-center rounded border border-gray-200"
+          aria-label="Toggle menu"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile nav menu (slides down) -->
+    <div id="mobileMenu" class="mobile-menu sm:hidden border-t border-gray-100 bg-white">
+      <div class="px-4 py-3 space-y-3">
+        <a href="#" class="block text-sm font-medium text-blue-600">Predict</a>
+        <a href="#" class="block text-sm text-gray-600">Teams</a>
+        <a href="#" class="block text-sm text-gray-600">Leaderboard</a>
+        <a href="#" class="block text-sm text-red-600">Admin</a>
+        <div class="pt-2 border-t border-gray-100 text-xs text-gray-400">Logged in as Ben</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="max-w-6xl mx-auto px-4 py-6">
+
+    <!-- Page title -->
+    <h1 class="text-2xl font-bold mb-2">Predictions</h1>
+
+    <!-- Stage filter tabs (wraps on mobile) -->
+    <div class="flex gap-2 mb-4 flex-wrap">
+      <a href="#" class="px-3 py-1 rounded text-sm bg-blue-600 text-white">All</a>
+      <a href="#" class="px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">Group Stage</a>
+      <a href="#" class="px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">R32</a>
+      <a href="#" class="px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">R16</a>
+      <a href="#" class="px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">QF</a>
+      <a href="#" class="px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">SF</a>
+      <a href="#" class="px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">3rd</a>
+      <a href="#" class="px-3 py-1 rounded text-sm bg-gray-200 text-gray-700">Final</a>
+    </div>
+
+    <!-- Prediction count -->
+    <p class="text-sm text-gray-500 mb-4">4 of 12 predictions submitted</p>
+
+    <!-- ===== Stage Divider ===== -->
+    <div class="mb-2 flex items-center gap-3">
+      <div class="h-px flex-1 bg-gray-300"></div>
+      <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Group Stage</span>
+      <div class="h-px flex-1 bg-gray-300"></div>
+    </div>
+
+    <!-- ===== MATCH CARDS ===== -->
+    <div class="space-y-1">
+
+      <!-- Match 1: Open for prediction, already submitted -->
+      <div class="p-3 rounded border bg-white border-gray-200">
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#1</span>
+              <span class="text-xs text-gray-400">Grp A</span>
+            </div>
+            <!-- 
+              MOBILE LAYOUT: On small screens, team names + inputs stack more naturally
+              because flex-wrap + min-w-0 lets them collapse gracefully.
+              The truncate ensures long names don't blow out the layout.
+            -->
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] text-right truncate">Morocco</span>
+              <div class="flex items-center gap-1">
+                <input type="number" value="2" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+                <span class="text-gray-400 text-xs">-</span>
+                <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+              </div>
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] truncate">Croatia</span>
+            </div>
+          </div>
+          <span class="text-xs text-green-600">✓</span>
+        </div>
+        <div class="text-xs text-gray-400 mt-1">
+          <span class="hidden sm:inline">Sat, Jun 14, 11:00 AM ET · Hard Rock Stadium, Miami</span>
+          <span class="sm:hidden">Sat Jun 14, 11AM · Miami</span>
+        </div>
+      </div>
+
+      <!-- Match 2: Open for prediction, missing -->
+      <div class="p-3 rounded border border-amber-300 bg-amber-50">
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#2</span>
+              <span class="text-xs text-gray-400">Grp A</span>
+            </div>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] text-right truncate">Argentina</span>
+              <div class="flex items-center gap-1">
+                <input type="number" placeholder="-" class="w-10 h-8 text-center border rounded text-sm bg-white">
+                <span class="text-gray-400 text-xs">-</span>
+                <input type="number" placeholder="-" class="w-10 h-8 text-center border rounded text-sm bg-white">
+              </div>
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] truncate">Peru</span>
+            </div>
+          </div>
+          <span class="text-amber-600 text-xs">ℹ️ Missing</span>
+        </div>
+        <div class="text-xs text-gray-400 mt-1">
+          <span class="hidden sm:inline">Sat, Jun 14, 2:00 PM ET · MetLife Stadium, New Jersey</span>
+          <span class="sm:hidden">Sat Jun 14, 2PM · New Jersey</span>
+        </div>
+      </div>
+
+      <!-- Match 3: Open for prediction, already submitted -->
+      <div class="p-3 rounded border bg-white border-gray-200">
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#3</span>
+              <span class="text-xs text-gray-400">Grp B</span>
+            </div>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] text-right truncate">Spain</span>
+              <div class="flex items-center gap-1">
+                <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+                <span class="text-gray-400 text-xs">-</span>
+                <input type="number" value="0" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+              </div>
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] truncate">Ecuador</span>
+            </div>
+          </div>
+          <span class="text-xs text-green-600">✓</span>
+        </div>
+        <div class="text-xs text-gray-400 mt-1">
+          <span class="hidden sm:inline">Sun, Jun 15, 5:00 PM ET · AT&T Stadium, Dallas</span>
+          <span class="sm:hidden">Sun Jun 15, 5PM · Dallas</span>
+        </div>
+      </div>
+
+      <!-- Match 4: Completed with score shown -->
+      <div class="p-3 rounded border bg-gray-50 border-gray-200">
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#4</span>
+              <span class="text-xs text-gray-400">Grp B</span>
+            </div>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] text-right truncate">Portugal</span>
+              <div class="flex items-center gap-1">
+                <span class="w-10 h-8 flex items-center justify-center text-sm font-bold">3</span>
+                <span class="text-gray-400 text-xs">-</span>
+                <span class="w-10 h-8 flex items-center justify-center text-sm font-bold">1</span>
+              </div>
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] truncate">Japan</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-400 mt-1">
+          <span class="hidden sm:inline">Fri, Jun 13, 8:00 PM ET · SoFi Stadium, Los Angeles</span>
+          <span class="sm:hidden">Fri Jun 13, 8PM · Los Angeles</span>
+        </div>
+        <!-- Score breakdown -->
+        <div class="mt-1 flex items-center gap-3 text-xs flex-wrap">
+          <span class="text-gray-500">Your score:</span>
+          <span class="text-gray-500">Base 5 × Odds 1.25 × Team 2</span>
+          <span class="font-bold text-gray-700">= 12.50 pts</span>
+        </div>
+      </div>
+
+      <!-- Match 5: TBD teams (knockout, not yet confirmed) -->
+      <div class="mt-6 mb-2 flex items-center gap-3">
+        <div class="h-px flex-1 bg-gray-300"></div>
+        <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Round of 32</span>
+        <div class="h-px flex-1 bg-gray-300"></div>
+      </div>
+
+      <div class="p-3 rounded border bg-white border-gray-200">
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#49</span>
+              <span class="text-xs text-gray-400">round of 32</span>
+            </div>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] text-right truncate">1A</span>
+              <span class="text-xs text-gray-400 px-2">TBD</span>
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] truncate">2C</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-xs text-gray-400 mt-1">
+          <span class="hidden sm:inline">Sat, Jun 28, 12:00 PM ET · Lincoln Financial Field, Philadelphia</span>
+          <span class="sm:hidden">Sat Jun 28, 12PM · Philadelphia</span>
+        </div>
+      </div>
+
+      <!-- Match 6: Knockout match with penalty winner needed -->
+      <div class="p-3 rounded border border-amber-300 bg-amber-50">
+        <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#50</span>
+              <span class="text-xs text-gray-400">round of 32</span>
+            </div>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] text-right truncate">Germany</span>
+              <div class="flex items-center gap-1">
+                <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+                <span class="text-gray-400 text-xs">-</span>
+                <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+              </div>
+              <span class="font-medium text-sm w-[100px] sm:w-[120px] truncate">Netherlands</span>
+            </div>
+          </div>
+          <!-- Penalty winner buttons -->
+          <div class="flex items-center gap-1 text-xs">
+            <span class="text-gray-500">Pen:</span>
+            <button class="px-2 py-1 rounded bg-blue-600 text-white">GER</button>
+            <button class="px-2 py-1 rounded bg-gray-100 hover:bg-gray-200">NED</button>
+          </div>
+        </div>
+        <div class="text-xs text-gray-400 mt-1">
+          <span class="hidden sm:inline">Sun, Jun 29, 3:00 PM ET · NRG Stadium, Houston</span>
+          <span class="sm:hidden">Sun Jun 29, 3PM · Houston</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== STICKY SUBMIT BAR ===== -->
+    <div class="sticky bottom-0 bg-white border-t border-gray-200 p-4 mt-4 -mx-4 flex items-center justify-between">
+      <span class="text-sm text-green-600 hidden sm:inline">2 predictions saved</span>
+      <span class="text-sm text-green-600 sm:hidden">2 saved</span>
+      <button class="px-6 py-2 rounded font-medium bg-blue-600 text-white hover:bg-blue-700">
+        Save All Predictions
+      </button>
+    </div>
+
+  </main>
+
+  <!-- ===== ANNOTATIONS ===== -->
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="border-t-4 border-dashed border-gray-300 pt-6">
+      <div class="bg-blue-50 border border-blue-200 rounded p-4 text-sm text-blue-800">
+        <h3 class="font-bold mb-2">📱 Responsive Design Notes</h3>
+        <ul class="list-disc ml-4 space-y-2">
+          <li>
+            <strong>Mobile nav (hamburger menu):</strong> On screens below 640px (sm breakpoint), nav links are replaced by a hamburger icon that reveals a slide-down menu. Click the ☰ icon above to see it in action.
+          </li>
+          <li>
+            <strong>Filter tabs:</strong> Use <code class="bg-blue-100 px-1 rounded">flex-wrap</code> so they wrap to a second row on narrow screens rather than overflowing.
+          </li>
+          <li>
+            <strong>Match cards:</strong> Team name width shrinks from <code class="bg-blue-100 px-1 rounded">w-[120px]</code> to <code class="bg-blue-100 px-1 rounded">w-[100px]</code> on mobile via <code class="bg-blue-100 px-1 rounded">sm:w-[120px]</code>. Combined with <code class="bg-blue-100 px-1 rounded">truncate</code>, long names are handled gracefully.
+          </li>
+          <li>
+            <strong>Venue/time info:</strong> Full details shown on desktop; shortened version on mobile using <code class="bg-blue-100 px-1 rounded">hidden sm:inline</code> / <code class="bg-blue-100 px-1 rounded">sm:hidden</code>.
+          </li>
+          <li>
+            <strong>Sticky save bar:</strong> Works perfectly on mobile — always accessible at the bottom of the viewport. Status text shortens on small screens.
+          </li>
+          <li>
+            <strong>No major restructuring needed.</strong> The existing card-based, single-column layout already scales well. The only real addition is the mobile nav drawer.
+          </li>
+        </ul>
+
+        <h3 class="font-bold mt-4 mb-2">🖥️ How to test:</h3>
+        <ul class="list-disc ml-4 space-y-1">
+          <li>Resize this browser window to see the responsive breakpoints in action</li>
+          <li>Or use browser DevTools → Device toolbar (Cmd+Shift+M) to simulate phones</li>
+          <li>Try iPhone SE (375px), iPhone 14 (390px), and iPad (768px)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

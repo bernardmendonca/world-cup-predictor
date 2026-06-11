@@ -198,11 +198,11 @@ export default async function MatchDetailPage({
             </div>
           )}
           <div className="text-sm text-gray-500 dark:text-gray-400 mt-2">{match.venue}</div>
-          <div className="text-xs text-gray-400 dark:text-gray-500 mt-2 space-x-4">
+          <div className="text-xs text-gray-400 dark:text-gray-500 mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
             <span>🇺🇸 {tz.eastern}</span>
             <span>🇬🇧 {tz.uk}</span>
-            <span>🇮🇳 {tz.ist}</span>
-            <span>🇦🇺 {tz.aest}</span>
+            <span className="hidden sm:inline">🇮🇳 {tz.ist}</span>
+            <span className="hidden sm:inline">🇦🇺 {tz.aest}</span>
           </div>
           {isCompleted && (
             <div className="mt-3">

@@ -26,7 +26,7 @@ export default async function MatchesPage({
     <div>
       <h1 className="text-2xl font-bold mb-4">Match Schedule</h1>
 
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4 flex-wrap">
         <a
           href={`/${resolvedParams.groupSlug}/matches`}
           className={`px-3 py-1 rounded text-sm ${!stageFilter ? "bg-blue-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
@@ -88,11 +88,11 @@ export default async function MatchesPage({
                   {match.status}
                 </span>
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex gap-4">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex gap-4 flex-wrap">
                 <span>🇺🇸 {tz.eastern}</span>
                 <span>🇬🇧 {tz.uk}</span>
-                <span>🇮🇳 {tz.ist}</span>
-                <span>🇦🇺 {tz.aest}</span>
+                <span className="hidden sm:inline">🇮🇳 {tz.ist}</span>
+                <span className="hidden sm:inline">🇦🇺 {tz.aest}</span>
               </div>
               <div className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                 {match.venue} ·{" "}

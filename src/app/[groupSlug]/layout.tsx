@@ -2,6 +2,7 @@ import { resolveGroup } from "@/lib/groups/group-service";
 import { notFound } from "next/navigation";
 import { PlayerSwitcher } from "./player-switcher";
 import { TimeOverrideBar } from "./time-override-bar";
+import { MobileNav } from "./mobile-nav";
 import { isTestMode } from "@/lib/test-mode/test-mode";
 import { ThemeToggle } from "../theme-toggle";
 import { getCurrentPlayer } from "@/lib/auth/get-session";
@@ -29,7 +30,7 @@ export default async function GroupLayout({
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+      <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 relative">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <a
@@ -71,10 +72,11 @@ export default async function GroupLayout({
             <ThemeToggle />
             {testMode && <PlayerSwitcher groupSlug={groupSlug} />}
             {!testMode && player && (
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="hidden sm:inline text-sm text-gray-600 dark:text-gray-400">
                 {player.name}
               </span>
             )}
+            <MobileNav groupSlug={groupSlug} showAdmin={!!showAdmin} />
           </div>
         </div>
       </nav>

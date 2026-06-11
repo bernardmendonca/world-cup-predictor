@@ -377,6 +377,23 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Static gray chip with count only when deadline has passed (not actionable)
     - _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5, 18.6, 18.7_
 
+- [x] 15. Mobile responsive design
+  - [x] 15.1 Add mobile navigation menu
+    - Create `src/app/[groupSlug]/mobile-nav.tsx` client component with hamburger icon and dropdown menu
+    - Visible only below sm breakpoint (640px) via `sm:hidden`
+    - Includes all nav links (Predict, Teams, Leaderboard, Admin)
+    - Desktop nav links remain via `hidden sm:flex`
+    - Nav container set to `relative` for dropdown positioning
+    - Player name hidden on mobile with `hidden sm:inline`
+    - _Requirements: 12.1_
+
+  - [x] 15.2 Fix responsive layout issues across pages
+    - Add `flex-wrap` to matches page filter buttons (already present on predict/admin pages)
+    - Make team name widths responsive: `w-[100px] sm:w-[120px]` in batch prediction form
+    - Hide secondary timezones (IST, AEST) on mobile via `hidden sm:inline` on matches and match detail pages
+    - Add `flex-wrap` to timezone rows to prevent overflow
+    - _Requirements: 12.1_
+
 ## Notes
 
 - Tasks marked with `*` are optional and can be skipped for faster MVP

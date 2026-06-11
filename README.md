@@ -33,6 +33,7 @@ A football World Cup predictor game for small groups of friends (20-50 players).
 - Multi-group support — run multiple independent competitions on one instance
 - Match prediction comparison — see everyone's predictions and scores for completed matches
 - Admin panel for recording results and managing the knockout bracket
+- Mobile-friendly responsive design with hamburger nav menu on small screens
 - Local test mode with dummy players and time simulation
 
 ## Quick Start (Test Mode)
@@ -423,7 +424,8 @@ src/
 ├── app/                          # Next.js App Router
 │   ├── page.tsx                  # Landing page
 │   ├── [groupSlug]/              # Group-scoped pages
-│   │   ├── layout.tsx            # Nav (Predict|Teams|Leaderboard|Admin), player switcher
+│   │   ├── layout.tsx            # Nav with responsive mobile menu, player switcher
+│   │   ├── mobile-nav.tsx        # Hamburger menu for mobile screens (<640px)
 │   │   ├── page.tsx              # Redirects to /predict
 │   │   ├── predict/              # Batch prediction page (primary view)
 │   │   │   ├── page.tsx          # Server component with filters
