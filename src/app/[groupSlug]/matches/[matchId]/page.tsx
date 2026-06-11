@@ -167,10 +167,10 @@ export default async function MatchDetailPage({
     <div>
       <div className="mb-6">
         <a
-          href={`/${resolvedParams.groupSlug}/matches`}
+          href={`/${resolvedParams.groupSlug}/predict`}
           className="text-sm text-blue-600 hover:underline dark:text-blue-400"
         >
-          ← Back to matches
+          ← Back to predictions
         </a>
       </div>
 

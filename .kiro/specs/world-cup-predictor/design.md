@@ -338,7 +338,7 @@ type KnockoutRound = 'round_of_32' | 'round_of_16' | 'quarter_finals' | 'semi_fi
 
 **Match detail page states:**
 
-The match detail page (`/[groupSlug]/matches/[matchId]`) is purely informational — no submit or save actions. All predictions are made on the batch predict page. The page is only accessible (clickable from the matches list) after the prediction deadline passes.
+The match detail page (`/[groupSlug]/matches/[matchId]`) is purely informational — no submit or save actions. All predictions are made on the batch predict page. The page is accessed via the "👁 Compare" button on locked match rows on the predict page. The back navigation link ("← Back to predictions") returns the user to the predict page.
 
 | State | Clickable from list? | Shows predictions? | Shows odds? | Shows comparison + points? |
 |-------|---------------------|-------------------|-------------|---------------------------|
