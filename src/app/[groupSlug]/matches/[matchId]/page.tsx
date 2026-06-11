@@ -202,6 +202,7 @@ export default async function MatchDetailPage({
             <span>🇺🇸 {tz.eastern}</span>
             <span>🇬🇧 {tz.uk}</span>
             <span>🇮🇳 {tz.ist}</span>
+            <span>🇦🇺 {tz.aest}</span>
           </div>
           {isCompleted && (
             <div className="mt-3">

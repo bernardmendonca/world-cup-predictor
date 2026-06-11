@@ -218,7 +218,7 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 
 #### Acceptance Criteria
 
-1. THE Predictor_System SHALL display match details including team names, dates, times (shown in US Eastern, UK GMT/BST, and India IST time zones), and venues on the batch prediction page
+1. THE Predictor_System SHALL display match details including team names, dates, times (shown in US Eastern, UK GMT/BST, India IST, and Australian AEST time zones), and venues on the batch prediction page
 2. WHEN a Match result is available, THE Predictor_System SHALL display the final score inline on the prediction page alongside the match details
 3. THE Predictor_System SHALL display the Prediction_Deadline for each upcoming Match where the current time is before the Prediction_Deadline
 4. WHEN a Match is complete, THE Predictor_System SHALL provide a match detail view showing each Player's predicted score, the actual result, and the points awarded for that Match

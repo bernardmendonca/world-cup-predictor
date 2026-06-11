@@ -169,7 +169,7 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Create `src/lib/matches/match-service.ts`
     - Implement `getAllMatches()`, `getMatch()`, `getMatchesByStage()`, `recordResult(matchId, homeScore, awayScore, penaltyWinner?)`
     - For knockout matches: `penaltyWinner` is required when homeScore === awayScore
-    - Create `src/lib/utils/timezone.ts` for converting UTC to Eastern, UK, and IST
+    - Create `src/lib/utils/timezone.ts` for converting UTC to Eastern, UK, IST, and AEST
     - Implement match status derivation: completed (has result), in_progress (past kickoff, no result), upcoming (before kickoff)
     - Implement prediction deadline derivation: kickoff - 2 hours
     - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5_

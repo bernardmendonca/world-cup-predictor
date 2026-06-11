@@ -9,20 +9,22 @@ describe("Property 11: Timezone Conversions", () => {
     max: new Date("2026-08-01T00:00:00Z"),
   });
 
-  it("all three timezone conversions represent the same instant (produce non-empty strings)", () => {
+  it("all four timezone conversions represent the same instant (produce non-empty strings)", () => {
     fc.assert(
       fc.property(utcDateArb, (utcDate) => {
         const result = formatTimeZones(utcDate);
 
-        // All three should produce non-empty strings
+        // All four should produce non-empty strings
         expect(result.eastern).toBeTruthy();
         expect(result.uk).toBeTruthy();
         expect(result.ist).toBeTruthy();
+        expect(result.aest).toBeTruthy();
 
         // They should be strings
         expect(typeof result.eastern).toBe("string");
         expect(typeof result.uk).toBe("string");
         expect(typeof result.ist).toBe("string");
+        expect(typeof result.aest).toBe("string");
       }),
       { numRuns: 100 }
     );
@@ -37,6 +39,7 @@ describe("Property 11: Timezone Conversions", () => {
         expect(result1.eastern).toBe(result2.eastern);
         expect(result1.uk).toBe(result2.uk);
         expect(result1.ist).toBe(result2.ist);
+        expect(result1.aest).toBe(result2.aest);
       }),
       { numRuns: 100 }
     );
@@ -54,7 +57,8 @@ describe("Property 11: Timezone Conversions", () => {
         const allSame =
           result1.eastern === result2.eastern &&
           result1.uk === result2.uk &&
-          result1.ist === result2.ist;
+          result1.ist === result2.ist &&
+          result1.aest === result2.aest;
         expect(allSame).toBe(false);
       }),
       { numRuns: 100 }

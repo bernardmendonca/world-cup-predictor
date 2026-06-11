@@ -92,6 +92,7 @@ export default async function MatchesPage({
                 <span>🇺🇸 {tz.eastern}</span>
                 <span>🇬🇧 {tz.uk}</span>
                 <span>🇮🇳 {tz.ist}</span>
+                <span>🇦🇺 {tz.aest}</span>
               </div>
               <div className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                 {match.venue} ·{" "}

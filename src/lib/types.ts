@@ -121,6 +121,7 @@ export interface TimeZoneDisplay {
   eastern: string;
   uk: string;
   ist: string;
+  aest: string;
 }
 
 // ===== Session =====

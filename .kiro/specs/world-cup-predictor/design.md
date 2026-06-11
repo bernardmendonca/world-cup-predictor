@@ -417,6 +417,7 @@ interface TimeZoneDisplay {
   eastern: string;  // US Eastern (ET)
   uk: string;       // UK (GMT/BST)
   ist: string;      // India Standard Time
+  aest: string;     // Australian Eastern (AEST/AEDT)
 }
 ```
 
@@ -716,7 +717,7 @@ This is the same rule as group stage (Property 6), applied per-match.
 
 ### Property 11: Time Zone Conversion
 
-*For any* valid UTC timestamp, the displayed times SHALL correctly represent the same instant in US Eastern (America/New_York), UK (Europe/London), and India Standard Time (Asia/Kolkata) time zones, accounting for daylight saving transitions.
+*For any* valid UTC timestamp, the displayed times SHALL correctly represent the same instant in US Eastern (America/New_York), UK (Europe/London), India Standard Time (Asia/Kolkata), and Australian Eastern (Australia/Sydney) time zones, accounting for daylight saving transitions.
 
 **Validates: Requirements 10.1**
 
