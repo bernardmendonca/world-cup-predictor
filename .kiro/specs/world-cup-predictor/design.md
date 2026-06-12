@@ -114,6 +114,8 @@ interface Group {
 - All API routes live under `/api/[groupSlug]/...` (e.g., `/api/friends1/predictions/group`)
 - The root `/` page shows a simple landing/group selector or redirects to a default group
 - Group slugs are validated: lowercase alphanumeric + hyphens, 3-30 characters
+- Navigation: Predict | Teams | Leaderboard | Rules | Admin (admin only)
+- The `/[groupSlug]/rules` page provides a static scoring rules explanation with examples (no auth required beyond group access)
 
 ### 1. Authentication Module
 
@@ -220,7 +222,7 @@ Participants always see their saved prediction values — the inputs transition 
 
 ### 3. Scoring Engine
 
-Calculates points based on match results, odds multipliers, and team multipliers. The same scoring formula applies to both group and knockout stages. For knockout matches decided by penalties, the penalty winner prediction is factored into correctness. The team multiplier only applies when the player predicted their favorite/minnow team to win AND that team actually won the match.
+Calculates points based on match results, odds multipliers, and team multipliers. The same scoring formula applies to both group and knockout stages. For knockout matches decided by penalties, the penalty winner prediction is factored into correctness. The team multiplier applies when the player correctly predicts the outcome involving their favorite/minnow team: either predicting that team to win and it wins, or predicting a draw when the team is playing and the match ends in a draw.
 
 ```typescript
 interface ScoringService {
@@ -671,12 +673,15 @@ model KnockoutPrediction {
 
 *For any* match and player with team selections:
 - If neither team in the match is the player's favorite or minnow, team multiplier SHALL be 1
-- If the player predicted a draw (no winner), team multiplier SHALL be 1
-- If the actual result is a draw (no winner), team multiplier SHALL be 1
+- If the player predicted a win but the match ended in a draw (or vice versa), team multiplier SHALL be 1
 - If the player predicted a team to win but a different team actually won, team multiplier SHALL be 1
 - If the player predicted their favorite team to win AND that team actually won, team multiplier SHALL be 2
 - If the player predicted their minnow team to win AND that team actually won, team multiplier SHALL be 2
-- If a team in the match is both the player's favorite AND minnow (same team selected for both), and the player predicted that team to win AND it actually won, team multiplier SHALL be 4
+- If the player's favorite team is playing in the match AND the player predicted a draw AND the match ended in a draw, team multiplier SHALL be 2
+- If the player's minnow team is playing in the match AND the player predicted a draw AND the match ended in a draw, team multiplier SHALL be 2
+- If a team in the match is both the player's favorite AND minnow, and the player predicted that team to win AND it actually won, team multiplier SHALL be 4
+- If a team in the match is both the player's favorite AND minnow, and the player predicted a draw AND the match ended in a draw, team multiplier SHALL be 4
+- If one team is the player's favorite and the other is the player's minnow, and the player predicted a draw AND the match ended in a draw, team multiplier SHALL be 4
 
 **Validates: Requirements 13.2, 13.3, 13.4, 13.5, 13.6, 6.5, 7.5, 7.7**
 

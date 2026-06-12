@@ -79,7 +79,9 @@ function scorePredictions(
       pred.homeScore > pred.awayScore ? result.homeTeamId :
         pred.awayScore > pred.homeScore ? result.awayTeamId : null,
       result.homeScore > result.awayScore ? result.homeTeamId :
-        result.awayScore > result.homeScore ? result.awayTeamId : null
+        result.awayScore > result.homeScore ? result.awayTeamId : null,
+      pred.homeScore === pred.awayScore,
+      result.homeScore === result.awayScore
     );
 
     const totalPoints = Math.round(basePoints * oddsMultiplier * teamMultiplier * 100) / 100;

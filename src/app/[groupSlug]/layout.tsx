@@ -58,6 +58,12 @@ export default async function GroupLayout({
               >
                 Leaderboard
               </a>
+              <a
+                href={`/${groupSlug}/rules`}
+                className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+              >
+                Rules
+              </a>
               {showAdmin && (
                 <a
                   href={`/${groupSlug}/admin`}

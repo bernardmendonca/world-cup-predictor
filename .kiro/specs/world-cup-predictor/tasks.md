@@ -64,7 +64,7 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
 
   - [x] 2.5 Implement team multiplier calculation
     - Create `src/lib/scoring/team-multiplier.ts`
-    - Implement logic: multiplier only applies when the player predicted their favorite/minnow team to win AND that team actually won. No winner (draw) → 1, predicted winner ≠ actual winner → 1, favorite/minnow predicted to win and won → 2, same team is both favorite and minnow and predicted to win and won → 4
+    - Implement logic: multiplier applies in two scenarios: (1) player predicted their favorite/minnow team to win AND that team actually won → 2x, (2) player's favorite/minnow team is playing AND player predicted draw AND actual result is draw → 2x. Same team as both favorite and minnow → 4x. Both teams in a draw match being favorite and minnow → 4x.
     - _Requirements: 13.2, 13.3, 13.4, 13.5, 13.6_
 
   - [x]* 2.6 Write property test for team multiplier calculation
@@ -355,6 +355,14 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Fix admin page Record Results and Assign Knockout Teams sections: add dark mode variants to match rows, sticky bars, inputs, selects, and penalty buttons
     - Add stage/round dividers to the Predictions page match list: horizontal line with label between Group Stage, Round of 32, Round of 16, Quarter Finals, Semi Finals, Third Place, and Final
     - _Requirements: 12.8_
+
+  - [x] 13.7 Scoring rules page
+    - Create `/{groupSlug}/rules` page with comprehensive scoring explanation
+    - Sections: Base Points, Odds Multiplier, Team Multiplier (Favorite & Minnow), Final Score Formula, Knockout Stage Scoring, Knockout Match Availability, Deadlines
+    - Include worked examples for each section
+    - Add "Rules" link to navigation bar between Leaderboard and Admin
+    - Full dark mode support
+    - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7, 19.8, 19.9_
 
 - [x] 14. Match Prediction Comparison Feature
   - [x] 14.1 Implement match list conditional clickability

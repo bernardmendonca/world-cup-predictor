@@ -92,10 +92,26 @@ function calculateTeamMultiplier(
   favoriteTeamId: string | null,
   minnowTeamId: string | null,
   predictedWinnerTeamId: string | null,
-  actualWinnerTeamId: string | null
+  actualWinnerTeamId: string | null,
+  predictedDraw: boolean,
+  actualDraw: boolean
 ): number {
   if (!homeTeamId || !awayTeamId) return 1;
   if (!favoriteTeamId && !minnowTeamId) return 1;
+
+  const teamsInMatch = [homeTeamId, awayTeamId];
+
+  // Scenario 2: Draw — both predicted and actual result are draws
+  if (predictedDraw && actualDraw) {
+    const favoriteInMatch = favoriteTeamId != null && teamsInMatch.includes(favoriteTeamId);
+    const minnowInMatch = minnowTeamId != null && teamsInMatch.includes(minnowTeamId);
+
+    if (favoriteInMatch && minnowInMatch) return 4;
+    if (favoriteInMatch || minnowInMatch) return 2;
+    return 1;
+  }
+
+  // Scenario 1: Win — predicted winner matches actual winner
   if (!predictedWinnerTeamId || !actualWinnerTeamId) return 1;
   if (predictedWinnerTeamId !== actualWinnerTeamId) return 1;
 
@@ -212,10 +228,14 @@ async function main() {
           actualAwayScore > actualHomeScore ? match.awayTeamId :
           null;
 
+        const predictedDraw = pred.homeScore === pred.awayScore;
+        const actualDraw = actualHomeScore === actualAwayScore;
+
         const teamMultiplier = calculateTeamMultiplier(
           match.homeTeamId, match.awayTeamId,
           pred.favoriteTeamId, pred.minnowTeamId,
-          predictedWinnerTeamId, actualWinnerTeamId
+          predictedWinnerTeamId, actualWinnerTeamId,
+          predictedDraw, actualDraw
         );
 
         const totalPoints = Math.round(basePoints * oddsMultiplier * teamMultiplier * 100) / 100;

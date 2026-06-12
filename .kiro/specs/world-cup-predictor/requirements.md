@@ -113,7 +113,7 @@ A football World Cup predictor game designed for small groups of friends and col
 2. WHILE the current time is before the Team_Selection_Deadline, THE Predictor_System SHALL allow Players to submit or modify their Favorite_Team selection
 3. WHEN the current time reaches or passes the Team_Selection_Deadline, THE Predictor_System SHALL lock all Favorite_Team selections and reject any new or modified submissions for the remainder of the tournament
 4. IF a Player attempts to select or change their Favorite_Team after the Team_Selection_Deadline, THEN THE Predictor_System SHALL display a message indicating that the selection window has closed
-5. WHEN a Player has predicted their Favorite_Team to win a Match AND that Favorite_Team actually wins the Match, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
+5. WHEN a Player has predicted their Favorite_Team to win a Match AND that Favorite_Team actually wins, OR WHEN a Player's Favorite_Team is playing in a Match AND the Player predicted a draw AND the Match ends in a draw, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
 6. THE Predictor_System SHALL apply the Favorite_Team multiplier to both Group_Stage and Knockout_Stage matches
 7. THE Predictor_System SHALL display the Favorite_Team selection dropdown on the Predictions page sorted by FIFA ranking, showing the team name, code, and ranking for each option
 8. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Favorite_Team selection on the Predictions page in a read-only state
@@ -130,9 +130,9 @@ A football World Cup predictor game designed for small groups of friends and col
 2. WHILE the current time is before the Team_Selection_Deadline, THE Predictor_System SHALL allow Players to submit or modify their Minnow_Team selection
 3. WHEN the current time reaches or passes the Team_Selection_Deadline, THE Predictor_System SHALL lock all Minnow_Team selections and reject any new or modified submissions for the remainder of the tournament
 4. IF a Player attempts to select or change their Minnow_Team after the Team_Selection_Deadline, THEN THE Predictor_System SHALL display a message indicating that the selection window has closed
-5. WHEN a Player has predicted their Minnow_Team to win a Match AND that Minnow_Team actually wins the Match, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
+5. WHEN a Player has predicted their Minnow_Team to win a Match AND that Minnow_Team actually wins, OR WHEN a Player's Minnow_Team is playing in a Match AND the Player predicted a draw AND the Match ends in a draw, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
 6. THE Predictor_System SHALL apply the Minnow_Team multiplier to both Group_Stage and Knockout_Stage matches
-7. THE Predictor_System SHALL allow a Player to select the same team as both Favorite_Team and Minnow_Team (if that team qualifies for both), resulting in a 4x multiplier for matches where that team wins as predicted
+7. THE Predictor_System SHALL allow a Player to select the same team as both Favorite_Team and Minnow_Team (if that team qualifies for both), resulting in a 4x multiplier for matches where that team wins as predicted or draws as predicted
 8. THE Predictor_System SHALL display the Minnow_Team selection dropdown on the Predictions page sorted by FIFA ranking, showing the team name, code, and ranking for each option
 9. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Minnow_Team selection on the Predictions page in a read-only state
 10. THE Predictor_System SHALL save team selections (both favorite and minnow) as part of the "Save All Predictions" batch operation, not via separate individual save buttons
@@ -261,11 +261,14 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 #### Acceptance Criteria
 
 1. WHEN a Player earns points for a Match, THE Predictor_System SHALL calculate the final score as: base_points × Odds_Multiplier × team_multiplier, rounded to 2 decimal places
-2. WHEN a Player has predicted their Favorite_Team to win AND that Favorite_Team actually wins the Match (and the Player has not selected a Minnow_Team or the Minnow_Team is not the winning team), THE Predictor_System SHALL apply a team_multiplier of 2
-3. WHEN a Player has predicted their Minnow_Team to win AND that Minnow_Team actually wins the Match (and the Player has not selected a Favorite_Team or the Favorite_Team is not the winning team), THE Predictor_System SHALL apply a team_multiplier of 2
-4. WHEN a Player has selected the same team as both Favorite_Team and Minnow_Team, AND that team wins the Match as predicted, THE Predictor_System SHALL apply a team_multiplier of 4
-5. WHEN the Match result is a draw, OR the Player predicted a draw, OR the Player predicted a different team to win than actually won, THE Predictor_System SHALL apply a team_multiplier of 1
-6. WHEN a Match does not involve a Player's Favorite_Team or Minnow_Team, THE Predictor_System SHALL apply a team_multiplier of 1
+2. WHEN a Player has predicted their Favorite_Team to win AND that Favorite_Team actually wins the Match, THE Predictor_System SHALL apply a team_multiplier of 2
+3. WHEN a Player has predicted their Minnow_Team to win AND that Minnow_Team actually wins the Match, THE Predictor_System SHALL apply a team_multiplier of 2
+4. WHEN a Player's Favorite_Team is playing in a Match AND the Player predicted a draw AND the Match actually ends in a draw, THE Predictor_System SHALL apply a team_multiplier of 2
+5. WHEN a Player's Minnow_Team is playing in a Match AND the Player predicted a draw AND the Match actually ends in a draw, THE Predictor_System SHALL apply a team_multiplier of 2
+6. WHEN a Player has selected the same team as both Favorite_Team and Minnow_Team, AND the team multiplier conditions are met (win or draw), THE Predictor_System SHALL apply a team_multiplier of 4
+7. WHEN a Player's Favorite_Team and Minnow_Team are two different teams both playing in the same Match, AND the Player predicted a draw AND the Match actually ends in a draw, THE Predictor_System SHALL apply a team_multiplier of 4
+8. WHEN the Player's prediction does not match the actual outcome (predicted wrong winner, or predicted win when result was draw, or predicted draw when result was a win), THE Predictor_System SHALL apply a team_multiplier of 1
+9. WHEN a Match does not involve a Player's Favorite_Team or Minnow_Team, THE Predictor_System SHALL apply a team_multiplier of 1
 
 ### Requirement 14: Local Test Mode
 
@@ -346,3 +349,19 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 5. THE missing player names list SHALL be expanded by default (no click required) when the prediction deadline is still open and predictions are incomplete, enabling admins to take a screenshot for sharing
 6. WHEN the prediction deadline for a match has passed, THE Predictor_System SHALL display only a static gray chip showing the final count (e.g., "10/12") without listing missing names, since reminders are no longer actionable
 7. THE prediction status SHALL be scoped to the current group only
+
+### Requirement 19: Scoring Rules Page
+
+**User Story:** As a player, I want to read a clear explanation of how scoring works with examples, so that I understand the game mechanics before making my predictions.
+
+#### Acceptance Criteria
+
+1. THE Predictor_System SHALL provide a rules page at `/{groupSlug}/rules` accessible to all authenticated players via a "Rules" link in the navigation bar
+2. THE rules page SHALL explain base points scoring: exact score (4 points), correct result (1 point), incorrect (0 points), with a worked example
+3. THE rules page SHALL explain the odds multiplier formula (`2 − predictions_for_outcome / total_predictions`), its range (1.00–2.00), and include a worked example with multiple players
+4. THE rules page SHALL explain the team multiplier: favorite team (any team, 2x), minnow team (FIFA rank ≥ 44 only, 2x), stacking rules (4x when both involved), with clear descriptions of each scenario
+5. THE rules page SHALL display the final score formula (`base_points × odds_multiplier × team_multiplier`) with a complete worked example showing all three multipliers applied
+6. THE rules page SHALL explain knockout stage scoring rules: penalty winner prediction requirement for drawn scores, scoring scenarios table, and a worked example showing different prediction outcomes
+7. THE rules page SHALL explain when knockout matches become available for predictions (after admin assigns teams from previous round)
+8. THE rules page SHALL explain all deadlines: team selection (2 hours before first match) and match predictions (2 hours before each match kickoff)
+9. THE rules page SHALL be styled consistently with the rest of the application including full dark mode support
