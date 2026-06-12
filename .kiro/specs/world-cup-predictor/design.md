@@ -220,7 +220,7 @@ Participants always see their saved prediction values — the inputs transition 
 
 ### 3. Scoring Engine
 
-Calculates points based on match results, odds multipliers, and team multipliers. The same scoring formula applies to both group and knockout stages. For knockout matches decided by penalties, the penalty winner prediction is factored into correctness.
+Calculates points based on match results, odds multipliers, and team multipliers. The same scoring formula applies to both group and knockout stages. For knockout matches decided by penalties, the penalty winner prediction is factored into correctness. The team multiplier only applies when the player predicted their favorite/minnow team to win AND that team actually won the match.
 
 ```typescript
 interface ScoringService {
@@ -671,9 +671,12 @@ model KnockoutPrediction {
 
 *For any* match and player with team selections:
 - If neither team in the match is the player's favorite or minnow, team multiplier SHALL be 1
-- If exactly one team in the match is the player's favorite XOR minnow (but not both roles), team multiplier SHALL be 2
-- If a team in the match is both the player's favorite AND minnow (same team selected for both), team multiplier SHALL be 4
-- If one team is the player's favorite and the other team is the player's minnow, team multiplier SHALL be 4
+- If the player predicted a draw (no winner), team multiplier SHALL be 1
+- If the actual result is a draw (no winner), team multiplier SHALL be 1
+- If the player predicted a team to win but a different team actually won, team multiplier SHALL be 1
+- If the player predicted their favorite team to win AND that team actually won, team multiplier SHALL be 2
+- If the player predicted their minnow team to win AND that team actually won, team multiplier SHALL be 2
+- If a team in the match is both the player's favorite AND minnow (same team selected for both), and the player predicted that team to win AND it actually won, team multiplier SHALL be 4
 
 **Validates: Requirements 13.2, 13.3, 13.4, 13.5, 13.6, 6.5, 7.5, 7.7**
 

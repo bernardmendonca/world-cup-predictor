@@ -30,7 +30,7 @@ A football World Cup predictor game for small groups of friends (20-50 players).
 - Score predictions for all 104 matches (group + knockout stages)
 - Penalty winner prediction for knockout draws
 - Odds multiplier rewarding less popular correct predictions
-- Favorite and minnow team bonuses (2x each, stackable to 4x)
+- Favorite and minnow team bonuses (2x when your selected team wins as you predicted, stackable to 4x)
 - Multi-group support — run multiple independent competitions on one instance
 - Match prediction comparison — see everyone's predictions and scores for completed matches
 - Admin panel for recording results and managing the knockout bracket
@@ -209,11 +209,19 @@ Calculated per match from prediction distribution: `2 - (predictions_for_outcome
 
 ### Team Multiplier
 
+The team multiplier rewards players who predict their selected favorite or minnow team to win — and that team actually wins. It only applies when the player's prediction has their selected team winning AND the actual result confirms that win.
+
 | Scenario | Multiplier |
 |----------|-----------|
-| No favorite/minnow in match | 1x |
-| Favorite OR minnow in match | 2x |
-| Both favorite AND minnow in match | 4x |
+| No favorite/minnow predicted to win and won | 1x |
+| Favorite OR minnow predicted to win and actually won | 2x |
+| Same team is both favorite AND minnow, predicted to win and actually won | 4x |
+
+The multiplier does NOT apply if:
+- The match is a draw (no winner)
+- The player predicted a different team to win
+- The player predicted a draw
+- The player's selected team lost
 
 **Favorite team**: Any of the 48 participating teams. **Minnow team**: Only teams with FIFA ranking ≥ 44 (the 14 lowest-ranked teams in the tournament).
 
@@ -404,7 +412,7 @@ npx vitest run src/__tests__/properties/base-points.property.test.ts
 | Scoring formula | 4 | base × odds × team = total (rounded to 2dp) |
 | Base points | 5 | Exact score (4), correct result (1), incorrect (0) |
 | Odds multiplier | 5 | Formula, range [1.00-2.00], zero predictions, single prediction |
-| Team multiplier | 4 | No match (1x), one team (2x), both teams (4x) |
+| Team multiplier | 11 | Predicted winner must match actual winner, favorite/minnow must be the winner (2x), both roles on same winner (4x), draws (1x) |
 | Knockout penalties | 5 | Penalty winner correctness, exact score with penalties |
 | Score validation | 3 | Integer 0-20 accepted, everything else rejected |
 | Deadlines | 6 | Group, knockout, team selection — all 2h before kickoff |

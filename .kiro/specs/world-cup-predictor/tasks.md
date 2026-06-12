@@ -64,7 +64,7 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
 
   - [x] 2.5 Implement team multiplier calculation
     - Create `src/lib/scoring/team-multiplier.ts`
-    - Implement logic: no team match → 1, one team matches favorite XOR minnow → 2, same team is both → 4, both teams in match are favorite and minnow → 4
+    - Implement logic: multiplier only applies when the player predicted their favorite/minnow team to win AND that team actually won. No winner (draw) → 1, predicted winner ≠ actual winner → 1, favorite/minnow predicted to win and won → 2, same team is both favorite and minnow and predicted to win and won → 4
     - _Requirements: 13.2, 13.3, 13.4, 13.5, 13.6_
 
   - [x]* 2.6 Write property test for team multiplier calculation

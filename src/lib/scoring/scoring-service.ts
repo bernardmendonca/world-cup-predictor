@@ -92,12 +92,25 @@ export async function calculateMatchScores(
     const predictedOutcome = getPredictionOutcome(pred.homeScore, pred.awayScore);
     const oddsMultiplier = oddsMultipliers[predictedOutcome];
 
-    // Get team multiplier
+    // Derive predicted winner and actual winner team IDs
+    const predictedWinnerTeamId =
+      pred.homeScore > pred.awayScore ? match.homeTeamId :
+      pred.awayScore > pred.homeScore ? match.awayTeamId :
+      null; // draw — no winner
+
+    const actualWinnerTeamId =
+      actualHomeScore > actualAwayScore ? match.homeTeamId :
+      actualAwayScore > actualHomeScore ? match.awayTeamId :
+      null; // draw — no winner
+
+    // Get team multiplier (only applies if predicted team won and actually won)
     const teamMultiplier = calculateTeamMultiplier(
       match.homeTeamId,
       match.awayTeamId,
       pred.favoriteTeamId,
-      pred.minnowTeamId
+      pred.minnowTeamId,
+      predictedWinnerTeamId,
+      actualWinnerTeamId
     );
 
     // Final score: base × odds × team, rounded to 2dp

@@ -12,8 +12,8 @@ A football World Cup predictor game designed for small groups of friends and col
 - **Match**: A scheduled World Cup game between two teams
 - **Group_Stage**: The initial phase of the World Cup where teams play in round-robin groups
 - **Knockout_Stage**: The elimination phase including Round of 32, Round of 16, Quarter Finals, Semi Finals, Third Place, and Final
-- **Favorite_Team**: A team selected by a Player whose matches earn double points
-- **Minnow_Team**: A team selected by a Player (typically a lower-ranked or underdog team) whose matches earn double points
+- **Favorite_Team**: A team selected by a Player that earns double points when predicted to win and that team actually wins
+- **Minnow_Team**: A team selected by a Player (typically a lower-ranked or underdog team) that earns double points when predicted to win and that team actually wins
 - **Odds_Multiplier**: A scoring multiplier calculated from the distribution of predictions among all Players for a given match, rewarding less popular correct predictions
 - **Kickoff_Time**: The official scheduled start time of a Match
 - **Prediction_Deadline**: The time 2 hours before Kickoff_Time after which predictions can no longer be submitted or modified
@@ -67,7 +67,7 @@ A football World Cup predictor game designed for small groups of friends and col
 2. WHEN a Group_Stage Match result is recorded, THE Predictor_System SHALL award 3 base points to each Player who predicted the Correct_Exact_Score
 3. WHEN a Player has predicted the Correct_Exact_Score, THE Predictor_System SHALL award both the Correct_Result base point (1) and the Correct_Exact_Score base point (3), for a total of 4 base points
 4. WHEN a Group_Stage Match result is recorded, THE Predictor_System SHALL calculate the final points for each Player as: base_points × Odds_Multiplier × team_multiplier, rounded to 2 decimal places
-5. IF a Player has selected a Favorite_Team or Minnow_Team that is involved in the Match, THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 13 after applying the Odds_Multiplier
+5. IF a Player has selected a Favorite_Team or Minnow_Team that is involved in the Match AND predicted that team to win AND that team actually wins, THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 13 after applying the Odds_Multiplier
 6. IF a Player did not submit a prediction for a Match, THEN THE Predictor_System SHALL award 0 points to that Player for that Match
 
 ### Requirement 4: Knockout Stage Score Predictions
@@ -100,12 +100,12 @@ A football World Cup predictor game designed for small groups of friends and col
 5. FOR Knockout_Stage matches that end in a draw (decided by penalties), a Correct_Exact_Score prediction requires: (a) predicting the exact drawn scoreline AND (b) correctly selecting the penalty winner
 6. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL calculate the Odds_Multiplier using the same formula as group stage (based on prediction distribution within the group for that match)
 7. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL calculate the final points for each Player as: base_points × Odds_Multiplier × team_multiplier, rounded to 2 decimal places
-8. IF a Player has selected a Favorite_Team or Minnow_Team that is involved in the Knockout_Stage Match, THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 13
+8. IF a Player has selected a Favorite_Team or Minnow_Team that is involved in the Knockout_Stage Match AND predicted that team to win AND that team actually wins, THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 13
 9. IF a Player did not submit a prediction for a Knockout_Stage Match, THEN THE Predictor_System SHALL award 0 points to that Player for that Match
 
 ### Requirement 6: Favorite Team Selection
 
-**User Story:** As a player, I want to select a favorite team, so that I earn double points on all matches involving that team throughout the tournament.
+**User Story:** As a player, I want to select a favorite team, so that I earn double points when I correctly predict that team to win.
 
 #### Acceptance Criteria
 
@@ -113,7 +113,7 @@ A football World Cup predictor game designed for small groups of friends and col
 2. WHILE the current time is before the Team_Selection_Deadline, THE Predictor_System SHALL allow Players to submit or modify their Favorite_Team selection
 3. WHEN the current time reaches or passes the Team_Selection_Deadline, THE Predictor_System SHALL lock all Favorite_Team selections and reject any new or modified submissions for the remainder of the tournament
 4. IF a Player attempts to select or change their Favorite_Team after the Team_Selection_Deadline, THEN THE Predictor_System SHALL display a message indicating that the selection window has closed
-5. WHEN a Match involves a Player's Favorite_Team, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
+5. WHEN a Player has predicted their Favorite_Team to win a Match AND that Favorite_Team actually wins the Match, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
 6. THE Predictor_System SHALL apply the Favorite_Team multiplier to both Group_Stage and Knockout_Stage matches
 7. THE Predictor_System SHALL display the Favorite_Team selection dropdown on the Predictions page sorted by FIFA ranking, showing the team name, code, and ranking for each option
 8. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Favorite_Team selection on the Predictions page in a read-only state
@@ -122,7 +122,7 @@ A football World Cup predictor game designed for small groups of friends and col
 
 ### Requirement 7: Minnow Team Selection
 
-**User Story:** As a player, I want to select a minnow team from the lower-ranked teams, so that I earn double points on all matches involving that underdog team throughout the tournament.
+**User Story:** As a player, I want to select a minnow team from the lower-ranked teams, so that I earn double points when I correctly predict that underdog team to win.
 
 #### Acceptance Criteria
 
@@ -130,9 +130,9 @@ A football World Cup predictor game designed for small groups of friends and col
 2. WHILE the current time is before the Team_Selection_Deadline, THE Predictor_System SHALL allow Players to submit or modify their Minnow_Team selection
 3. WHEN the current time reaches or passes the Team_Selection_Deadline, THE Predictor_System SHALL lock all Minnow_Team selections and reject any new or modified submissions for the remainder of the tournament
 4. IF a Player attempts to select or change their Minnow_Team after the Team_Selection_Deadline, THEN THE Predictor_System SHALL display a message indicating that the selection window has closed
-5. WHEN a Match involves a Player's Minnow_Team, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
+5. WHEN a Player has predicted their Minnow_Team to win a Match AND that Minnow_Team actually wins the Match, THE Predictor_System SHALL apply a 2x multiplier to the points earned by that Player for that Match
 6. THE Predictor_System SHALL apply the Minnow_Team multiplier to both Group_Stage and Knockout_Stage matches
-7. THE Predictor_System SHALL allow a Player to select the same team as both Favorite_Team and Minnow_Team (if that team qualifies for both), resulting in a 4x multiplier for matches involving that team
+7. THE Predictor_System SHALL allow a Player to select the same team as both Favorite_Team and Minnow_Team (if that team qualifies for both), resulting in a 4x multiplier for matches where that team wins as predicted
 8. THE Predictor_System SHALL display the Minnow_Team selection dropdown on the Predictions page sorted by FIFA ranking, showing the team name, code, and ranking for each option
 9. WHEN the Team_Selection_Deadline has passed, THE Predictor_System SHALL still display the Player's locked Minnow_Team selection on the Predictions page in a read-only state
 10. THE Predictor_System SHALL save team selections (both favorite and minnow) as part of the "Save All Predictions" batch operation, not via separate individual save buttons
@@ -261,10 +261,10 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 #### Acceptance Criteria
 
 1. WHEN a Player earns points for a Match, THE Predictor_System SHALL calculate the final score as: base_points × Odds_Multiplier × team_multiplier, rounded to 2 decimal places
-2. WHEN a Match involves a Player's Favorite_Team but not their Minnow_Team, THE Predictor_System SHALL apply a team_multiplier of 2
-3. WHEN a Match involves a Player's Minnow_Team but not their Favorite_Team, THE Predictor_System SHALL apply a team_multiplier of 2
-4. WHEN a Match involves both a Player's Favorite_Team and Minnow_Team as the same team (Player selected the same team for both), THE Predictor_System SHALL apply a team_multiplier of 4
-5. WHEN a Match involves a Player's Favorite_Team and Minnow_Team as two different teams (one on each side of the Match), THE Predictor_System SHALL apply a team_multiplier of 4
+2. WHEN a Player has predicted their Favorite_Team to win AND that Favorite_Team actually wins the Match (and the Player has not selected a Minnow_Team or the Minnow_Team is not the winning team), THE Predictor_System SHALL apply a team_multiplier of 2
+3. WHEN a Player has predicted their Minnow_Team to win AND that Minnow_Team actually wins the Match (and the Player has not selected a Favorite_Team or the Favorite_Team is not the winning team), THE Predictor_System SHALL apply a team_multiplier of 2
+4. WHEN a Player has selected the same team as both Favorite_Team and Minnow_Team, AND that team wins the Match as predicted, THE Predictor_System SHALL apply a team_multiplier of 4
+5. WHEN the Match result is a draw, OR the Player predicted a draw, OR the Player predicted a different team to win than actually won, THE Predictor_System SHALL apply a team_multiplier of 1
 6. WHEN a Match does not involve a Player's Favorite_Team or Minnow_Team, THE Predictor_System SHALL apply a team_multiplier of 1
 
 ### Requirement 14: Local Test Mode

@@ -75,7 +75,11 @@ function scorePredictions(
       result.homeTeamId,
       result.awayTeamId,
       pred.favoriteTeamId,
-      pred.minnowTeamId
+      pred.minnowTeamId,
+      pred.homeScore > pred.awayScore ? result.homeTeamId :
+        pred.awayScore > pred.homeScore ? result.awayTeamId : null,
+      result.homeScore > result.awayScore ? result.homeTeamId :
+        result.awayScore > result.homeScore ? result.awayTeamId : null
     );
 
     const totalPoints = Math.round(basePoints * oddsMultiplier * teamMultiplier * 100) / 100;
