@@ -239,7 +239,17 @@ total = base_points × odds_multiplier × team_multiplier
 
 ### Knockout Penalty Rules
 
-When you predict equal scores in a knockout match, you must also select which team wins on penalties. You only get points if both the score AND the penalty winner are correct.
+When you predict equal scores in a knockout match, you must also select which team wins on penalties. You get points if both the draw and the penalty winner are correct. Additionally, if you predicted the correct advancing team to win outright (non-draw scoreline), you earn 1 base point — you got the right team through, just via the wrong method.
+
+| Scenario | Base Points |
+|----------|------------|
+| Exact drawn score + correct penalty winner | 4 |
+| Any draw + correct penalty winner (wrong score) | 1 |
+| Predicted advancing team to win outright | 1 |
+| Draw predicted + wrong penalty winner | 0 |
+| Predicted the losing team to win outright | 0 |
+
+Team multipliers also apply when you correctly identify the advancing team, whether via a penalty prediction or an outright win prediction.
 
 ## Deploying on Railway
 

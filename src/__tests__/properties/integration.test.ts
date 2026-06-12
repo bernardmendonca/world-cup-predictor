@@ -338,9 +338,9 @@ describe("Integration Test 11.3: Full Scoring Pipeline", () => {
     expect(scores[1].correctResult).toBe(false);
     expect(scores[1].totalPoints).toBe(0);
 
-    // Charlie: predicted home win (not a draw) → 0 points
-    expect(scores[2].correctResult).toBe(false);
-    expect(scores[2].totalPoints).toBe(0);
+    // Charlie: predicted home win (not a draw) but home team advances on penalties → 1 point base (correct advancing team)
+    expect(scores[2].correctResult).toBe(true);
+    expect(scores[2].totalPoints).toBeGreaterThan(0);
   });
 
   it("multiple matches accumulate in leaderboard correctly", () => {

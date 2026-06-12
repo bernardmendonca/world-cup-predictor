@@ -41,7 +41,7 @@ describe("Property 5: Knockout Penalty Scoring", () => {
     );
   });
 
-  it("equal actual scores with penalties: correct result requires equal predicted scores + correct penalty winner", () => {
+  it("equal actual scores with penalties: correct result requires equal predicted scores + correct penalty winner, OR correct advancing team via outright win", () => {
     fc.assert(
       fc.property(
         scoreArb,
@@ -78,18 +78,24 @@ describe("Property 5: Knockout Penalty Scoring", () => {
           expect(wrongPenaltyResult.basePoints).toBe(0);
           expect(wrongPenaltyResult.correctResult).toBe(false);
 
-          // Non-draw prediction: incorrect
+          // Non-draw prediction with correct advancing team: 1 point
           fc.pre(otherPredScore !== predDraw);
-          const nonDrawResult = calculateBasePoints(
-            predDraw,
-            otherPredScore,
-            actScore,
-            actScore,
-            correctPenalty,
-            actualPenaltyWinner
-          );
-          expect(nonDrawResult.basePoints).toBe(0);
-          expect(nonDrawResult.correctResult).toBe(false);
+          const higherScore = Math.max(predDraw, otherPredScore);
+          const lowerScore = Math.min(predDraw, otherPredScore);
+
+          // Predict the advancing team to win outright
+          const correctAdvancingResult = actualPenaltyWinner === "home"
+            ? calculateBasePoints(higherScore, lowerScore, actScore, actScore, null, actualPenaltyWinner)
+            : calculateBasePoints(lowerScore, higherScore, actScore, actScore, null, actualPenaltyWinner);
+          expect(correctAdvancingResult.basePoints).toBe(1);
+          expect(correctAdvancingResult.correctResult).toBe(true);
+
+          // Predict the losing team to win outright: 0 points
+          const wrongAdvancingResult = actualPenaltyWinner === "home"
+            ? calculateBasePoints(lowerScore, higherScore, actScore, actScore, null, actualPenaltyWinner)
+            : calculateBasePoints(higherScore, lowerScore, actScore, actScore, null, actualPenaltyWinner);
+          expect(wrongAdvancingResult.basePoints).toBe(0);
+          expect(wrongAdvancingResult.correctResult).toBe(false);
         }
       ),
       { numRuns: 100 }

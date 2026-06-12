@@ -98,9 +98,12 @@ export async function calculateMatchScores(
       pred.awayScore > pred.homeScore ? match.awayTeamId :
       null; // draw — no winner
 
+    // For knockout penalty matches, the advancing team is the "winner" for team multiplier purposes
+    const isKnockoutPenalties = actualHomeScore === actualAwayScore && penaltyWinner != null;
     const actualWinnerTeamId =
       actualHomeScore > actualAwayScore ? match.homeTeamId :
       actualAwayScore > actualHomeScore ? match.awayTeamId :
+      isKnockoutPenalties ? (penaltyWinner === "home" ? match.homeTeamId : match.awayTeamId) :
       null; // draw — no winner
 
     const predictedDraw = pred.homeScore === pred.awayScore;
