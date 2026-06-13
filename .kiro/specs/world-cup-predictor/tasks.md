@@ -411,6 +411,28 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Add `flex-wrap` to timezone rows to prevent overflow
     - _Requirements: 12.1_
 
+- [x] 16. Admin kickoff time management
+  - [x] 16.1 Implement kickoff time editing on admin page
+    - Create `src/app/[groupSlug]/admin/kickoff-times-form.tsx` client component with datetime-local inputs for each match
+    - Pre-fill inputs with existing kickoff times (converted to local timezone)
+    - Highlight modified rows in purple with change indicator and count
+    - Add filter buttons (All / Group / Knockout) for narrowing the list
+    - Add reset button per row to undo individual changes
+    - Only submit modified matches on save
+    - _Requirements: 16.13, 16.14, 16.15_
+
+  - [x] 16.2 Create admin kickoff time update API endpoint
+    - Create `/api/[groupSlug]/admin/kickoff-times` POST route
+    - Accept batch array of `{ matchId, kickoffTime }` updates
+    - Validate datetime values and admin authorization
+    - Update only specified matches' `kickoffTime` in the database
+    - _Requirements: 16.13, 16.14_
+
+  - [x] 16.3 Add "Kickoff Times" tab to admin page
+    - Add purple "Kickoff Times" navigation tab to admin section selector
+    - Route to `KickoffTimesForm` component when selected
+    - _Requirements: 16.13_
+
 ## Notes
 
 - Tasks marked with `*` are optional and can be skipped for faster MVP

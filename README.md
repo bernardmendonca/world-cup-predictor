@@ -164,6 +164,16 @@ Navigate to `/{groupSlug}/admin` (e.g., `/friends1/admin`). For first-time setup
 
 Results are idempotent — change any score and re-save to correct mistakes. All player scores will be recalculated.
 
+### Updating kickoff times
+
+1. Go to the admin panel, click "Kickoff Times" tab
+2. All matches are listed with their current kickoff time in a datetime picker (displayed in your local timezone)
+3. Change only the times that are incorrect — unmodified matches are left untouched
+4. Changed rows are highlighted in purple with a "changed" indicator
+5. Click "Save Kickoff Times" to batch-update only the modified matches
+
+Updating a match's kickoff time immediately adjusts its prediction deadline (2 hours before kickoff). Use this when FIFA reschedules a match or the original fixture data had errors.
+
 ### Managing the knockout bracket
 
 1. Go to the admin panel, click "Assign Knockout Teams" tab
@@ -458,10 +468,14 @@ src/
 │   │   ├── leaderboard/          # Leaderboard
 │   │   ├── rules/                # Scoring rules & examples
 │   │   └── admin/                # Admin panel
+│   │       ├── page.tsx
+│   │       ├── admin-batch-form.tsx
+│   │       ├── player-management.tsx
+│   │       └── kickoff-times-form.tsx
 │   └── api/[groupSlug]/          # API routes
 │       ├── predictions/          # Prediction endpoints
 │       ├── teams/                # Team selection endpoint
-│       ├── admin/                # Admin endpoints
+│       ├── admin/                # Admin endpoints (results, knockout-assign, players, kickoff-times)
 │       ├── auth/                 # Login/logout
 │       └── test/                 # Test mode helpers
 ├── lib/                          # Business logic

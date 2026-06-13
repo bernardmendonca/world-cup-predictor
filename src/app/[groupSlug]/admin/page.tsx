@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { applyTimeOverride } from "@/lib/utils/apply-time-override";
 import { AdminBatchForm } from "./admin-batch-form";
 import { PlayerManagement } from "./player-management";
+import { KickoffTimesForm } from "./kickoff-times-form";
 import type { AdminMatchData } from "./admin-batch-form";
 
 export default async function AdminPage({
@@ -174,6 +175,12 @@ export default async function AdminPage({
         >
           Assign Knockout Teams
         </a>
+        <a
+          href={sectionParam("kickoff-times")}
+          className={`px-3 py-1 rounded text-sm ${section === "kickoff-times" ? "bg-purple-600 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-gray-300"}`}
+        >
+          Kickoff Times
+        </a>
       </div>
 
       {section === "players" ? (
@@ -181,6 +188,11 @@ export default async function AdminPage({
           players={players.map((p) => ({ ...p, createdAt: p.createdAt.toISOString() }))}
           groupSlug={resolvedParams.groupSlug}
           adminKey={bootstrapAccess ? resolvedSearchParams.adminKey : undefined}
+        />
+      ) : section === "kickoff-times" ? (
+        <KickoffTimesForm
+          matches={matchData}
+          groupSlug={resolvedParams.groupSlug}
         />
       ) : (
         <AdminBatchForm

@@ -337,6 +337,9 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 10. FOR each subsequent knockout round (Round of 16, Quarter Finals, Semi Finals, Third Place, Final), WHEN all matches in the preceding round have results recorded, THE Predictor_System SHALL display a prompt allowing the admin to confirm the advancing teams for the next round
 11. THE Predictor_System SHALL NOT allow Players to submit predictions for a Knockout_Stage match until both teams have been confirmed by the admin
 12. THE Predictor_System SHALL display on the admin page a scoring summary showing, for each completed match, the number of Players who scored points and the average points awarded
+13. THE Predictor_System SHALL provide a "Kickoff Times" tab on the admin page showing all matches with datetime input fields pre-filled with the current kickoff time, allowing the admin to correct scheduling errors without losing existing predictions
+14. WHEN an admin modifies one or more kickoff times and clicks the "Save Kickoff Times" button, THE Predictor_System SHALL update only the modified matches' kickoff times in the database, immediately adjusting their associated prediction deadlines
+15. THE Predictor_System SHALL visually highlight modified kickoff time rows and display a count of changed matches before saving
 
 ### Requirement 18: Admin Prediction Status Visibility
 

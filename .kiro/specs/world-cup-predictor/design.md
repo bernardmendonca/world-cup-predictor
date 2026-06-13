@@ -368,6 +368,9 @@ interface AdminService {
   // Match result recording
   recordMatchResult(groupId: string, matchId: string, homeScore: number, awayScore: number, penaltyWinner?: 'home' | 'away'): Promise<AdminResultResponse>;
 
+  // Kickoff time management
+  updateKickoffTimes(updates: Array<{ matchId: string; kickoffTime: Date }>): Promise<{ success: number; failed: number }>;
+
   // Knockout bracket management
   getKnockoutBracketStatus(): Promise<BracketStatus>;
   assignTeamsToKnockoutMatch(matchId: string, homeTeamId: string, awayTeamId: string): Promise<void>;
@@ -405,11 +408,12 @@ interface PendingAssignment {
 **Admin workflow:**
 1. Bootstrap: Admin accesses admin panel via `?adminKey=SECRET`, creates themselves as first player, logs in via invite link
 2. Player management: Admin creates all players in the Players tab, copies and shares invite links
-3. Group stage matches complete → admin enters scores inline on the Record Results tab, clicks "Save All Results" to batch-process them
-4. Once all 6 matches in a group are done, the admin switches to the "Assign Knockout Teams" tab and assigns teams to R32 slots in batch
-5. Once all R32 matches have results, admin assigns R16 teams, and so on through the bracket
-6. At each step, the system shows what's pending and what's ready for assignment
-7. Both result recording and team assignment support batch operations with a single submit button
+3. Kickoff time corrections: If any match times are wrong, admin uses the "Kickoff Times" tab to update them (only modified times are saved; existing predictions are preserved)
+4. Group stage matches complete → admin enters scores inline on the Record Results tab, clicks "Save All Results" to batch-process them
+5. Once all 6 matches in a group are done, the admin switches to the "Assign Knockout Teams" tab and assigns teams to R32 slots in batch
+6. Once all R32 matches have results, admin assigns R16 teams, and so on through the bracket
+7. At each step, the system shows what's pending and what's ready for assignment
+8. Both result recording and team assignment support batch operations with a single submit button
 
 **Prediction status visibility (Record Results tab):**
 
