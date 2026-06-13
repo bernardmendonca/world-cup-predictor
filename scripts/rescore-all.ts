@@ -38,14 +38,14 @@ function calculateBasePoints(
 
     const exactScore = predictedHome === actualHome && predictedAway === actualAway;
     if (exactScore) {
-      return { basePoints: 4, correctResult: true, correctExactScore: true };
+      return { basePoints: 3, correctResult: true, correctExactScore: true };
     }
     return { basePoints: 1, correctResult: true, correctExactScore: false };
   }
 
   const exactScore = predictedHome === actualHome && predictedAway === actualAway;
   if (exactScore) {
-    return { basePoints: 4, correctResult: true, correctExactScore: true };
+    return { basePoints: 3, correctResult: true, correctExactScore: true };
   }
 
   const predictedOutcome = getOutcome(predictedHome, predictedAway);

@@ -42,7 +42,7 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
 - [x] 2. Scoring engine implementation
   - [x] 2.1 Implement base points calculation
     - Create `src/lib/scoring/base-points.ts`
-    - Implement logic: exact score match → 4 pts, correct result only → 1 pt, incorrect → 0 pts
+    - Implement logic: exact score match → 3 pts, correct result only → 1 pt, incorrect → 0 pts
     - Handle edge cases: draws, high scores, zero-zero
     - _Requirements: 3.1, 3.2, 3.3_
 
@@ -88,7 +88,7 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Create `src/lib/scoring/knockout-penalty-scoring.ts`
     - Implement logic for determining correct result and correct exact score when a knockout match ends in a draw (penalties)
     - A prediction of equal scores with the correct penalty winner = correct result (1 base point)
-    - A prediction of the exact drawn scoreline with the correct penalty winner = correct exact score (4 base points)
+    - A prediction of the exact drawn scoreline with the correct penalty winner = correct exact score (3 base points)
     - A prediction of equal scores with the wrong penalty winner = incorrect (0 points)
     - _Requirements: 5.4, 5.5_
 

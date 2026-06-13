@@ -26,7 +26,7 @@ export default async function RulesPage({
             <tbody>
               <tr className="border-t border-gray-200 dark:border-gray-700">
                 <td className="px-4 py-2 dark:text-gray-300">Correct exact score</td>
-                <td className="px-4 py-2 text-right font-bold dark:text-gray-100">4</td>
+                <td className="px-4 py-2 text-right font-bold dark:text-gray-100">3</td>
               </tr>
               <tr className="border-t border-gray-200 dark:border-gray-700">
                 <td className="px-4 py-2 dark:text-gray-300">Correct result (wrong score)</td>
@@ -43,7 +43,7 @@ export default async function RulesPage({
           <p className="font-medium text-blue-800 dark:text-blue-300 mb-1">Example</p>
           <p className="text-blue-700 dark:text-blue-400">
             Actual result: Brazil 2 – 1 Germany<br />
-            You predicted: 2 – 1 → <strong>4 points</strong> (exact score)<br />
+            You predicted: 2 – 1 → <strong>3 points</strong> (exact score)<br />
             Another player predicted: 1 – 0 → <strong>1 point</strong> (correct winner, wrong score)<br />
             Another player predicted: 0 – 2 → <strong>0 points</strong> (wrong result)
           </p>
@@ -186,10 +186,10 @@ export default async function RulesPage({
         <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-800 text-sm">
           <p className="font-medium text-blue-800 dark:text-blue-300 mb-1">Example</p>
           <p className="text-blue-700 dark:text-blue-400">
-            You predict the exact score correctly (4 base points).<br />
+            You predict the exact score correctly (3 base points).<br />
             Only 2 out of 10 players predicted this outcome (odds multiplier = 1.80).<br />
             The match involves your favorite team (team multiplier = 2x).<br />
-            <strong>Total = 4 × 1.80 × 2 = 14.40 points</strong>
+            <strong>Total = 3 × 1.80 × 2 = 10.80 points</strong>
           </p>
         </div>
       </section>
@@ -217,7 +217,7 @@ export default async function RulesPage({
             <tbody>
               <tr className="border-t border-gray-200 dark:border-gray-700">
                 <td className="px-4 py-2 dark:text-gray-300">Exact drawn score + correct penalty winner</td>
-                <td className="px-4 py-2 text-right font-bold dark:text-gray-100">4</td>
+                <td className="px-4 py-2 text-right font-bold dark:text-gray-100">3</td>
               </tr>
               <tr className="border-t border-gray-200 dark:border-gray-700">
                 <td className="px-4 py-2 dark:text-gray-300">Any draw predicted + correct penalty winner (wrong exact score)</td>
@@ -241,14 +241,14 @@ export default async function RulesPage({
 
         <h3 className="text-sm font-semibold mb-2 dark:text-gray-200">When a knockout match is decided in regular/extra time</h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          If the match has a clear winner (unequal scores), the scoring works exactly like the group stage — correct result = 1 point, exact score = 4 points.
+          If the match has a clear winner (unequal scores), the scoring works exactly like the group stage — correct result = 1 point, exact score = 3 points.
         </p>
 
         <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-800 text-sm">
           <p className="font-medium text-blue-800 dark:text-blue-300 mb-1">Example — Quarter Final decided by penalties</p>
           <p className="text-blue-700 dark:text-blue-400">
             Actual result: Argentina 1 – 1 France (Argentina wins on penalties)<br /><br />
-            Player A predicted: 1 – 1, penalty winner: Argentina → <strong>4 points</strong> (exact score + correct penalty winner)<br />
+            Player A predicted: 1 – 1, penalty winner: Argentina → <strong>3 points</strong> (exact score + correct penalty winner)<br />
             Player B predicted: 0 – 0, penalty winner: Argentina → <strong>1 point</strong> (correct result — draw with correct penalty winner — but wrong exact score)<br />
             Player C predicted: Argentina 2 – 1 → <strong>1 point</strong> (predicted the correct advancing team via outright win)<br />
             Player D predicted: 1 – 1, penalty winner: France → <strong>0 points</strong> (correct score but wrong penalty winner)<br />

@@ -199,7 +199,7 @@ Matches with open predictions are not clickable — they become accessible only 
 ### Base Points
 | Prediction | Points |
 |-----------|--------|
-| Correct exact score | 4 (1 + 3) |
+| Correct exact score | 3 (1 + 2) |
 | Correct result (wrong score) | 1 |
 | Incorrect | 0 |
 
@@ -243,7 +243,7 @@ When you predict equal scores in a knockout match, you must also select which te
 
 | Scenario | Base Points |
 |----------|------------|
-| Exact drawn score + correct penalty winner | 4 |
+| Exact drawn score + correct penalty winner | 3 |
 | Any draw + correct penalty winner (wrong score) | 1 |
 | Predicted advancing team to win outright | 1 |
 | Draw predicted + wrong penalty winner | 0 |
@@ -424,7 +424,7 @@ npx vitest run src/__tests__/properties/base-points.property.test.ts
 | Category | Tests | What's covered |
 |----------|-------|----------------|
 | Scoring formula | 4 | base × odds × team = total (rounded to 2dp) |
-| Base points | 5 | Exact score (4), correct result (1), incorrect (0) |
+| Base points | 5 | Exact score (3), correct result (1), incorrect (0) |
 | Odds multiplier | 5 | Formula, range [1.00-2.00], zero predictions, single prediction |
 | Team multiplier | 16 | Win scenario (predicted team won), draw scenario (team in drawn match), both roles on same winner (4x), neither team in match (1x) |
 | Knockout penalties | 5 | Penalty winner correctness, exact score with penalties |

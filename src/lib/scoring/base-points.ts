@@ -1,12 +1,12 @@
 /**
  * Calculate base points for a prediction against an actual result.
  *
- * - Exact score match: 4 points (1 for correct result + 3 for exact score)
+ * - Exact score match: 3 points (1 for correct result + 2 for exact score)
  * - Correct result only: 1 point
  * - Incorrect: 0 points
  *
  * For knockout matches decided by penalties (equal scores):
- * - Predicted draw + correct penalty winner + exact score: 4 points
+ * - Predicted draw + correct penalty winner + exact score: 3 points
  * - Predicted draw + correct penalty winner (wrong score): 1 point
  * - Predicted the advancing team to win outright (non-draw): 1 point
  * - Predicted draw + wrong penalty winner: 0 points
@@ -38,7 +38,7 @@ export function calculateBasePoints(
       // Predicted draw + correct penalty winner
       const exactScore = predictedHome === actualHome && predictedAway === actualAway;
       if (exactScore) {
-        return { basePoints: 4, correctResult: true, correctExactScore: true };
+        return { basePoints: 3, correctResult: true, correctExactScore: true };
       }
       // Correct result (draw + right penalty winner) but not exact score
       return { basePoints: 1, correctResult: true, correctExactScore: false };
@@ -58,7 +58,7 @@ export function calculateBasePoints(
   // Regular match (group stage, or knockout decided in regular/extra time)
   const exactScore = predictedHome === actualHome && predictedAway === actualAway;
   if (exactScore) {
-    return { basePoints: 4, correctResult: true, correctExactScore: true };
+    return { basePoints: 3, correctResult: true, correctExactScore: true };
   }
 
   const predictedOutcome = getOutcome(predictedHome, predictedAway);

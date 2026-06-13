@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import * as fc from "fast-check";
 
 describe("Property 1: Scoring Formula", () => {
-  const basePointsArb = fc.constantFrom(0, 1, 4);
+  const basePointsArb = fc.constantFrom(0, 1, 3);
   const oddsMultiplierArb = fc.double({ min: 1.0, max: 2.0, noNaN: true });
   const teamMultiplierArb = fc.constantFrom(1, 2, 4);
 

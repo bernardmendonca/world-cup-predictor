@@ -234,7 +234,7 @@ interface ScoringService {
 interface MatchScoreResult {
   playerId: string;
   matchId: string;
-  basePoints: number;         // 0, 1, or 4
+  basePoints: number;         // 0, 1, or 3
   oddsMultiplier: number;     // 1.00 - 2.00
   teamMultiplier: number;     // 1, 2, or 4
   totalPoints: number;        // base × odds × team, rounded to 2dp
@@ -252,7 +252,7 @@ interface OddsMultipliers {
 **Knockout scoring details:**
 - For knockout matches where the actual result is a draw (penalties), the "correct result" means predicting equal scores AND correctly picking the penalty winner.
 - A player who predicts equal scores but picks the wrong penalty winner gets 0 points (wrong result).
-- A player who predicts the exact drawn scoreline AND the correct penalty winner gets 4 base points.
+- A player who predicts the exact drawn scoreline AND the correct penalty winner gets 3 base points.
 - A player who predicts the advancing team to win outright (non-draw scoreline) earns 1 base point for correctly identifying the team that goes through.
 - A player who predicts the losing team to win outright gets 0 points.
 - The team multiplier applies when a player correctly identifies the advancing team (whether via draw + penalty winner, or via outright win prediction) and that team is their favorite/minnow.
@@ -650,14 +650,14 @@ model KnockoutPrediction {
 
 ### Property 1: Scoring Formula Correctness
 
-*For any* valid combination of base points (0, 1, or 4), odds multiplier (0.00–2.00), and team multiplier (1, 2, or 4), the calculated total points SHALL equal `round(basePoints × oddsMultiplier × teamMultiplier, 2)`.
+*For any* valid combination of base points (0, 1, or 3), odds multiplier (0.00–2.00), and team multiplier (1, 2, or 4), the calculated total points SHALL equal `round(basePoints × oddsMultiplier × teamMultiplier, 2)`.
 
 **Validates: Requirements 3.4, 13.1**
 
 ### Property 2: Base Points Calculation
 
 *For any* group stage match prediction and actual result pair:
-- If the predicted score exactly matches the actual score, base points SHALL be 4 (1 for correct result + 3 for exact score)
+- If the predicted score exactly matches the actual score, base points SHALL be 3 (1 for correct result + 2 for exact score)
 - If the predicted outcome (home win / away win / draw) matches the actual outcome but scores differ, base points SHALL be 1
 - Otherwise, base points SHALL be 0
 
@@ -691,7 +691,7 @@ model KnockoutPrediction {
 ### Property 5: Knockout Stage Scoring with Penalties
 
 *For any* knockout stage match prediction and actual result pair:
-- If the actual result has unequal scores: correctness is determined the same as group stage (exact score → 4, correct winner → 1, wrong → 0)
+- If the actual result has unequal scores: correctness is determined the same as group stage (exact score → 3, correct winner → 1, wrong → 0)
 - If the actual result is a draw (decided by penalties): a prediction is "correct result" only if it predicts equal scores AND the correct penalty winner. A prediction is "correct exact score" only if it predicts the exact drawn scoreline AND the correct penalty winner.
 - The odds multiplier for knockout matches SHALL be calculated using the same formula as group stage, with outcomes being: home win, away win, or draw (penalties).
 
@@ -848,7 +848,7 @@ The system provides visual cues to help players identify incomplete predictions:
 
 Unit tests cover specific examples, edge cases, and component behavior:
 
-- **Scoring engine**: Specific score scenarios (e.g., predict 2-1, actual 2-1 → 4 base points)
+- **Scoring engine**: Specific score scenarios (e.g., predict 2-1, actual 2-1 → 3 base points)
 - **Odds multiplier edge cases**: Single prediction, unanimous predictions, zero predictions for an outcome
 - **Team multiplier edge cases**: Same team as both favorite and minnow, both teams in match selected
 - **Deadline boundary**: Exact moment of deadline (millisecond precision)

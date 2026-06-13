@@ -105,7 +105,7 @@ describe("Property 5: Knockout Penalty Scoring", () => {
   it("exact score in penalties requires exact drawn scoreline + correct penalty winner", () => {
     fc.assert(
       fc.property(scoreArb, penaltyWinnerArb, (score, penaltyWinner) => {
-        // Exact match: same draw score + correct penalty winner → 4 points
+        // Exact match: same draw score + correct penalty winner → 3 points
         const exact = calculateBasePoints(
           score,
           score,
@@ -114,7 +114,7 @@ describe("Property 5: Knockout Penalty Scoring", () => {
           penaltyWinner,
           penaltyWinner
         );
-        expect(exact.basePoints).toBe(4);
+        expect(exact.basePoints).toBe(3);
         expect(exact.correctExactScore).toBe(true);
 
         // Different draw score + correct penalty winner → 1 point (correct result, not exact)

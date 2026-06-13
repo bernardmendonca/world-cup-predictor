@@ -64,8 +64,8 @@ A football World Cup predictor game designed for small groups of friends and col
 #### Acceptance Criteria
 
 1. WHEN a Group_Stage Match result is recorded, THE Predictor_System SHALL award 1 base point to each Player who predicted the Correct_Result
-2. WHEN a Group_Stage Match result is recorded, THE Predictor_System SHALL award 3 base points to each Player who predicted the Correct_Exact_Score
-3. WHEN a Player has predicted the Correct_Exact_Score, THE Predictor_System SHALL award both the Correct_Result base point (1) and the Correct_Exact_Score base point (3), for a total of 4 base points
+2. WHEN a Group_Stage Match result is recorded, THE Predictor_System SHALL award 2 base points to each Player who predicted the Correct_Exact_Score
+3. WHEN a Player has predicted the Correct_Exact_Score, THE Predictor_System SHALL award both the Correct_Result base point (1) and the Correct_Exact_Score base point (2), for a total of 3 base points
 4. WHEN a Group_Stage Match result is recorded, THE Predictor_System SHALL calculate the final points for each Player as: base_points × Odds_Multiplier × team_multiplier, rounded to 2 decimal places
 5. IF a Player has selected a Favorite_Team or Minnow_Team that is involved in the Match AND predicted that team to win AND that team actually wins, THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 13 after applying the Odds_Multiplier
 6. IF a Player did not submit a prediction for a Match, THEN THE Predictor_System SHALL award 0 points to that Player for that Match
@@ -94,8 +94,8 @@ A football World Cup predictor game designed for small groups of friends and col
 #### Acceptance Criteria
 
 1. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL award 1 base point to each Player who predicted the Correct_Result (correct winner, or correct draw with correct penalty winner)
-2. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL award 3 base points to each Player who predicted the Correct_Exact_Score (exact scoreline match after regular/extra time)
-3. WHEN a Player has predicted the Correct_Exact_Score in a Knockout_Stage Match, THE Predictor_System SHALL award both the Correct_Result base point (1) and the Correct_Exact_Score base point (3), for a total of 4 base points
+2. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL award 2 base points to each Player who predicted the Correct_Exact_Score (exact scoreline match after regular/extra time)
+3. WHEN a Player has predicted the Correct_Exact_Score in a Knockout_Stage Match, THE Predictor_System SHALL award both the Correct_Result base point (1) and the Correct_Exact_Score base point (2), for a total of 3 base points
 4. FOR Knockout_Stage matches that end in a draw (decided by penalties), a Correct_Result prediction requires: (a) predicting equal scores AND (b) correctly selecting the penalty winner
 5. FOR Knockout_Stage matches that end in a draw (decided by penalties), a Correct_Exact_Score prediction requires: (a) predicting the exact drawn scoreline AND (b) correctly selecting the penalty winner
 6. FOR Knockout_Stage matches that end in a draw (decided by penalties), IF a Player predicted the advancing team to win via an outright (non-draw) scoreline, THE Predictor_System SHALL award 1 base point (correct advancing team)
@@ -359,7 +359,7 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 #### Acceptance Criteria
 
 1. THE Predictor_System SHALL provide a rules page at `/{groupSlug}/rules` accessible to all authenticated players via a "Rules" link in the navigation bar
-2. THE rules page SHALL explain base points scoring: exact score (4 points), correct result (1 point), incorrect (0 points), with a worked example
+2. THE rules page SHALL explain base points scoring: exact score (3 points), correct result (1 point), incorrect (0 points), with a worked example
 3. THE rules page SHALL explain the odds multiplier formula (`2 − predictions_for_outcome / total_predictions`), its range (1.00–2.00), and include a worked example with multiple players
 4. THE rules page SHALL explain the team multiplier: favorite team (any team, 2x), minnow team (FIFA rank ≥ 44 only, 2x), stacking rules (4x when both involved), with clear descriptions of each scenario
 5. THE rules page SHALL display the final score formula (`base_points × odds_multiplier × team_multiplier`) with a complete worked example showing all three multipliers applied

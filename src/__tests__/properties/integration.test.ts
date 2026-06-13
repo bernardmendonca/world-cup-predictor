@@ -177,8 +177,8 @@ describe("Integration Test 11.3: Full Scoring Pipeline", () => {
 
     const scores = scorePredictions(predictions, result);
 
-    // Alice: exact score (4) × odds × team multiplier (2, favorite in match)
-    // Bob: exact score (4) × odds × team multiplier (1, no team)
+    // Alice: exact score (3) × odds × team multiplier (2, favorite in match)
+    // Bob: exact score (3) × odds × team multiplier (1, no team)
     // Charlie: wrong result (0)
     expect(scores[0].correctExactScore).toBe(true); // Alice
     expect(scores[0].totalPoints).toBeGreaterThan(0);
@@ -330,7 +330,7 @@ describe("Integration Test 11.3: Full Scoring Pipeline", () => {
 
     const scores = scorePredictions(predictions, result);
 
-    // Alice: exact score + correct penalty winner → 4 points base
+    // Alice: exact score + correct penalty winner → 3 points base
     expect(scores[0].correctExactScore).toBe(true);
     expect(scores[0].totalPoints).toBeGreaterThan(0);
 
@@ -414,8 +414,8 @@ describe("Integration Test 11.3: Full Scoring Pipeline", () => {
 
     expect(leaderboard.length).toBe(2);
     // Both Alice and Bob got one exact score each across two matches
-    // Alice: match1 exact (4pts), match2 wrong (0pts)
-    // Bob: match1 wrong (0pts), match2 exact (4pts)
+    // Alice: match1 exact (3pts), match2 wrong (0pts)
+    // Bob: match1 wrong (0pts), match2 exact (3pts)
     // They should have equal points
     expect(leaderboard[0].totalPoints).toBe(leaderboard[1].totalPoints);
   });
