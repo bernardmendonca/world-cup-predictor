@@ -433,6 +433,28 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Route to `KickoffTimesForm` component when selected
     - _Requirements: 16.13_
 
+- [x] 17. Auto-scroll to next upcoming match
+  - [x] 17.1 Create shared auto-scroll hook and utility
+    - Create `src/lib/hooks/use-scroll-to-upcoming.ts` client hook using `scrollIntoView` with smooth behavior and `requestAnimationFrame` for hydration safety
+    - Create `src/lib/utils/next-upcoming-match.ts` utility to find the first non-completed match ID from an ordered list
+    - Add `data-match-id` attributes and `scroll-mt-24` class to match row elements for targeting and header offset
+    - _Requirements: 20.1, 20.6, 20.7_
+
+  - [x] 17.2 Integrate auto-scroll into predict page
+    - Compute `nextUpcomingMatchId` server-side and pass to `PredictClient`
+    - Call `useScrollToUpcoming` hook in `PredictClient`
+    - _Requirements: 20.1, 20.4, 20.5_
+
+  - [x] 17.3 Integrate auto-scroll into admin Record Results and Kickoff Times tabs
+    - Pass `nextUpcomingMatchId` to `AdminBatchForm` and `KickoffTimesForm`
+    - Call `useScrollToUpcoming` hook in `ResultsSection`, `KnockoutAssignSection`, and `KickoffTimesForm`
+    - _Requirements: 20.2, 20.3, 20.4, 20.5_
+
+  - [x] 17.4 Write property test for next upcoming match ID derivation
+    - Verify `findNextUpcomingMatchId` returns the first non-completed match
+    - Verify it returns null when all matches are completed or list is empty
+    - _Requirements: 20.4, 20.5_
+
 ## Notes
 
 - Tasks marked with `*` are optional and can be skipped for faster MVP

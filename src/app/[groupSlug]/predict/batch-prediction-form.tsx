@@ -257,7 +257,7 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
           const showDivider = index === 0 || currentLabel !== prevLabel;
 
           return (
-            <div key={match.id}>
+            <div key={match.id} data-match-id={match.id} className="scroll-mt-24">
               {showDivider && (
                 <div className={`${index > 0 ? "mt-6" : ""} mb-2 flex items-center gap-3`}>
                   <div className="h-px flex-1 bg-gray-300 dark:bg-gray-600"></div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { TeamSelectionSection } from "./team-selection-section";
 import { BatchPredictionForm, type MatchData } from "./batch-prediction-form";
+import { useScrollToUpcoming } from "@/lib/hooks/use-scroll-to-upcoming";
 
 interface Team {
   id: string;
@@ -20,10 +21,13 @@ interface Props {
   matches: MatchData[];
   predictableCount: number;
   predictedCount: number;
+  nextUpcomingMatchId: string | null;
 }
 
-export function PredictClient({ teams, selections, selectionOpen, groupSlug, matches, predictableCount, predictedCount }: Props) {
+export function PredictClient({ teams, selections, selectionOpen, groupSlug, matches, predictableCount, predictedCount, nextUpcomingMatchId }: Props) {
   const [teamSelections, setTeamSelections] = useState(selections);
+
+  useScrollToUpcoming(nextUpcomingMatchId);
 
   return (
     <>

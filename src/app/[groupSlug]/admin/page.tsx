@@ -9,6 +9,7 @@ import { applyTimeOverride } from "@/lib/utils/apply-time-override";
 import { AdminBatchForm } from "./admin-batch-form";
 import { PlayerManagement } from "./player-management";
 import { KickoffTimesForm } from "./kickoff-times-form";
+import { findNextUpcomingMatchId } from "@/lib/utils/next-upcoming-match";
 import type { AdminMatchData } from "./admin-batch-form";
 
 export default async function AdminPage({
@@ -142,6 +143,9 @@ export default async function AdminPage({
 
   const teamList = teams.map((t) => ({ id: t.id, name: t.name, code: t.code }));
 
+  // Determine the next upcoming match for auto-scrolling
+  const nextUpcomingMatchId = findNextUpcomingMatchId(matchData);
+
   // Build the base admin URL (preserve adminKey if used for bootstrap)
   const adminBase = bootstrapAccess
     ? `/${resolvedParams.groupSlug}/admin?adminKey=${resolvedSearchParams.adminKey}`
@@ -193,6 +197,7 @@ export default async function AdminPage({
         <KickoffTimesForm
           matches={matchData}
           groupSlug={resolvedParams.groupSlug}
+          nextUpcomingMatchId={nextUpcomingMatchId}
         />
       ) : (
         <AdminBatchForm
@@ -201,6 +206,7 @@ export default async function AdminPage({
           groupSlug={resolvedParams.groupSlug}
           groupId={group.id}
           section={section}
+          nextUpcomingMatchId={nextUpcomingMatchId}
         />
       )}
     </div>

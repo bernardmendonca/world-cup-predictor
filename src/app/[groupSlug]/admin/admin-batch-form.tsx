@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useScrollToUpcoming } from "@/lib/hooks/use-scroll-to-upcoming";
 
 export interface AdminMatchData {
   id: string;
@@ -39,6 +40,7 @@ interface Props {
   groupSlug: string;
   groupId: string;
   section: string;
+  nextUpcomingMatchId: string | null;
 }
 
 interface ResultEntry {
@@ -52,26 +54,30 @@ interface AssignEntry {
   awayTeamId: string;
 }
 
-export function AdminBatchForm({ matches, teams, groupSlug, groupId, section }: Props) {
+export function AdminBatchForm({ matches, teams, groupSlug, groupId, section, nextUpcomingMatchId }: Props) {
   if (section === "knockout") {
-    return <KnockoutAssignSection matches={matches} teams={teams} groupSlug={groupSlug} />;
+    return <KnockoutAssignSection matches={matches} teams={teams} groupSlug={groupSlug} nextUpcomingMatchId={nextUpcomingMatchId} />;
   }
-  return <ResultsSection matches={matches} groupSlug={groupSlug} groupId={groupId} />;
+  return <ResultsSection matches={matches} groupSlug={groupSlug} groupId={groupId} nextUpcomingMatchId={nextUpcomingMatchId} />;
 }
 
 function ResultsSection({
   matches,
   groupSlug,
   groupId,
+  nextUpcomingMatchId,
 }: {
   matches: AdminMatchData[];
   groupSlug: string;
   groupId: string;
+  nextUpcomingMatchId: string | null;
 }) {
   // Only show matches that have teams confirmed (can have results)
   const eligibleMatches = matches.filter(
     (m) => m.homeTeamId != null && m.awayTeamId != null
   );
+
+  useScrollToUpcoming(nextUpcomingMatchId);
 
   const initialState: Record<string, ResultEntry> = {};
   for (const match of eligibleMatches) {
@@ -187,7 +193,8 @@ function ResultsSection({
           return (
             <div
               key={match.id}
-              className={`p-3 rounded border ${isCompleted ? "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800" : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"}`}
+              data-match-id={match.id}
+              className={`p-3 rounded border scroll-mt-24 ${isCompleted ? "bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800" : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"}`}
             >
               <div className="flex items-center gap-2 flex-wrap">
                 <div className="flex-1 min-w-[200px]">
@@ -319,14 +326,18 @@ function KnockoutAssignSection({
   matches,
   teams,
   groupSlug,
+  nextUpcomingMatchId,
 }: {
   matches: AdminMatchData[];
   teams: TeamOption[];
   groupSlug: string;
+  nextUpcomingMatchId: string | null;
 }) {
   const unassigned = matches.filter(
     (m) => m.stage === "knockout" && (m.homeTeamId == null || m.awayTeamId == null)
   );
+
+  useScrollToUpcoming(nextUpcomingMatchId);
 
   const initialState: Record<string, AssignEntry> = {};
   for (const match of unassigned) {
@@ -392,7 +403,7 @@ function KnockoutAssignSection({
         {unassigned.map((match) => {
           const entry = assignments[match.id];
           return (
-            <div key={match.id} className="p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700">
+            <div key={match.id} data-match-id={match.id} className="p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 scroll-mt-24">
               <div className="flex items-center gap-1 mb-2">
                 <span className="text-xs text-gray-400">#{match.matchNumber}</span>
                 <span className="text-xs text-gray-400">

@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useScrollToUpcoming } from "@/lib/hooks/use-scroll-to-upcoming";
 import type { AdminMatchData } from "./admin-batch-form";
 
 interface Props {
   matches: AdminMatchData[];
   groupSlug: string;
+  nextUpcomingMatchId: string | null;
 }
 
 function toLocalDatetimeValue(isoString: string): string {
@@ -16,7 +18,7 @@ function toLocalDatetimeValue(isoString: string): string {
   return local.toISOString().slice(0, 16);
 }
 
-export function KickoffTimesForm({ matches, groupSlug }: Props) {
+export function KickoffTimesForm({ matches, groupSlug, nextUpcomingMatchId }: Props) {
   const [times, setTimes] = useState<Record<string, string>>(() => {
     const initial: Record<string, string> = {};
     for (const match of matches) {
@@ -27,6 +29,8 @@ export function KickoffTimesForm({ matches, groupSlug }: Props) {
   const [saving, setSaving] = useState(false);
   const [outcome, setOutcome] = useState<{ success: number; failed: number } | null>(null);
   const [filter, setFilter] = useState<"all" | "group" | "knockout">("all");
+
+  useScrollToUpcoming(nextUpcomingMatchId);
 
   const filteredMatches = matches.filter((m) => {
     if (filter === "group") return m.stage === "group";
@@ -118,7 +122,8 @@ export function KickoffTimesForm({ matches, groupSlug }: Props) {
           return (
             <div
               key={match.id}
-              className={`p-3 rounded border ${
+              data-match-id={match.id}
+              className={`p-3 rounded border scroll-mt-24 ${
                 isChanged
                   ? "bg-purple-50 dark:bg-purple-950/30 border-purple-200 dark:border-purple-800"
                   : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"

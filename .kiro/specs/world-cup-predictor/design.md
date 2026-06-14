@@ -220,6 +220,10 @@ interface PredictionResult {
 
 Participants always see their saved prediction values — the inputs transition from editable to disabled when the deadline passes, providing confidence that their data is preserved. The "Compare" button appears only for locked matches and links to the match detail page where participants can see all group members' predictions, odds multipliers, and (for completed matches) the full comparison table with scores.
 
+**Auto-scroll to next upcoming match:**
+
+On page load, the predict page, admin Record Results tab, and admin Kickoff Times tab automatically scroll to the first match that is not yet completed. This is implemented via a shared `useScrollToUpcoming` React hook that uses `scrollIntoView({ behavior: 'smooth', block: 'start' })` with `requestAnimationFrame` to wait for hydration. Match elements use `data-match-id` attributes for targeting and `scroll-mt-24` (Tailwind) to offset for any sticky headers. The server computes the `nextUpcomingMatchId` using a `findNextUpcomingMatchId()` utility and passes it as a prop to client components. If all matches are completed or the list is empty, no scrolling occurs.
+
 ### 3. Scoring Engine
 
 Calculates points based on match results, odds multipliers, and team multipliers. The same scoring formula applies to both group and knockout stages. For knockout matches decided by penalties, the penalty winner prediction is factored into correctness. The team multiplier applies when the player correctly predicts the outcome involving their favorite/minnow team: either predicting that team to win and it wins, or predicting a draw when the team is playing and the match ends in a draw.

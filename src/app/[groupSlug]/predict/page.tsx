@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { PredictClient } from "./predict-client";
 import type { MatchData } from "./batch-prediction-form";
 import { getPlayerSelections, isTeamSelectionOpen } from "@/lib/predictions/team-selection";
+import { findNextUpcomingMatchId } from "@/lib/utils/next-upcoming-match";
 
 export default async function PredictPage({
   params,
@@ -118,6 +119,7 @@ export default async function PredictPage({
 
   const predictableCount = matchData.filter((m) => m.teamsConfirmed).length;
   const predictedCount = matchData.filter((m) => m.existingPrediction !== null).length;
+  const nextUpcomingMatchId = findNextUpcomingMatchId(matchData);
 
   return (
     <div>
@@ -182,6 +184,7 @@ export default async function PredictPage({
         matches={matchData}
         predictableCount={predictableCount}
         predictedCount={predictedCount}
+        nextUpcomingMatchId={nextUpcomingMatchId}
       />
     </div>
   );

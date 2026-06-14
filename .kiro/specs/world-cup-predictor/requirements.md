@@ -370,3 +370,17 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 7. THE rules page SHALL explain when knockout matches become available for predictions (after admin assigns teams from previous round)
 8. THE rules page SHALL explain all deadlines: team selection (2 hours before first match) and match predictions (2 hours before each match kickoff)
 9. THE rules page SHALL be styled consistently with the rest of the application including full dark mode support
+
+### Requirement 20: Auto-scroll to Next Upcoming Match
+
+**User Story:** As a player or admin, I want the page to automatically scroll to the next upcoming match when I load the predictions page or admin match management tabs, so that I don't have to manually scroll past completed matches as the tournament progresses.
+
+#### Acceptance Criteria
+
+1. WHEN a Player loads the batch prediction page (`/{groupSlug}/predict`), THE Predictor_System SHALL automatically scroll the viewport to the first match that is not yet completed
+2. WHEN an Admin loads the "Record Results" tab on the admin page, THE Predictor_System SHALL automatically scroll to the first match that is not yet completed
+3. WHEN an Admin loads the "Kickoff Times" tab on the admin page, THE Predictor_System SHALL automatically scroll to the first match that is not yet completed
+4. IF all matches are completed, THEN THE Predictor_System SHALL NOT perform any automatic scrolling and SHALL display the page from the top
+5. IF no matches exist or the tournament has not started (all matches are upcoming), THEN THE Predictor_System SHALL NOT perform any automatic scrolling
+6. THE auto-scroll SHALL use smooth scrolling behavior and account for any fixed/sticky headers via scroll margin
+7. THE auto-scroll SHALL wait for page hydration to complete before scrolling, ensuring the layout is stable
