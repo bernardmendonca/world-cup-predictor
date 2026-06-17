@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - Exact Scores & Correct Results Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-6">
+        <a href="#" class="font-bold text-lg text-blue-600">WCP 2026</a>
+        <div class="hidden sm:flex items-center gap-4 text-sm">
+          <a href="#" class="text-gray-600 hover:text-gray-900">Predict</a>
+          <a href="#" class="text-gray-600 hover:text-gray-900">Teams</a>
+          <a href="#" class="text-blue-600 font-medium border-b-2 border-blue-600 pb-0.5">Leaderboard</a>
+          <a href="#" class="text-red-600 hover:text-red-800">Admin</a>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="w-8 h-8 rounded border border-gray-200 flex items-center justify-center text-sm" title="Toggle theme">🌙</button>
+        <span class="hidden sm:inline text-sm text-gray-600">Ben</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="max-w-6xl mx-auto px-4 py-6">
+
+    <h1 class="text-2xl font-bold mb-4">Leaderboard</h1>
+
+    <!-- ===== LEADERBOARD TABLE ===== -->
+    <div class="bg-white rounded border border-gray-200 overflow-x-auto">
+      <table class="w-full text-sm" id="leaderboardTable">
+        <thead class="bg-gray-50">
+          <tr class="text-left">
+            <th class="px-4 py-3 font-medium text-gray-500 cursor-pointer hover:text-gray-700 select-none relative group/rank" onclick="sort('rank')">
+              #<span id="sort-rank" class="ml-1">↑</span>
+              <div class="absolute hidden group-hover/rank:block z-10 top-full left-0 mt-1 w-48 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none">
+                Leaderboard position based on total points
+              </div>
+            </th>
+            <th class="px-4 py-3 font-medium text-gray-500 cursor-pointer hover:text-gray-700 select-none relative group/player" onclick="sort('playerName')">
+              Player<span id="sort-playerName" class="text-gray-300 ml-1">↕</span>
+              <div class="absolute hidden group-hover/player:block z-10 top-full left-0 mt-1 w-40 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none">
+                Player name
+              </div>
+            </th>
+            <th class="px-4 py-3 font-medium text-gray-500 cursor-pointer hover:text-gray-700 select-none relative group/fav" onclick="sort('favoriteTeam')">
+              Fav<span id="sort-favoriteTeam" class="text-gray-300 ml-1">↕</span>
+              <div class="absolute hidden group-hover/fav:block z-10 top-full left-0 mt-1 w-52 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none">
+                Favourite team — earns a 2× multiplier when this team wins and you predicted it
+              </div>
+            </th>
+            <th class="px-4 py-3 font-medium text-gray-500 cursor-pointer hover:text-gray-700 select-none relative group/minnow" onclick="sort('minnowTeam')">
+              Minnow<span id="sort-minnowTeam" class="text-gray-300 ml-1">↕</span>
+              <div class="absolute hidden group-hover/minnow:block z-10 top-full left-0 mt-1 w-56 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none">
+                Minnow team — earns a 2× multiplier when this team wins and you predicted it
+              </div>
+            </th>
+            <th class="px-4 py-3 font-medium text-gray-500 text-right cursor-pointer hover:text-gray-700 select-none relative group/group" onclick="sort('groupStagePoints')">
+              Group<span id="sort-groupStagePoints" class="text-gray-300 ml-1">↕</span>
+              <div class="absolute hidden group-hover/group:block z-10 top-full right-0 mt-1 w-48 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none">
+                Total points earned from group stage matches
+              </div>
+            </th>
+            <th class="px-4 py-3 font-medium text-gray-500 text-right cursor-pointer hover:text-gray-700 select-none relative group/knockout" onclick="sort('knockoutPoints')">
+              Knockout<span id="sort-knockoutPoints" class="text-gray-300 ml-1">↕</span>
+              <div class="absolute hidden group-hover/knockout:block z-10 top-full right-0 mt-1 w-48 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none">
+                Total points earned from knockout stage matches
+              </div>
+            </th>
+            <th class="px-4 py-3 font-medium text-gray-500 text-right cursor-pointer hover:text-gray-700 select-none relative group/total" onclick="sort('totalPoints')">
+              Total<span id="sort-totalPoints" class="text-gray-300 ml-1">↕</span>
+              <div class="absolute hidden group-hover/total:block z-10 top-full right-0 mt-1 w-48 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none">
+                Combined points from all scored matches (group + knockout)
+              </div>
+            </th>
+            <!-- NEW COLUMNS -->
+            <th class="px-4 py-3 font-medium text-gray-500 text-right cursor-pointer hover:text-gray-700 select-none relative group/exact" onclick="sort('exactScores')">
+              Exact<span id="sort-exactScores" class="text-gray-300 ml-1">↕</span>
+              <div class="absolute hidden group-hover/exact:block z-10 top-full right-0 mt-1 w-56 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none">
+                Number of matches where the exact final score was predicted correctly
+              </div>
+            </th>
+            <th class="px-4 py-3 font-medium text-gray-500 text-right cursor-pointer hover:text-gray-700 select-none relative group/results" onclick="sort('correctResults')">
+              Results<span id="sort-correctResults" class="text-gray-300 ml-1">↕</span>
+              <div class="absolute hidden group-hover/results:block z-10 top-full right-0 mt-1 w-56 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none">
+                Number of matches where the correct outcome (win/draw/loss) was predicted, excluding exact scores
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardBody">
+          <!-- Rows populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===== LEGEND ===== -->
+    <div class="mt-4 flex items-center gap-6 text-xs text-gray-500">
+      <div class="flex items-center gap-1">
+        <span class="inline-block w-3 h-3 rounded bg-purple-100 border border-purple-300"></span>
+        <span><strong>Exact</strong> — Predicted the exact final score</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <span class="inline-block w-3 h-3 rounded bg-blue-100 border border-blue-300"></span>
+        <span><strong>Results</strong> — Predicted the correct result (win/draw/loss) but not the exact score</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== ANNOTATIONS ===== -->
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="border-t-4 border-dashed border-gray-300 pt-6">
+      <div class="bg-blue-50 border border-blue-200 rounded p-4 text-sm text-blue-800">
+        <h3 class="font-bold mb-2">📋 Mockup Notes: Leaderboard — Exact Scores & Correct Results</h3>
+        <ul class="list-disc ml-4 space-y-2">
+          <li>
+            <strong>Two new columns added:</strong>
+            <ul class="list-disc ml-4 mt-1 space-y-1">
+              <li><strong>"Exact"</strong> — Count of matches where the player predicted the exact final score correctly.</li>
+              <li><strong>"Results"</strong> — Count of matches where the player predicted the correct outcome (home win / draw / away win) but NOT the exact score. This explicitly excludes exact score matches to avoid double-counting.</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Both columns are sortable</strong> — clicking the header toggles ascending/descending sort, same as existing columns.
+          </li>
+          <li>
+            <strong>Default sort order:</strong> The table sorts by Total Points (desc) first, then Exact Scores (desc) as a tiebreaker, then Correct Results (desc) as a second tiebreaker. This is reflected in rank assignment.
+          </li>
+          <li>
+            <strong>Data source:</strong> The <code class="bg-blue-100 px-1 rounded">MatchScore</code> model already stores <code class="bg-blue-100 px-1 rounded">correctExactScore</code> (Boolean) and <code class="bg-blue-100 px-1 rounded">correctResult</code> (Boolean) fields. The counts can be derived by summing these per player from scored matches only.
+          </li>
+          <li>
+            <strong>"Correct Results" logic:</strong> Only counts matches where <code class="bg-blue-100 px-1 rounded">correctResult === true AND correctExactScore === false</code>. This ensures no overlap with the Exact column.
+          </li>
+          <li>
+            <strong>Column header tooltips:</strong> Hovering over <em>any</em> column header shows a styled tooltip popup explaining what that column means. Uses Tailwind <code class="bg-blue-100 px-1 rounded">group-hover</code> with named groups for a dark tooltip that appears below the header. This gives more control over styling and readability than the browser's default title tooltip. Left-aligned columns show the tooltip anchored left; right-aligned columns anchor right.
+          </li>
+        </ul>
+
+        <h3 class="font-bold mt-4 mb-2">🔄 Sort Behaviour</h3>
+        <ul class="list-disc ml-4 space-y-1">
+          <li>Clicking any column header sorts by that column (toggling asc/desc).</li>
+          <li>Default load order: Total (desc) → Exact (desc) → Results (desc).</li>
+          <li>Active sort column shows ↑ or ↓; inactive columns show ↕.</li>
+        </ul>
+
+        <h3 class="font-bold mt-4 mb-2">📐 Implementation Notes</h3>
+        <ul class="list-disc ml-4 space-y-1">
+          <li>Update <code class="bg-blue-100 px-1 rounded">LeaderboardEntry</code> interface to include <code class="bg-blue-100 px-1 rounded">exactScores: number</code> and <code class="bg-blue-100 px-1 rounded">correctResults: number</code>.</li>
+          <li>In <code class="bg-blue-100 px-1 rounded">leaderboard-service.ts</code>, count from matchScores: <code class="bg-blue-100 px-1 rounded">player.matchScores.filter(s => s.correctExactScore).length</code> and <code class="bg-blue-100 px-1 rounded">player.matchScores.filter(s => s.correctResult && !s.correctExactScore).length</code>.</li>
+          <li>Update default sort in <code class="bg-blue-100 px-1 rounded">leaderboard-table.tsx</code> to use multi-key: totalPoints desc → exactScores desc → correctResults desc.</li>
+          <li>Add the two new <code class="bg-blue-100 px-1 rounded">SortColumn</code> values and corresponding sort logic.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample data
+    const data = [
+      { rank: 1, playerName: "Ben", favoriteTeam: "ENG", minnowTeam: "CRC", groupStagePoints: 45.50, knockoutPoints: 12.00, totalPoints: 57.50, exactScores: 4, correctResults: 8 },
+      { rank: 2, playerName: "Sarah", favoriteTeam: "BRA", minnowTeam: "NZL", groupStagePoints: 42.75, knockoutPoints: 14.25, totalPoints: 57.00, exactScores: 3, correctResults: 10 },
+      { rank: 3, playerName: "Dave", favoriteTeam: "ARG", minnowTeam: "JAM", groupStagePoints: 38.00, knockoutPoints: 15.50, totalPoints: 53.50, exactScores: 5, correctResults: 6 },
+      { rank: 4, playerName: "Lucy", favoriteTeam: "FRA", minnowTeam: "TRI", groupStagePoints: 40.25, knockoutPoints: 10.00, totalPoints: 50.25, exactScores: 2, correctResults: 11 },
+      { rank: 5, playerName: "James", favoriteTeam: "GER", minnowTeam: "CAN", groupStagePoints: 35.00, knockoutPoints: 13.75, totalPoints: 48.75, exactScores: 3, correctResults: 7 },
+      { rank: 6, playerName: "Emma", favoriteTeam: "ESP", minnowTeam: "SAU", groupStagePoints: 33.50, knockoutPoints: 11.00, totalPoints: 44.50, exactScores: 2, correctResults: 9 },
+      { rank: 7, playerName: "Tom", favoriteTeam: "NED", minnowTeam: "QAT", groupStagePoints: 30.00, knockoutPoints: 8.50, totalPoints: 38.50, exactScores: 1, correctResults: 6 },
+      { rank: 8, playerName: "Katie", favoriteTeam: "POR", minnowTeam: "IRN", groupStagePoints: 28.75, knockoutPoints: 7.25, totalPoints: 36.00, exactScores: 1, correctResults: 5 },
+    ];
+
+    let currentSort = "rank";
+    let currentDir = "asc";
+
+    function sort(column) {
+      if (currentSort === column) {
+        currentDir = currentDir === "asc" ? "desc" : "asc";
+      } else {
+        currentSort = column;
+        // Default direction: desc for numeric, asc for text
+        if (["playerName", "favoriteTeam", "minnowTeam", "rank"].includes(column)) {
+          currentDir = "asc";
+        } else {
+          currentDir = "desc";
+        }
+      }
+      render();
+    }
+
+    function render() {
+      const sorted = [...data].sort((a, b) => {
+        let cmp = 0;
+        if (currentSort === "playerName" || currentSort === "favoriteTeam" || currentSort === "minnowTeam") {
+          cmp = (a[currentSort] || "ZZZ").localeCompare(b[currentSort] || "ZZZ");
+        } else {
+          cmp = a[currentSort] - b[currentSort];
+        }
+        return currentDir === "asc" ? cmp : -cmp;
+      });
+
+      // Update sort indicators
+      const columns = ["rank", "playerName", "favoriteTeam", "minnowTeam", "groupStagePoints", "knockoutPoints", "totalPoints", "exactScores", "correctResults"];
+      columns.forEach(col => {
+        const el = document.getElementById("sort-" + col);
+        if (col === currentSort) {
+          el.className = "ml-1";
+          el.textContent = currentDir === "asc" ? "↑" : "↓";
+        } else {
+          el.className = "text-gray-300 ml-1";
+          el.textContent = "↕";
+        }
+      });
+
+      // Render rows
+      const tbody = document.getElementById("leaderboardBody");
+      tbody.innerHTML = sorted.map((entry, i) => `
+        <tr class="border-t border-gray-200">
+          <td class="px-4 py-3 font-bold text-gray-400">${entry.rank}</td>
+          <td class="px-4 py-3 font-medium">${entry.playerName}</td>
+          <td class="px-4 py-3 text-sm text-blue-600">${entry.favoriteTeam || "—"}</td>
+          <td class="px-4 py-3 text-sm text-green-600">${entry.minnowTeam || "—"}</td>
+          <td class="px-4 py-3 text-right text-gray-600">${entry.groupStagePoints.toFixed(2)}</td>
+          <td class="px-4 py-3 text-right text-gray-600">${entry.knockoutPoints.toFixed(2)}</td>
+          <td class="px-4 py-3 text-right font-bold">${entry.totalPoints.toFixed(2)}</td>
+          <td class="px-4 py-3 text-right font-medium text-purple-700">${entry.exactScores}</td>
+          <td class="px-4 py-3 text-right font-medium text-blue-700">${entry.correctResults}</td>
+        </tr>
+      `).join("");
+    }
+
+    // Initial render
+    render();
+  </script>
+
+</body>
+</html>

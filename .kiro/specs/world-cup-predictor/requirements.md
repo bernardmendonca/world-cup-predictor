@@ -208,11 +208,14 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 
 #### Acceptance Criteria
 
-1. THE Predictor_System SHALL display a leaderboard showing all Players with columns for: Rank, Player Name, Favorite Team, Minnow Team, Group Stage Points, Knockout Points, and Total Points
+1. THE Predictor_System SHALL display a leaderboard showing all Players with columns for: Rank, Player Name, Favorite Team, Minnow Team, Group Stage Points, Knockout Points, Total Points, Exact Scores, and Correct Results
 2. WHEN a Match result is recorded and scores are calculated, THE Predictor_System SHALL update the leaderboard within 5 minutes
-3. THE Predictor_System SHALL allow sorting the leaderboard by any column (Rank, Player Name, Group Stage Points, Knockout Points, Total Points) in ascending or descending order
-4. THE Predictor_System SHALL default to sorting by Total Points descending, with Player Name ascending as a tiebreaker
+3. THE Predictor_System SHALL allow sorting the leaderboard by any column (Rank, Player Name, Group Stage Points, Knockout Points, Total Points, Exact Scores, Correct Results) in ascending or descending order
+4. THE Predictor_System SHALL default to sorting by Total Points descending, with Exact Scores descending as a secondary tiebreaker, Correct Results descending as a tertiary tiebreaker, and Player Name ascending as a final tiebreaker
 5. THE Predictor_System SHALL display a sort indicator (arrow) on the currently active sort column
+6. THE Predictor_System SHALL display the "Exact Scores" column showing the count of matches where a Player predicted the exact final score correctly, counted only from matches where final scores have been recorded
+7. THE Predictor_System SHALL display the "Correct Results" column showing the count of matches where a Player predicted the correct outcome (win/draw/loss) but did NOT predict the exact score, counted only from matches where final scores have been recorded
+8. THE Predictor_System SHALL display a descriptive tooltip on hover for every column header explaining what that column represents
 
 ### Requirement 10: Match Schedule and Results
 

@@ -157,9 +157,10 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
   - [x] 6.1 Implement leaderboard service
     - Create `src/lib/leaderboard/leaderboard-service.ts`
     - Implement `getLeaderboard(groupId)`: aggregate total points from MatchScore table (covers both group and knockout stages) for players in the specified group only
-    - Implement ordering: total points desc → exact scores desc → alphabetical name
+    - Include `exactScores` count (matches where `correctExactScore` is true) and `correctResults` count (matches where `correctResult` is true AND `correctExactScore` is false)
+    - Implement ordering: total points desc → exact scores desc → correct results desc → alphabetical name
     - Return ranked LeaderboardEntry array
-    - _Requirements: 9.1, 9.3, 9.4, 15.3_
+    - _Requirements: 9.1, 9.3, 9.4, 9.6, 9.7, 15.3_
 
   - [x]* 6.2 Write property test for leaderboard ordering
     - **Property 10: Leaderboard ordering**
@@ -344,12 +345,13 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
 
   - [x] 13.5 Refactor leaderboard with stage breakdown and sortable columns
     - Update leaderboard service to calculate group stage points and knockout points separately
-    - Replace leaderboard page with columns: Rank, Player, Group, Knockout, Total
+    - Replace leaderboard page with columns: Rank, Player, Fav, Minnow, Group, Knockout, Total, Exact, Results
     - Create `LeaderboardTable` client component with click-to-sort on all columns
-    - Default sort by total points descending, toggle asc/desc on click
+    - Include `exactScores` (count of exact score predictions) and `correctResults` (correct outcome predictions excluding exact scores)
+    - Default sort by total points desc → exact scores desc → correct results desc, toggle asc/desc on click
     - Display sort indicator arrows on active column
-    - Remove `correctPredictions` and `exactScores` columns
-    - _Requirements: 9.1, 9.3, 9.4, 9.5_
+    - Display descriptive tooltip on hover for every column header
+    - _Requirements: 9.1, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8_
 
   - [x] 13.6 Dark mode fixes and predict page stage dividers
     - Fix admin page Record Results and Assign Knockout Teams sections: add dark mode variants to match rows, sticky bars, inputs, selects, and penalty buttons

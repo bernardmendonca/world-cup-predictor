@@ -113,6 +113,8 @@ export interface LeaderboardEntry {
   groupStagePoints: number;
   knockoutPoints: number;
   totalPoints: number;
+  exactScores: number;
+  correctResults: number;
 }
 
 // ===== Time Zone Display =====

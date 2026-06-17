@@ -442,7 +442,7 @@ npx vitest run src/__tests__/properties/base-points.property.test.ts
 | Deadlines | 6 | Group, knockout, team selection — all 2h before kickoff |
 | Prediction persistence | 2 | Last-write-wins semantics |
 | Penalty winner validation | 3 | Required when equal scores, null when unequal |
-| Leaderboard ordering | 4 | Points desc → name asc |
+| Leaderboard ordering | 4 | Points desc → exact scores desc → correct results desc → name asc |
 | Timezone conversion | 2 | Four timezone outputs represent same instant |
 | Match status | 3 | completed/in_progress/upcoming derivation |
 | Group isolation | 5 | Leaderboard, odds, player limits scoped per group |

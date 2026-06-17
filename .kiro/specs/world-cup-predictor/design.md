@@ -290,7 +290,7 @@ interface SelectionResult {
 
 ### 5. Leaderboard Module
 
-Aggregates scores and provides ranked player standings, scoped to a group. Points are broken down by group stage and knockout stage.
+Aggregates scores and provides ranked player standings, scoped to a group. Points are broken down by group stage and knockout stage. Additionally tracks exact score predictions and correct result predictions per player.
 
 ```typescript
 interface LeaderboardService {
@@ -306,10 +306,14 @@ interface LeaderboardEntry {
   groupStagePoints: number;      // sum of points from group stage matches
   knockoutPoints: number;        // sum of points from all knockout stage matches
   totalPoints: number;           // groupStagePoints + knockoutPoints
+  exactScores: number;           // count of matches where correctExactScore is true
+  correctResults: number;        // count of matches where correctResult is true AND correctExactScore is false
 }
 ```
 
-**Sorting:** The leaderboard is a client-sortable table. Default sort is by total points descending, with player name as tiebreaker. Users can click any column header to sort by that column (ascending/descending toggle). Favorite and Minnow team columns show the FIFA 3-letter code (e.g., "BRA", "NZL") or "—" if not selected.
+**Sorting:** The leaderboard is a client-sortable table. Default sort is by total points descending, with exact scores descending as secondary tiebreaker, correct results descending as tertiary tiebreaker, and player name ascending as final tiebreaker. Users can click any column header to sort by that column (ascending/descending toggle). Favorite and Minnow team columns show the FIFA 3-letter code (e.g., "BRA", "NZL") or "—" if not selected.
+
+**Column tooltips:** Every column header displays a descriptive tooltip on hover explaining what the column represents. This uses Tailwind `group-hover` with a positioned tooltip div for consistent styling across light/dark themes.
 
 ### 6. Match Schedule Module
 

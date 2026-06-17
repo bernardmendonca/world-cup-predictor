@@ -11,14 +11,28 @@ interface LeaderboardEntry {
   groupStagePoints: number;
   knockoutPoints: number;
   totalPoints: number;
+  exactScores: number;
+  correctResults: number;
 }
 
-type SortColumn = "rank" | "playerName" | "favoriteTeam" | "minnowTeam" | "groupStagePoints" | "knockoutPoints" | "totalPoints";
+type SortColumn = "rank" | "playerName" | "favoriteTeam" | "minnowTeam" | "groupStagePoints" | "knockoutPoints" | "totalPoints" | "exactScores" | "correctResults";
 type SortDirection = "asc" | "desc";
 
 interface Props {
   entries: LeaderboardEntry[];
 }
+
+const COLUMN_TOOLTIPS: Record<SortColumn, string> = {
+  rank: "Leaderboard position based on total points",
+  playerName: "Player name",
+  favoriteTeam: "Favourite team — earns a 2× multiplier when this team wins and you predicted it",
+  minnowTeam: "Minnow team — earns a 2× multiplier when this team wins and you predicted it",
+  groupStagePoints: "Total points earned from group stage matches",
+  knockoutPoints: "Total points earned from knockout stage matches",
+  totalPoints: "Combined points from all scored matches (group + knockout)",
+  exactScores: "Number of matches where the exact final score was predicted correctly",
+  correctResults: "Number of matches where the correct outcome (win/draw/loss) was predicted, excluding exact scores",
+};
 
 export function LeaderboardTable({ entries }: Props) {
   const [sortColumn, setSortColumn] = useState<SortColumn>("rank");
@@ -29,7 +43,7 @@ export function LeaderboardTable({ entries }: Props) {
       setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
     } else {
       setSortColumn(column);
-      // Default direction: desc for points, asc for rank/name/teams
+      // Default direction: desc for points/counts, asc for rank/name/teams
       setSortDirection(column === "playerName" || column === "rank" || column === "favoriteTeam" || column === "minnowTeam" ? "asc" : "desc");
     }
   }
@@ -58,6 +72,12 @@ export function LeaderboardTable({ entries }: Props) {
       case "totalPoints":
         cmp = a.totalPoints - b.totalPoints;
         break;
+      case "exactScores":
+        cmp = a.exactScores - b.exactScores;
+        break;
+      case "correctResults":
+        cmp = a.correctResults - b.correctResults;
+        break;
     }
     return sortDirection === "asc" ? cmp : -cmp;
   });
@@ -67,53 +87,34 @@ export function LeaderboardTable({ entries }: Props) {
     return <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>;
   }
 
+  function HeaderCell({ column, label, alignRight = false }: { column: SortColumn; label: string; alignRight?: boolean }) {
+    return (
+      <th
+        className={`px-4 py-3 font-medium text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none relative group ${alignRight ? "text-right" : ""}`}
+        onClick={() => handleSort(column)}
+      >
+        {label}<SortIndicator column={column} />
+        <div className={`absolute hidden group-hover:block z-10 top-full ${alignRight ? "right-0" : "left-0"} mt-1 w-56 p-2 bg-gray-800 text-white text-xs font-normal rounded shadow-lg leading-relaxed pointer-events-none`}>
+          {COLUMN_TOOLTIPS[column]}
+        </div>
+      </th>
+    );
+  }
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto">
       <table className="w-full text-sm">
         <thead className="bg-gray-50 dark:bg-gray-750">
           <tr className="text-left">
-            <th
-              className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
-              onClick={() => handleSort("rank")}
-            >
-              #<SortIndicator column="rank" />
-            </th>
-            <th
-              className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
-              onClick={() => handleSort("playerName")}
-            >
-              Player<SortIndicator column="playerName" />
-            </th>
-            <th
-              className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
-              onClick={() => handleSort("favoriteTeam")}
-            >
-              Fav<SortIndicator column="favoriteTeam" />
-            </th>
-            <th
-              className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
-              onClick={() => handleSort("minnowTeam")}
-            >
-              Minnow<SortIndicator column="minnowTeam" />
-            </th>
-            <th
-              className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 text-right cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
-              onClick={() => handleSort("groupStagePoints")}
-            >
-              Group<SortIndicator column="groupStagePoints" />
-            </th>
-            <th
-              className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 text-right cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
-              onClick={() => handleSort("knockoutPoints")}
-            >
-              Knockout<SortIndicator column="knockoutPoints" />
-            </th>
-            <th
-              className="px-4 py-3 font-medium text-gray-500 dark:text-gray-400 text-right cursor-pointer hover:text-gray-700 dark:hover:text-gray-200 select-none"
-              onClick={() => handleSort("totalPoints")}
-            >
-              Total<SortIndicator column="totalPoints" />
-            </th>
+            <HeaderCell column="rank" label="#" />
+            <HeaderCell column="playerName" label="Player" />
+            <HeaderCell column="favoriteTeam" label="Fav" />
+            <HeaderCell column="minnowTeam" label="Minnow" />
+            <HeaderCell column="groupStagePoints" label="Group" alignRight />
+            <HeaderCell column="knockoutPoints" label="Knockout" alignRight />
+            <HeaderCell column="totalPoints" label="Total" alignRight />
+            <HeaderCell column="exactScores" label="Exact" alignRight />
+            <HeaderCell column="correctResults" label="Results" alignRight />
           </tr>
         </thead>
         <tbody>
@@ -139,6 +140,12 @@ export function LeaderboardTable({ entries }: Props) {
               </td>
               <td className="px-4 py-3 text-right font-bold dark:text-gray-100">
                 {entry.totalPoints.toFixed(2)}
+              </td>
+              <td className="px-4 py-3 text-right font-medium text-purple-700 dark:text-purple-400">
+                {entry.exactScores}
+              </td>
+              <td className="px-4 py-3 text-right font-medium text-blue-700 dark:text-blue-400">
+                {entry.correctResults}
               </td>
             </tr>
           ))}
