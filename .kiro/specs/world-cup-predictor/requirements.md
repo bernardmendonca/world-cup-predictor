@@ -343,6 +343,7 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 13. THE Predictor_System SHALL provide a "Kickoff Times" tab on the admin page showing all matches with datetime input fields pre-filled with the current kickoff time, allowing the admin to correct scheduling errors without losing existing predictions
 14. WHEN an admin modifies one or more kickoff times and clicks the "Save Kickoff Times" button, THE Predictor_System SHALL update only the modified matches' kickoff times in the database, immediately adjusting their associated prediction deadlines
 15. THE Predictor_System SHALL visually highlight modified kickoff time rows and display a count of changed matches before saving
+16. THE Predictor_System SHALL visually distinguish matches that already have results recorded on the Kickoff Times tab by highlighting them with a green background and displaying the recorded score, allowing the admin to quickly identify which games have been finalized
 
 ### Requirement 18: Admin Prediction Status Visibility
 
@@ -387,3 +388,4 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 5. IF no matches exist or the tournament has not started (all matches are upcoming), THEN THE Predictor_System SHALL NOT perform any automatic scrolling
 6. THE auto-scroll SHALL use smooth scrolling behavior and account for any fixed/sticky headers via scroll margin
 7. THE auto-scroll SHALL wait for page hydration to complete before scrolling, ensuring the layout is stable
+8. THE Predictor_System SHALL display a floating "scroll to top" button on pages that use auto-scroll (predict page, admin Record Results, admin Kickoff Times), visible once the user has scrolled down more than 400 pixels, allowing easy navigation back to the top of the page

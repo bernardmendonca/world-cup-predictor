@@ -53,6 +53,13 @@ export function MobileNav({ groupSlug, showAdmin }: MobileNavProps) {
             >
               Leaderboard
             </a>
+            <a
+              href={`/${groupSlug}/rules`}
+              className="block text-sm text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+              onClick={() => setOpen(false)}
+            >
+              Rules
+            </a>
             {showAdmin && (
               <a
                 href={`/${groupSlug}/admin`}

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { TeamSelectionSection } from "./team-selection-section";
 import { BatchPredictionForm, type MatchData } from "./batch-prediction-form";
 import { useScrollToUpcoming } from "@/lib/hooks/use-scroll-to-upcoming";
+import { ScrollToTopButton } from "@/components/scroll-to-top-button";
 
 interface Team {
   id: string;
@@ -47,6 +48,7 @@ export function PredictClient({ teams, selections, selectionOpen, groupSlug, mat
         predictableCount={predictableCount}
         predictedCount={predictedCount}
       />
+      <ScrollToTopButton />
     </>
   );
 }

@@ -36,3 +36,5 @@ next-env.d.ts
 # prisma
 /data/*.db
 /data/*.db-journal
+# data dumps
+/data_dumps

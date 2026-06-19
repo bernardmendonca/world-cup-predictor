@@ -46,8 +46,8 @@ export async function validateSession(
 
   if (!session) return null;
   if (session.expiresAt < new Date()) {
-    // Expired - clean up
-    await prisma.session.delete({ where: { id: session.id } });
+    // Expired - clean up (use deleteMany to avoid P2025 race condition)
+    await prisma.session.deleteMany({ where: { id: session.id } });
     return null;
   }
 

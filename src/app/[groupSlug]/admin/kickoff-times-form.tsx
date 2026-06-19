@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useScrollToUpcoming } from "@/lib/hooks/use-scroll-to-upcoming";
+import { ScrollToTopButton } from "@/components/scroll-to-top-button";
 import type { AdminMatchData } from "./admin-batch-form";
 
 interface Props {
@@ -118,6 +119,7 @@ export function KickoffTimesForm({ matches, groupSlug, nextUpcomingMatchId }: Pr
         {filteredMatches.map((match) => {
           const original = toLocalDatetimeValue(match.kickoffTime);
           const isChanged = times[match.id] !== original;
+          const hasResult = match.existingHomeScore != null && match.existingAwayScore != null;
 
           return (
             <div
@@ -126,7 +128,9 @@ export function KickoffTimesForm({ matches, groupSlug, nextUpcomingMatchId }: Pr
               className={`p-3 rounded border scroll-mt-24 ${
                 isChanged
                   ? "bg-purple-50 dark:bg-purple-950/30 border-purple-200 dark:border-purple-800"
-                  : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                  : hasResult
+                    ? "bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800"
+                    : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
               }`}
             >
               <div className="flex items-center gap-3 flex-wrap">
@@ -138,6 +142,11 @@ export function KickoffTimesForm({ matches, groupSlug, nextUpcomingMatchId }: Pr
                         ? `Grp ${match.groupLetter}`
                         : match.knockoutRound?.replace(/_/g, " ")}
                     </span>
+                    {hasResult && (
+                      <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                        ✓ {match.existingHomeScore}–{match.existingAwayScore}
+                      </span>
+                    )}
                     {isChanged && (
                       <span className="text-xs text-purple-600 dark:text-purple-400 font-medium">
                         • changed
@@ -197,6 +206,7 @@ export function KickoffTimesForm({ matches, groupSlug, nextUpcomingMatchId }: Pr
           {saving ? "Saving..." : "Save Kickoff Times"}
         </button>
       </div>
+      <ScrollToTopButton />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useScrollToUpcoming } from "@/lib/hooks/use-scroll-to-upcoming";
+import { ScrollToTopButton } from "@/components/scroll-to-top-button";
 
 export interface AdminMatchData {
   id: string;
@@ -318,6 +319,7 @@ function ResultsSection({
           {saving ? "Saving..." : "Save All Results"}
         </button>
       </div>
+      <ScrollToTopButton />
     </div>
   );
 }
@@ -466,6 +468,7 @@ function KnockoutAssignSection({
           {saving ? "Saving..." : "Assign All Teams"}
         </button>
       </div>
+      <ScrollToTopButton />
     </div>
   );
 }

@@ -35,6 +35,7 @@ A football World Cup predictor game for small groups of friends (20-50 players).
 - Match prediction comparison — see everyone's predictions and scores for completed matches
 - Admin panel for recording results and managing the knockout bracket
 - Mobile-friendly responsive design with hamburger nav menu on small screens
+- Scroll-to-top button on long-scrolling pages (predict, admin results, kickoff times)
 - Local test mode with dummy players and time simulation
 
 ## Quick Start (Test Mode)
@@ -168,9 +169,10 @@ Results are idempotent — change any score and re-save to correct mistakes. All
 
 1. Go to the admin panel, click "Kickoff Times" tab
 2. All matches are listed with their current kickoff time in a datetime picker (displayed in your local timezone)
-3. Change only the times that are incorrect — unmodified matches are left untouched
-4. Changed rows are highlighted in purple with a "changed" indicator
-5. Click "Save Kickoff Times" to batch-update only the modified matches
+3. Matches that already have results recorded are highlighted in green with a checkmark and the final score displayed
+4. Change only the times that are incorrect — unmodified matches are left untouched
+5. Changed rows are highlighted in purple with a "changed" indicator
+6. Click "Save Kickoff Times" to batch-update only the modified matches
 
 Updating a match's kickoff time immediately adjusts its prediction deadline (2 hours before kickoff). Use this when FIFA reschedules a match or the original fixture data had errors.
 
@@ -478,6 +480,8 @@ src/
 │       ├── admin/                # Admin endpoints (results, knockout-assign, players, kickoff-times)
 │       ├── auth/                 # Login/logout
 │       └── test/                 # Test mode helpers
+├── components/                   # Shared UI components
+│   └── scroll-to-top-button.tsx  # Floating scroll-to-top button for long pages
 ├── lib/                          # Business logic
 │   ├── scoring/                  # Scoring engine
 │   ├── predictions/              # Prediction services

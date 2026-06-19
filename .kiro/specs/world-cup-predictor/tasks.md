@@ -490,3 +490,24 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
   ]
 }
 ```
+
+- [x] 18. UI enhancements
+  - [x] 18.1 Highlight matches with recorded results in admin Kickoff Times tab
+    - Add `hasResult` check (`existingHomeScore != null && existingAwayScore != null`) to each match row in `kickoff-times-form.tsx`
+    - Apply green background (`bg-green-50 dark:bg-green-950/20`) and green border to rows with results
+    - Display a green `✓ X–Y` badge showing the recorded score next to the match number
+    - Changed rows (purple highlight) take precedence over result highlighting
+    - _Requirements: 16.13_
+
+  - [x] 18.2 Add scroll-to-top button on pages with auto-scroll
+    - Create `src/components/scroll-to-top-button.tsx` — a floating button (fixed, bottom-right, z-50) that appears after scrolling 400px down
+    - Uses `window.scrollTo({ top: 0, behavior: 'smooth' })` on click
+    - Renders a purple circular button with an up-arrow chevron icon
+    - Integrated into `predict-client.tsx`, `kickoff-times-form.tsx`, and both `ResultsSection` and `KnockoutAssignSection` in `admin-batch-form.tsx`
+    - _Requirements: 20.8_
+
+  - [x] 18.3 Add Rules link to mobile hamburger menu
+    - Add `/{groupSlug}/rules` anchor between Leaderboard and Admin links in `mobile-nav.tsx`
+    - Matches styling of other mobile nav links (text-sm, gray-600, hover states, dark mode)
+    - Closes menu on click via `setOpen(false)`
+    - _Requirements: 19.1_
