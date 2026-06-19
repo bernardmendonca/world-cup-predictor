@@ -34,6 +34,7 @@ A football World Cup predictor game for small groups of friends (20-50 players).
 - Multi-group support — run multiple independent competitions on one instance
 - Match prediction comparison — see everyone's predictions and scores for completed matches
 - Admin panel for recording results and managing the knockout bracket
+- Country flags displayed beside team names in match cards, team selection, and penalty winner buttons (bundled SVGs, no external CDN)
 - Mobile-friendly responsive design with hamburger nav menu on small screens
 - Scroll-to-top button on long-scrolling pages (predict, admin results, kickoff times)
 - Local test mode with dummy players and time simulation

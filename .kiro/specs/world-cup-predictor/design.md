@@ -920,3 +920,60 @@ Property-based tests verify universal correctness properties using randomized in
 - **Deadline enforcement**: Attempt predictions at various times relative to deadlines
 - **Browser compatibility**: Smoke tests on Chrome, Firefox, Safari, Edge (latest 2 versions)
 
+
+### 8. Country Flags Module
+
+Displays country flag SVG icons beside team names throughout the predict page — match prediction cards, team selection dropdowns, and penalty winner buttons.
+
+**Asset strategy:** Bundled SVGs stored in `public/flags/{iso}.svg`. Each flag is a rectangular SVG sourced from flagcdn.com, totaling ~930KB for all 48 teams. Served as static assets by Next.js with browser caching. No external CDN dependency at runtime.
+
+**Mapping utility:** `src/lib/utils/country-flags.ts` provides a FIFA 3-letter code → ISO 3166-1 alpha-2 code mapping. Some codes differ significantly (e.g., `SUI` → `ch`, `RSA` → `za`, `SCO` → `gb-sct`, `ENG` → `gb-eng`).
+
+```typescript
+interface CountryFlagUtils {
+  fifaToIso(fifaCode: string): string | null;
+  getFlagPath(fifaCode: string): string | null;  // returns "/flags/{iso}.svg"
+  getAllFifaToIsoMappings(): Array<{ fifa: string; iso: string }>;
+}
+```
+
+**Flag placement in match cards:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  #1  Grp C                                                  │
+│  Morocco 🇲🇦  [ 2 ] - [ 1 ]  🇭🇷 Croatia           ✓     │
+│  Sat, Jun 14, 11:00 AM ET · Hard Rock Stadium, Miami        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+- Home team: flag to the RIGHT of the name (inward, toward scores)
+- Away team: flag to the LEFT of the name (inward, toward scores)
+- Uses `flex items-center gap-1.5` within team name spans
+- Team name containers widened from `w-[100px] sm:w-[120px]` → `w-[120px] sm:w-[140px]`
+
+**Flag sizing:**
+
+| Context | Size | CSS class |
+|---------|------|-----------|
+| Match cards (team names) | 20×15px | `w-5 h-[15px] rounded-sm object-cover` |
+| Team selection dropdowns | 20×15px | `w-5 h-[15px] rounded-sm object-cover` |
+| Penalty winner buttons | 16×12px | `w-4 h-3 rounded-[1px] object-cover` |
+| Match detail page header | 28×20px | `w-7 h-5 rounded-sm object-cover` |
+
+**Conditional rendering:**
+- Flags render only when `teamsConfirmed === true` (i.e., the team code is available)
+- Knockout TBD slots (e.g., "Winner Group A") show no flag
+- `getFlagPath()` returns `null` for unrecognized codes, and the component renders nothing
+
+**Team selection section:**
+- Native `<select>` elements cannot render images, so flag display in dropdown options uses Unicode flag emoji as a lightweight alternative (derived from ISO code). The selected value display and the read-only locked view use actual SVG flag images.
+- Alternatively, a custom dropdown component can render SVG flags inline for both the options list and selected value.
+
+**Components affected:**
+- `src/app/[groupSlug]/predict/batch-prediction-form.tsx` — match cards, penalty winner buttons
+- `src/app/[groupSlug]/predict/team-selection-section.tsx` — favorite/minnow selection display
+- `src/app/[groupSlug]/predict/predict-client.tsx` — passes flag data through
+- `src/app/[groupSlug]/matches/[matchId]/page.tsx` — match detail page header with larger flags flanking the score
+
+**Data flow:** No schema changes needed. The existing `homeTeamCode` / `awayTeamCode` fields in `MatchData` and the `code` field in the `Team` interface provide the FIFA codes needed to resolve flag paths client-side.

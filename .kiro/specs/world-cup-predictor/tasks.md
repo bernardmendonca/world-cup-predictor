@@ -511,3 +511,47 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Matches styling of other mobile nav links (text-sm, gray-600, hover states, dark mode)
     - Closes menu on click via `setOpen(false)`
     - _Requirements: 19.1_
+
+- [ ] 19. Country flags on predict page
+  - [x] 19.1 Bundle flag SVG assets and create mapping utility
+    - Download 48 rectangular SVG flags from flagcdn.com into `public/flags/{iso}.svg`
+    - Create `src/lib/utils/country-flags.ts` with FIFA code → ISO 3166-1 alpha-2 mapping
+    - Export `fifaToIso(code)`, `getFlagPath(code)`, and `getAllFifaToIsoMappings()`
+    - Handle non-standard mappings: SCO→gb-sct, ENG→gb-eng, SUI→ch, RSA→za, etc.
+    - Total asset size: ~930KB for all 48 flags
+    - _Requirements: 21.7_
+
+  - [ ] 19.2 Add flag icons to match prediction cards
+    - Update `batch-prediction-form.tsx` to import `getFlagPath` and render `<img>` tags beside team names
+    - Home team flag positioned RIGHT of name (inward); away team flag positioned LEFT of name (inward)
+    - Size: 20×15px with `rounded-sm` for visual softening
+    - Widen team name containers from `w-[100px] sm:w-[120px]` → `w-[120px] sm:w-[140px]`
+    - Only render flag when `homeTeamCode` / `awayTeamCode` is non-null (skip TBD knockout slots)
+    - _Requirements: 21.1, 21.2, 21.5, 21.8, 21.9_
+
+  - [ ] 19.3 Add flag icons to penalty winner buttons
+    - Update penalty winner button rendering in `batch-prediction-form.tsx`
+    - Add smaller flag (16×12px) beside team code text in each penalty winner button
+    - Only render when team code is available
+    - _Requirements: 21.6, 21.8_
+
+  - [ ] 19.4 Add flag icons to team selection section
+    - Update `team-selection-section.tsx` to show flags in the read-only selected team display
+    - For native `<select>` dropdowns: prepend Unicode flag emoji to option text (derived from ISO code via regional indicator symbols)
+    - Alternatively: replace `<select>` with a custom dropdown component that renders SVG flag images inline
+    - Show flag beside team name in locked/read-only state after selection deadline
+    - _Requirements: 21.3, 21.4_
+
+  - [ ] 19.5 Verify responsive layout and dark mode
+    - Test on mobile (< 640px) that widened team name containers don't overflow
+    - Verify flags render identically in light and dark themes
+    - Ensure `truncate` still works on long team names (e.g., "Bosnia and Herzegovina")
+    - Test knockout TBD matches show no flags
+    - _Requirements: 21.9, 21.10_
+
+  - [x] 19.6 Add flag icons to match detail page header
+    - Update `src/app/[groupSlug]/matches/[matchId]/page.tsx` to import `getFlagPath`
+    - Render larger flags (28×20px) beside team names in the match header
+    - Home flag to the LEFT of home name, away flag to the RIGHT of away name (outward-facing, flanking score)
+    - Only render when team data is available (skip TBD knockout slots)
+    - _Requirements: 21.11_

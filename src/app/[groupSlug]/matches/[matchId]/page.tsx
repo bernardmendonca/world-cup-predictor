@@ -5,6 +5,7 @@ import { isPredictionOpen } from "@/lib/utils/time";
 import { getOddsMultipliers } from "@/lib/scoring/scoring-service";
 import { resolveGroup } from "@/lib/groups/group-service";
 import { applyTimeOverride } from "@/lib/utils/apply-time-override";
+import { getFlagPath } from "@/lib/utils/country-flags";
 
 export default async function MatchDetailPage({
   params,
@@ -183,14 +184,32 @@ export default async function MatchDetailPage({
               ? `Group ${match.groupLetter}`
               : match.knockoutRound}
           </div>
-          <div className="text-2xl font-bold mb-2">
-            <span>{match.homeTeam?.name || match.homeSlotLabel || "TBD"}</span>
-            <span className="mx-4 text-gray-400 dark:text-gray-500">
+          <div className="text-2xl font-bold mb-2 flex items-center justify-center gap-2 flex-wrap">
+            <span className="inline-flex items-center gap-2">
+              {match.homeTeam?.code && getFlagPath(match.homeTeam.code) && (
+                <img
+                  src={getFlagPath(match.homeTeam.code)!}
+                  alt={match.homeTeam.name}
+                  className="w-7 h-5 rounded-sm object-cover"
+                />
+              )}
+              <span>{match.homeTeam?.name || match.homeSlotLabel || "TBD"}</span>
+            </span>
+            <span className="mx-2 text-gray-400 dark:text-gray-500">
               {match.status === "completed"
                 ? `${match.homeScore} - ${match.awayScore}`
                 : "vs"}
             </span>
-            <span>{match.awayTeam?.name || match.awaySlotLabel || "TBD"}</span>
+            <span className="inline-flex items-center gap-2">
+              <span>{match.awayTeam?.name || match.awaySlotLabel || "TBD"}</span>
+              {match.awayTeam?.code && getFlagPath(match.awayTeam.code) && (
+                <img
+                  src={getFlagPath(match.awayTeam.code)!}
+                  alt={match.awayTeam.name}
+                  className="w-7 h-5 rounded-sm object-cover"
+                />
+              )}
+            </span>
           </div>
           {match.penaltyWinner && (
             <div className="text-sm text-gray-500 dark:text-gray-400">

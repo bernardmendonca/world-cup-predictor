@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getFlagPath } from "@/lib/utils/country-flags";
 
 export interface MatchData {
   id: string;
@@ -286,8 +287,15 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                     </span>
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className="font-medium text-sm w-[100px] sm:w-[120px] text-right truncate">
-                      {match.homeTeamName}
+                    <span className="font-medium text-sm w-[120px] sm:w-[140px] text-right truncate flex items-center justify-end gap-1.5">
+                      <span className="truncate">{match.homeTeamName}</span>
+                      {match.homeTeamCode && getFlagPath(match.homeTeamCode) && (
+                        <img
+                          src={getFlagPath(match.homeTeamCode)!}
+                          alt={match.homeTeamName}
+                          className="w-5 h-[15px] rounded-sm object-cover flex-shrink-0"
+                        />
+                      )}
                     </span>
 
                     {/* Score inputs */}
@@ -340,8 +348,15 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                       </div>
                     )}
 
-                    <span className="font-medium text-sm w-[100px] sm:w-[120px] truncate">
-                      {match.awayTeamName}
+                    <span className="font-medium text-sm w-[120px] sm:w-[140px] truncate flex items-center gap-1.5">
+                      {match.awayTeamCode && getFlagPath(match.awayTeamCode) && (
+                        <img
+                          src={getFlagPath(match.awayTeamCode)!}
+                          alt={match.awayTeamName}
+                          className="w-5 h-[15px] rounded-sm object-cover flex-shrink-0"
+                        />
+                      )}
+                      <span className="truncate">{match.awayTeamName}</span>
                     </span>
                   </div>
                 </div>
@@ -353,23 +368,37 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                     <button
                       type="button"
                       onClick={() => updatePrediction(match.id, "penaltyWinner", "home")}
-                      className={`px-2 py-1 rounded ${
+                      className={`px-2 py-1 rounded flex items-center gap-1 ${
                         pred.penaltyWinner === "home"
                           ? "bg-blue-600 text-white"
                           : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
                       }`}
                     >
+                      {match.homeTeamCode && getFlagPath(match.homeTeamCode) && (
+                        <img
+                          src={getFlagPath(match.homeTeamCode)!}
+                          alt=""
+                          className="w-4 h-3 rounded-[1px] object-cover"
+                        />
+                      )}
                       {match.homeTeamCode || "H"}
                     </button>
                     <button
                       type="button"
                       onClick={() => updatePrediction(match.id, "penaltyWinner", "away")}
-                      className={`px-2 py-1 rounded ${
+                      className={`px-2 py-1 rounded flex items-center gap-1 ${
                         pred.penaltyWinner === "away"
                           ? "bg-blue-600 text-white"
                           : "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600"
                       }`}
                     >
+                      {match.awayTeamCode && getFlagPath(match.awayTeamCode) && (
+                        <img
+                          src={getFlagPath(match.awayTeamCode)!}
+                          alt=""
+                          className="w-4 h-3 rounded-[1px] object-cover"
+                        />
+                      )}
                       {match.awayTeamCode || "A"}
                     </button>
                   </div>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Predict Page – Country Flags Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .flag-icon {
+      width: 20px;
+      height: 15px;
+      border-radius: 2px;
+      object-fit: cover;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+    .flag-icon-sm {
+      width: 16px;
+      height: 12px;
+      border-radius: 1px;
+      object-fit: cover;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-4 max-w-2xl mx-auto font-sans">
+
+  <h1 class="text-2xl font-bold mb-2">Predictions</h1>
+  <p class="text-sm text-gray-500 mb-4">Mockup: Country flags beside team names in match cards, team selection, and knockout stages</p>
+
+  <!-- Stage filter pills -->
+  <div class="flex gap-2 mb-4 flex-wrap">
+    <span class="px-3 py-1 rounded text-sm bg-blue-600 text-white">All</span>
+    <span class="px-3 py-1 rounded text-sm bg-gray-200">Group Stage</span>
+    <span class="px-3 py-1 rounded text-sm bg-gray-200">Round of 32</span>
+    <span class="px-3 py-1 rounded text-sm bg-gray-200">Round of 16</span>
+    <span class="px-3 py-1 rounded text-sm bg-gray-200">QF</span>
+    <span class="px-3 py-1 rounded text-sm bg-gray-200">SF</span>
+    <span class="px-3 py-1 rounded text-sm bg-gray-200">Final</span>
+  </div>
+
+  <!-- ===================== -->
+  <!-- TEAM SELECTION SECTION -->
+  <!-- ===================== -->
+  <div class="rounded border border-gray-200 bg-white p-4 mb-6">
+    <h2 class="font-semibold mb-2">Your Team Selections</h2>
+    <div class="flex flex-col sm:flex-row gap-4">
+      <!-- Favorite team -->
+      <div class="flex-1">
+        <label class="text-xs text-gray-500 block mb-1">
+          Favorite Team <span class="text-blue-600">(2x multiplier)</span>
+        </label>
+        <div class="w-full px-2 py-1.5 border rounded text-sm bg-white border-gray-300 flex items-center gap-2">
+          <img class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="Brazil">
+          <span>#6 — Brazil (BRA)</span>
+        </div>
+      </div>
+      <!-- Minnow team -->
+      <div class="flex-1">
+        <label class="text-xs text-gray-500 block mb-1">
+          Minnow Team <span class="text-green-600">(2x multiplier)</span>
+        </label>
+        <div class="w-full px-2 py-1.5 border rounded text-sm bg-white border-gray-300 flex items-center gap-2">
+          <img class="flag-icon" src="https://flagcdn.com/w40/jp.png" alt="Japan">
+          <span>#18 — Japan (JPN)</span>
+        </div>
+      </div>
+    </div>
+    <p class="text-xs text-gray-400 mt-2">Team selections are saved with the "Save All Predictions" button below.</p>
+  </div>
+
+  <!-- ========================= -->
+  <!-- GROUP STAGE MATCH CARDS   -->
+  <!-- ========================= -->
+  <h3 class="font-semibold text-sm text-gray-600 mb-2 uppercase tracking-wide">Group Stage</h3>
+
+  <div class="space-y-2 mb-6">
+    <!-- Match 1: Submitted prediction -->
+    <div class="p-3 rounded border bg-white border-gray-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#1</span>
+            <span class="text-xs text-gray-400">Grp C</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <!-- Home team with flag -->
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] text-right truncate flex items-center justify-end gap-1.5">
+              Morocco
+              <img class="flag-icon" src="https://flagcdn.com/w40/ma.png" alt="Morocco">
+            </span>
+            <!-- Score inputs -->
+            <div class="flex items-center gap-1">
+              <input type="number" value="2" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+            </div>
+            <!-- Away team with flag -->
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] truncate flex items-center gap-1.5">
+              <img class="flag-icon" src="https://flagcdn.com/w40/hr.png" alt="Croatia">
+              Croatia
+            </span>
+          </div>
+        </div>
+        <span class="text-xs text-green-600">✓</span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">Sat, Jun 14, 11:00 AM ET · Hard Rock Stadium, Miami</div>
+    </div>
+
+    <!-- Match 2: Open, missing prediction -->
+    <div class="p-3 rounded border border-amber-300 bg-amber-50">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#2</span>
+            <span class="text-xs text-gray-400">Grp H</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] text-right truncate flex items-center justify-end gap-1.5">
+              Argentina
+              <img class="flag-icon" src="https://flagcdn.com/w40/ar.png" alt="Argentina">
+            </span>
+            <div class="flex items-center gap-1">
+              <input type="number" placeholder="-" class="w-10 h-8 text-center border rounded text-sm bg-white">
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" placeholder="-" class="w-10 h-8 text-center border rounded text-sm bg-white">
+            </div>
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] truncate flex items-center gap-1.5">
+              <img class="flag-icon" src="https://flagcdn.com/w40/pe.png" alt="Peru">
+              Peru
+            </span>
+          </div>
+        </div>
+        <span class="text-amber-600 text-xs">ℹ️ Missing</span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">Sat, Jun 14, 2:00 PM ET · MetLife Stadium, New Jersey</div>
+    </div>
+
+    <!-- Match 3: Submitted -->
+    <div class="p-3 rounded border bg-white border-gray-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#3</span>
+            <span class="text-xs text-gray-400">Grp E</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] text-right truncate flex items-center justify-end gap-1.5">
+              Spain
+              <img class="flag-icon" src="https://flagcdn.com/w40/es.png" alt="Spain">
+            </span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="0" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+            </div>
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] truncate flex items-center gap-1.5">
+              <img class="flag-icon" src="https://flagcdn.com/w40/ec.png" alt="Ecuador">
+              Ecuador
+            </span>
+          </div>
+        </div>
+        <span class="text-xs text-green-600">✓</span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">Sun, Jun 15, 5:00 PM ET · AT&T Stadium, Dallas</div>
+    </div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- KNOCKOUT STAGE MATCH CARDS   -->
+  <!-- ============================ -->
+  <h3 class="font-semibold text-sm text-gray-600 mb-2 uppercase tracking-wide">Round of 16</h3>
+
+  <div class="space-y-2 mb-6">
+    <!-- Knockout match: Confirmed teams, prediction with penalty winner -->
+    <div class="p-3 rounded border bg-white border-gray-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#51</span>
+            <span class="text-xs text-gray-400">Round of 16</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] text-right truncate flex items-center justify-end gap-1.5">
+              Germany
+              <img class="flag-icon" src="https://flagcdn.com/w40/de.png" alt="Germany">
+            </span>
+            <div class="flex items-center gap-1">
+              <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" value="1" class="w-10 h-8 text-center border rounded text-sm bg-white" readonly>
+            </div>
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] truncate flex items-center gap-1.5">
+              <img class="flag-icon" src="https://flagcdn.com/w40/fr.png" alt="France">
+              France
+            </span>
+          </div>
+          <!-- Penalty winner selection -->
+          <div class="flex items-center gap-1 mt-1.5 text-xs">
+            <span class="text-gray-500">Pen winner:</span>
+            <button class="px-2 py-1 rounded bg-blue-600 text-white flex items-center gap-1">
+              <img class="flag-icon-sm" src="https://flagcdn.com/w20/de.png" alt="Germany">
+              GER
+            </button>
+            <button class="px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 flex items-center gap-1">
+              <img class="flag-icon-sm" src="https://flagcdn.com/w20/fr.png" alt="France">
+              FRA
+            </button>
+          </div>
+        </div>
+        <span class="text-xs text-green-600">✓</span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">Sat, Jul 4, 3:00 PM ET · MetLife Stadium, New Jersey</div>
+    </div>
+
+    <!-- Knockout match: TBD teams (no flags shown) -->
+    <div class="p-3 rounded border bg-white border-gray-200">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#52</span>
+            <span class="text-xs text-gray-400">Round of 16</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] text-right truncate text-gray-400 italic">
+              Winner Group E
+            </span>
+            <span class="text-xs text-gray-400 px-2">TBD</span>
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] truncate text-gray-400 italic">
+              Runner-up Group F
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">Sun, Jul 5, 12:00 PM ET · SoFi Stadium, Los Angeles</div>
+    </div>
+
+    <!-- Knockout match: Quarter Final with flag -->
+    <div class="p-3 rounded border border-amber-300 bg-amber-50">
+      <div class="flex items-center gap-2 flex-wrap">
+        <div class="flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1">
+            <span class="text-xs text-gray-400">#57</span>
+            <span class="text-xs text-gray-400">Quarter Final</span>
+          </div>
+          <div class="flex items-center gap-2 mt-0.5">
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] text-right truncate flex items-center justify-end gap-1.5">
+              Brazil
+              <img class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="Brazil">
+            </span>
+            <div class="flex items-center gap-1">
+              <input type="number" placeholder="-" class="w-10 h-8 text-center border rounded text-sm bg-white">
+              <span class="text-gray-400 text-xs">-</span>
+              <input type="number" placeholder="-" class="w-10 h-8 text-center border rounded text-sm bg-white">
+            </div>
+            <span class="font-medium text-sm w-[120px] sm:w-[140px] truncate flex items-center gap-1.5">
+              <img class="flag-icon" src="https://flagcdn.com/w40/us.png" alt="United States">
+              United States
+            </span>
+          </div>
+        </div>
+        <span class="text-amber-600 text-xs">ℹ️ Missing</span>
+      </div>
+      <div class="text-xs text-gray-400 mt-1">Fri, Jul 10, 8:00 PM ET · AT&T Stadium, Dallas</div>
+    </div>
+  </div>
+
+  <!-- ============================ -->
+  <!-- DROPDOWN MOCKUP WITH FLAGS   -->
+  <!-- ============================ -->
+  <h3 class="font-semibold text-sm text-gray-600 mb-2 uppercase tracking-wide">Team Selection Dropdown (Expanded)</h3>
+  <p class="text-xs text-gray-500 mb-2">Shows how flags appear in the native select dropdown alternatives (custom dropdown component):</p>
+
+  <div class="rounded border border-gray-200 bg-white p-4 mb-6">
+    <label class="text-xs text-gray-500 block mb-1">Favorite Team <span class="text-blue-600">(2x multiplier)</span></label>
+    <div class="w-full border rounded text-sm bg-white border-gray-300">
+      <!-- Simulated expanded dropdown -->
+      <div class="px-2 py-1.5 border-b flex items-center gap-2 bg-blue-50">
+        <img class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="Brazil">
+        <span>#6 — Brazil (BRA)</span>
+        <span class="ml-auto text-blue-600 text-xs">✓ Selected</span>
+      </div>
+      <div class="px-2 py-1.5 border-b flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
+        <img class="flag-icon" src="https://flagcdn.com/w40/fr.png" alt="France">
+        <span>#2 — France (FRA)</span>
+      </div>
+      <div class="px-2 py-1.5 border-b flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
+        <img class="flag-icon" src="https://flagcdn.com/w40/ar.png" alt="Argentina">
+        <span>#1 — Argentina (ARG)</span>
+      </div>
+      <div class="px-2 py-1.5 border-b flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
+        <img class="flag-icon" src="https://flagcdn.com/w40/es.png" alt="Spain">
+        <span>#5 — Spain (ESP)</span>
+      </div>
+      <div class="px-2 py-1.5 flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
+        <img class="flag-icon" src="https://flagcdn.com/w40/de.png" alt="Germany">
+        <span>#10 — Germany (GER)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend / Notes -->
+  <div class="rounded border border-blue-200 bg-blue-50 p-4 mt-6 text-sm">
+    <h3 class="font-semibold text-blue-800 mb-2">Design Notes</h3>
+    <ul class="list-disc list-inside space-y-1 text-blue-700 text-xs">
+      <li><strong>Flag placement:</strong> Home team flag appears to the RIGHT of the name (flag faces inward toward scores). Away team flag appears to the LEFT of the name (flag faces inward).</li>
+      <li><strong>Flag size:</strong> 20×14px for match cards, 16×11px for penalty winner buttons.</li>
+      <li><strong>Spacing:</strong> Team name containers widened from w-[100px]/w-[120px] to w-[120px]/w-[140px] to accommodate flags.</li>
+      <li><strong>TBD teams:</strong> No flag shown when teams aren't confirmed (knockout slot labels only).</li>
+      <li><strong>Team selection:</strong> Flags appear inline in both the dropdown options and the locked read-only display.</li>
+      <li><strong>Penalty winner buttons:</strong> Smaller flag beside the team code in penalty selection.</li>
+      <li><strong>Dark mode:</strong> Flags are unaffected by dark mode (they're images). Rounded corners soften the edges.</li>
+      <li><strong>Implementation:</strong> Use a FIFA code → ISO 3166-1 alpha-2 mapping utility, then load flags from a CDN like flagcdn.com (as used in this mockup) or bundle SVG flag icons.</li>
+    </ul>
+  </div>
+
+</body>
+</html>

@@ -389,3 +389,21 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 6. THE auto-scroll SHALL use smooth scrolling behavior and account for any fixed/sticky headers via scroll margin
 7. THE auto-scroll SHALL wait for page hydration to complete before scrolling, ensuring the layout is stable
 8. THE Predictor_System SHALL display a floating "scroll to top" button on pages that use auto-scroll (predict page, admin Record Results, admin Kickoff Times), visible once the user has scrolled down more than 400 pixels, allowing easy navigation back to the top of the page
+
+### Requirement 21: Country Flags
+
+**User Story:** As a player, I want to see country flags beside team names on the predict page, so that I can quickly identify teams visually and the interface feels more engaging and sports-oriented.
+
+#### Acceptance Criteria
+
+1. THE Predictor_System SHALL display a country flag icon beside each team name in match prediction cards on the batch prediction page, for both group stage and knockout stage matches
+2. THE flag icon for the home team SHALL be positioned to the RIGHT of the home team name (inward-facing, toward the score inputs), and the flag icon for the away team SHALL be positioned to the LEFT of the away team name (inward-facing)
+3. THE Predictor_System SHALL display country flag icons in the team selection section (Favorite Team and Minnow Team dropdowns) beside each team option
+4. WHEN team selections are displayed in read-only mode (after the selection deadline), THE Predictor_System SHALL show the flag beside the selected team name
+5. FOR knockout stage matches where teams are not yet confirmed (TBD slot labels), THE Predictor_System SHALL NOT display any flag icon — only the slot label text (e.g., "Winner Group A")
+6. THE Predictor_System SHALL display smaller flag icons beside team codes in the penalty winner selection buttons for knockout matches with equal predicted scores
+7. THE flag icons SHALL be rendered as SVG images bundled in the application at `/public/flags/{iso-code}.svg`, using a FIFA code to ISO 3166-1 alpha-2 mapping utility to resolve the correct file
+8. THE flag icons SHALL be sized at 20×15px for match cards and team selection, and 16×12px for penalty winner buttons, with a 2px border-radius for visual softening
+9. THE Predictor_System SHALL ensure flag icons do not break the responsive layout on mobile screens — team name containers SHALL be widened from `w-[100px]/w-[120px]` to `w-[120px]/w-[140px]` to accommodate flags with appropriate gap spacing
+10. THE flag icons SHALL render identically in both light and dark themes (SVG images are unaffected by theme changes)
+11. THE Predictor_System SHALL display country flag icons beside team names in the match detail page header (accessed via the "Compare" button), sized at 28×20px, with the home team flag to the LEFT of the home team name and the away team flag to the RIGHT of the away team name (outward-facing, flanking the score)

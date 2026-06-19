@@ -1,6 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import { getFlagPath, fifaToIso } from "@/lib/utils/country-flags";
+
+/**
+ * Converts an ISO alpha-2 code to a Unicode flag emoji.
+ * e.g., "us" → "🇺🇸", "br" → "🇧🇷"
+ */
+function isoToFlagEmoji(iso: string): string {
+  // Handle subdivision codes like gb-eng, gb-sct
+  const base = iso.split("-")[0].toUpperCase();
+  if (base.length !== 2) return "";
+  const codePoints = [...base].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65);
+  return String.fromCodePoint(...codePoints);
+}
+
+/**
+ * Gets a flag emoji for a FIFA team code.
+ */
+function getFlagEmoji(fifaCode: string): string {
+  const iso = fifaToIso(fifaCode);
+  if (!iso) return "";
+  return isoToFlagEmoji(iso);
+}
 
 interface Team {
   id: string;
@@ -93,7 +115,7 @@ export function TeamSelectionSection({ teams, selections, selectionOpen, groupSl
               <option value="">Select favorite team...</option>
               {teamsByRank.map((team) => (
                 <option key={team.id} value={team.id}>
-                  #{team.fifaRanking} — {team.name} ({team.code})
+                  {getFlagEmoji(team.code)} #{team.fifaRanking} — {team.name} ({team.code})
                 </option>
               ))}
             </select>
@@ -116,7 +138,7 @@ export function TeamSelectionSection({ teams, selections, selectionOpen, groupSl
               <option value="">Select minnow team...</option>
               {minnowTeams.map((team) => (
                 <option key={team.id} value={team.id}>
-                  #{team.fifaRanking} — {team.name} ({team.code})
+                  {getFlagEmoji(team.code)} #{team.fifaRanking} — {team.name} ({team.code})
                 </option>
               ))}
             </select>
@@ -126,13 +148,27 @@ export function TeamSelectionSection({ teams, selections, selectionOpen, groupSl
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <span className="text-xs text-gray-500 dark:text-gray-400">Favorite: </span>
-            <span className="font-medium text-sm text-blue-600 dark:text-blue-400">
+            <span className="font-medium text-sm text-blue-600 dark:text-blue-400 inline-flex items-center gap-1.5">
+              {favoriteTeam && getFlagPath(favoriteTeam.code) && (
+                <img
+                  src={getFlagPath(favoriteTeam.code)!}
+                  alt={favoriteTeam.name}
+                  className="w-5 h-[15px] rounded-sm object-cover"
+                />
+              )}
               {favoriteTeam ? `${favoriteTeam.name} (${favoriteTeam.code}) — #${favoriteTeam.fifaRanking}` : "Not selected"}
             </span>
           </div>
           <div className="flex-1">
             <span className="text-xs text-gray-500 dark:text-gray-400">Minnow: </span>
-            <span className="font-medium text-sm text-green-600 dark:text-green-400">
+            <span className="font-medium text-sm text-green-600 dark:text-green-400 inline-flex items-center gap-1.5">
+              {minnowTeam && getFlagPath(minnowTeam.code) && (
+                <img
+                  src={getFlagPath(minnowTeam.code)!}
+                  alt={minnowTeam.name}
+                  className="w-5 h-[15px] rounded-sm object-cover"
+                />
+              )}
               {minnowTeam ? `${minnowTeam.name} (${minnowTeam.code}) — #${minnowTeam.fifaRanking}` : "Not selected"}
             </span>
           </div>
