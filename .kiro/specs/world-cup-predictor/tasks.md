@@ -345,7 +345,7 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
 
   - [x] 13.5 Refactor leaderboard with stage breakdown and sortable columns
     - Update leaderboard service to calculate group stage points and knockout points separately
-    - Replace leaderboard page with columns: Rank, Player, Fav, Minnow, Group, Knockout, Total, Exact, Results
+    - Replace leaderboard page with columns: Rank, Player, Total, Group, Knockout, Exact, Results, Fav, Minnow
     - Create `LeaderboardTable` client component with click-to-sort on all columns
     - Include `exactScores` (count of exact score predictions) and `correctResults` (correct outcome predictions excluding exact scores)
     - Default sort by total points desc → exact scores desc → correct results desc, toggle asc/desc on click

@@ -208,7 +208,7 @@ Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for b
 
 #### Acceptance Criteria
 
-1. THE Predictor_System SHALL display a leaderboard showing all Players with columns for: Rank, Player Name, Favorite Team, Minnow Team, Group Stage Points, Knockout Points, Total Points, Exact Scores, and Correct Results
+1. THE Predictor_System SHALL display a leaderboard showing all Players with columns for: Rank, Player Name, Total Points, Group Stage Points, Knockout Points, Exact Scores, Correct Results, Favorite Team, and Minnow Team
 2. WHEN a Match result is recorded and scores are calculated, THE Predictor_System SHALL update the leaderboard within 5 minutes
 3. THE Predictor_System SHALL allow sorting the leaderboard by any column (Rank, Player Name, Group Stage Points, Knockout Points, Total Points, Exact Scores, Correct Results) in ascending or descending order
 4. THE Predictor_System SHALL default to sorting by Total Points descending, with Exact Scores descending as a secondary tiebreaker, Correct Results descending as a tertiary tiebreaker, and Player Name ascending as a final tiebreaker

@@ -313,7 +313,7 @@ interface LeaderboardEntry {
 }
 ```
 
-**Sorting:** The leaderboard is a client-sortable table. Default sort is by total points descending, with exact scores descending as secondary tiebreaker, correct results descending as tertiary tiebreaker, and player name ascending as final tiebreaker. Users can click any column header to sort by that column (ascending/descending toggle). Favorite and Minnow team columns show the FIFA 3-letter code (e.g., "BRA", "NZL") or "—" if not selected.
+**Sorting:** The leaderboard is a client-sortable table with columns displayed in this order: Rank, Player, Total, Group, Knockout, Exact, Results, Fav, Minnow. Default sort is by total points descending, with exact scores descending as secondary tiebreaker, correct results descending as tertiary tiebreaker, and player name ascending as final tiebreaker. Users can click any column header to sort by that column (ascending/descending toggle). Favorite and Minnow team columns show the FIFA 3-letter code (e.g., "BRA", "NZL") or "—" if not selected.
 
 **Column tooltips:** Every column header displays a descriptive tooltip on hover explaining what the column represents. This uses Tailwind `group-hover` with a positioned tooltip div for consistent styling across light/dark themes.
 

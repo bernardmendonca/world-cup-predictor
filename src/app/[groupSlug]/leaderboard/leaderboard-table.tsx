@@ -108,13 +108,13 @@ export function LeaderboardTable({ entries }: Props) {
           <tr className="text-left">
             <HeaderCell column="rank" label="#" />
             <HeaderCell column="playerName" label="Player" />
-            <HeaderCell column="favoriteTeam" label="Fav" />
-            <HeaderCell column="minnowTeam" label="Minnow" />
+            <HeaderCell column="totalPoints" label="Total" alignRight />
             <HeaderCell column="groupStagePoints" label="Group" alignRight />
             <HeaderCell column="knockoutPoints" label="Knockout" alignRight />
-            <HeaderCell column="totalPoints" label="Total" alignRight />
             <HeaderCell column="exactScores" label="Exact" alignRight />
             <HeaderCell column="correctResults" label="Results" alignRight />
+            <HeaderCell column="favoriteTeam" label="Fav" />
+            <HeaderCell column="minnowTeam" label="Minnow" />
           </tr>
         </thead>
         <tbody>
@@ -126,11 +126,8 @@ export function LeaderboardTable({ entries }: Props) {
               <td className="px-4 py-3 font-medium dark:text-gray-100">
                 {entry.playerName}
               </td>
-              <td className="px-4 py-3 text-sm text-blue-600 dark:text-blue-400">
-                {entry.favoriteTeam || "—"}
-              </td>
-              <td className="px-4 py-3 text-sm text-green-600 dark:text-green-400">
-                {entry.minnowTeam || "—"}
+              <td className="px-4 py-3 text-right font-bold dark:text-gray-100">
+                {entry.totalPoints.toFixed(2)}
               </td>
               <td className="px-4 py-3 text-right text-gray-600 dark:text-gray-400">
                 {entry.groupStagePoints.toFixed(2)}
@@ -138,14 +135,17 @@ export function LeaderboardTable({ entries }: Props) {
               <td className="px-4 py-3 text-right text-gray-600 dark:text-gray-400">
                 {entry.knockoutPoints.toFixed(2)}
               </td>
-              <td className="px-4 py-3 text-right font-bold dark:text-gray-100">
-                {entry.totalPoints.toFixed(2)}
-              </td>
               <td className="px-4 py-3 text-right font-medium text-purple-700 dark:text-purple-400">
                 {entry.exactScores}
               </td>
               <td className="px-4 py-3 text-right font-medium text-blue-700 dark:text-blue-400">
                 {entry.correctResults}
+              </td>
+              <td className="px-4 py-3 text-sm text-blue-600 dark:text-blue-400">
+                {entry.favoriteTeam || "—"}
+              </td>
+              <td className="px-4 py-3 text-sm text-green-600 dark:text-green-400">
+                {entry.minnowTeam || "—"}
               </td>
             </tr>
           ))}
