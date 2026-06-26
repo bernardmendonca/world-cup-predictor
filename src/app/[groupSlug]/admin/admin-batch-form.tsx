@@ -424,7 +424,7 @@ function KnockoutAssignSection({
                 <span>
                   {new Date(match.kickoffTime).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
                   {" \u00b7 "}
-                  {new Date(match.kickoffTime).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/New_York" })} ET
+                  {new Date(match.kickoffTime).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-2">
