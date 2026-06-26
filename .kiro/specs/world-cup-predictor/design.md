@@ -410,6 +410,8 @@ interface PendingAssignment {
   knockoutRound: KnockoutRound;
   homeTeamSlot: string;        // description like "Winner of Match 49" or "1st Group A"
   awayTeamSlot: string;
+  venue: string;               // match venue for admin context
+  kickoffTime: Date;           // scheduled kickoff for admin context
   homeTeamId: string | null;   // null if not yet assigned
   awayTeamId: string | null;
 }
@@ -420,7 +422,7 @@ interface PendingAssignment {
 2. Player management: Admin creates all players in the Players tab, copies and shares invite links
 3. Kickoff time corrections: If any match times are wrong, admin uses the "Kickoff Times" tab to update them (only modified times are saved; existing predictions are preserved). Matches with results already recorded are highlighted in green with a checkmark and score display for easy identification.
 4. Group stage matches complete → admin enters scores inline on the Record Results tab, clicks "Save All Results" to batch-process them
-5. Once all 6 matches in a group are done, the admin switches to the "Assign Knockout Teams" tab and assigns teams to R32 slots in batch
+5. Once all 6 matches in a group are done, the admin switches to the "Assign Knockout Teams" tab and assigns teams to R32 slots in batch. Each match card shows the venue and kickoff date/time to help the admin quickly identify the correct slot.
 6. Once all R32 matches have results, admin assigns R16 teams, and so on through the bracket
 7. At each step, the system shows what's pending and what's ready for assignment
 8. Both result recording and team assignment support batch operations with a single submit button

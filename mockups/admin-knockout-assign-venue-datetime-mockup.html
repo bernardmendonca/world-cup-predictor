@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Knockout Assign - Venue & DateTime Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-xl font-bold mb-2">Admin &mdash; Assign Knockout Teams</h1>
+    <p class="text-sm text-gray-500 mb-4">16 knockout matches need team assignments</p>
+
+    <div class="space-y-2">
+
+      <!-- Match 73 - Round of 32 -->
+      <div class="p-3 bg-white rounded border border-gray-200">
+        <div class="flex items-center gap-1 mb-1">
+          <span class="text-xs text-gray-400">#73</span>
+          <span class="text-xs text-gray-400">round of 32</span>
+          <span class="text-xs text-gray-500 ml-2">2nd Group A vs 2nd Group B</span>
+        </div>
+        <!-- NEW: Venue & DateTime line -->
+        <div class="flex items-center gap-2 mb-2 text-xs text-gray-500">
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Los Angeles</span>
+          <span class="text-gray-300">|</span>
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Sat, Jun 28 &middot; 3:00 PM ET</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Home team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Away team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Match 74 - Round of 32 -->
+      <div class="p-3 bg-white rounded border border-gray-200">
+        <div class="flex items-center gap-1 mb-1">
+          <span class="text-xs text-gray-400">#74</span>
+          <span class="text-xs text-gray-400">round of 32</span>
+          <span class="text-xs text-gray-500 ml-2">1st Group E vs 3rd Group A/B/C/D/F</span>
+        </div>
+        <!-- NEW: Venue & DateTime line -->
+        <div class="flex items-center gap-2 mb-2 text-xs text-gray-500">
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Boston</span>
+          <span class="text-gray-300">|</span>
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Sun, Jun 29 &middot; 4:30 PM ET</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Home team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Away team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Match 75 - Round of 32 -->
+      <div class="p-3 bg-white rounded border border-gray-200">
+        <div class="flex items-center gap-1 mb-1">
+          <span class="text-xs text-gray-400">#75</span>
+          <span class="text-xs text-gray-400">round of 32</span>
+          <span class="text-xs text-gray-500 ml-2">1st Group F vs 2nd Group C</span>
+        </div>
+        <!-- NEW: Venue & DateTime line -->
+        <div class="flex items-center gap-2 mb-2 text-xs text-gray-500">
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Monterrey</span>
+          <span class="text-gray-300">|</span>
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Sun, Jun 29 &middot; 9:00 PM ET</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Home team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Away team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Match 76 - Round of 32 -->
+      <div class="p-3 bg-white rounded border border-gray-200">
+        <div class="flex items-center gap-1 mb-1">
+          <span class="text-xs text-gray-400">#76</span>
+          <span class="text-xs text-gray-400">round of 32</span>
+          <span class="text-xs text-gray-500 ml-2">1st Group C vs 2nd Group F</span>
+        </div>
+        <!-- NEW: Venue & DateTime line -->
+        <div class="flex items-center gap-2 mb-2 text-xs text-gray-500">
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Houston</span>
+          <span class="text-gray-300">|</span>
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Sun, Jun 29 &middot; 12:00 PM ET</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Home team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Away team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Match 89 - Round of 16 (different round example) -->
+      <div class="p-3 bg-white rounded border border-gray-200">
+        <div class="flex items-center gap-1 mb-1">
+          <span class="text-xs text-gray-400">#89</span>
+          <span class="text-xs text-gray-400">round of 16</span>
+          <span class="text-xs text-gray-500 ml-2">Winner Match 74 vs Winner Match 77</span>
+        </div>
+        <!-- NEW: Venue & DateTime line -->
+        <div class="flex items-center gap-2 mb-2 text-xs text-gray-500">
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Philadelphia</span>
+          <span class="text-gray-300">|</span>
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Fri, Jul 4 &middot; 5:00 PM ET</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Home team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Away team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Match 97 - Quarter Final -->
+      <div class="p-3 bg-white rounded border border-gray-200">
+        <div class="flex items-center gap-1 mb-1">
+          <span class="text-xs text-gray-400">#97</span>
+          <span class="text-xs text-gray-400">quarter finals</span>
+          <span class="text-xs text-gray-500 ml-2">Winner Match 89 vs Winner Match 90</span>
+        </div>
+        <!-- NEW: Venue & DateTime line -->
+        <div class="flex items-center gap-2 mb-2 text-xs text-gray-500">
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Boston</span>
+          <span class="text-gray-300">|</span>
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Wed, Jul 9 &middot; 4:00 PM ET</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Home team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Away team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Match 104 - Final -->
+      <div class="p-3 bg-white rounded border border-gray-200">
+        <div class="flex items-center gap-1 mb-1">
+          <span class="text-xs text-gray-400">#104</span>
+          <span class="text-xs text-gray-400">final</span>
+          <span class="text-xs text-gray-500 ml-2">Winner Match 101 vs Winner Match 102</span>
+        </div>
+        <!-- NEW: Venue & DateTime line -->
+        <div class="flex items-center gap-2 mb-2 text-xs text-gray-500">
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>New York/New Jersey</span>
+          <span class="text-gray-300">|</span>
+          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Sun, Jul 19 &middot; 3:00 PM ET</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Home team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+          <select class="px-2 py-1 border rounded text-sm bg-white">
+            <option value="">Away team...</option>
+            <option>Argentina (ARG)</option>
+            <option>Brazil (BRA)</option>
+            <option>France (FRA)</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sticky footer -->
+    <div class="sticky bottom-0 bg-white border-t border-gray-200 p-4 mt-4 -mx-4 flex items-center justify-between">
+      <div></div>
+      <button class="px-6 py-2 rounded font-medium bg-orange-600 text-white hover:bg-orange-700">
+        Assign All Teams
+      </button>
+    </div>
+
+    <!-- Annotation -->
+    <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
+      <strong>What's new (highlighted):</strong>
+      <ul class="mt-2 list-disc list-inside space-y-1">
+        <li>Added a <strong>venue + date/time</strong> line between the slot label header and the team dropdowns</li>
+        <li>Uses a pin icon for venue and calendar icon for date/time</li>
+        <li>Format: <code>Venue | Day, Mon DD &middot; H:MM PM ET</code></li>
+        <li>Already have <code>venue</code> and <code>kickoffTime</code> on the Match model &mdash; just need to surface them in the component (no schema changes required)</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

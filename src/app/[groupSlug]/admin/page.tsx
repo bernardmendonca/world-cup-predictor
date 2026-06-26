@@ -126,6 +126,7 @@ export default async function AdminPage({
       knockoutRound: match.knockoutRound,
       groupLetter: match.groupLetter,
       kickoffTime: match.kickoffTime.toISOString(),
+      venue: match.venue,
       status: match.status,
       existingHomeScore: match.homeScore,
       existingAwayScore: match.awayScore,
