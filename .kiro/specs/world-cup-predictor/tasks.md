@@ -417,6 +417,7 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
   - [x] 16.1 Implement kickoff time editing on admin page
     - Create `src/app/[groupSlug]/admin/kickoff-times-form.tsx` client component with datetime-local inputs for each match
     - Pre-fill inputs with existing kickoff times (converted to local timezone)
+    - Display venue below team names for quick match identification
     - Highlight modified rows in purple with change indicator and count
     - Add filter buttons (All / Group / Knockout) for narrowing the list
     - Add reset button per row to undo individual changes

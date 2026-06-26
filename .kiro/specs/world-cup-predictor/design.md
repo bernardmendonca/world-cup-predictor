@@ -420,7 +420,7 @@ interface PendingAssignment {
 **Admin workflow:**
 1. Bootstrap: Admin accesses admin panel via `?adminKey=SECRET`, creates themselves as first player, logs in via invite link
 2. Player management: Admin creates all players in the Players tab, copies and shares invite links
-3. Kickoff time corrections: If any match times are wrong, admin uses the "Kickoff Times" tab to update them (only modified times are saved; existing predictions are preserved). Matches with results already recorded are highlighted in green with a checkmark and score display for easy identification.
+3. Kickoff time corrections: If any match times are wrong, admin uses the "Kickoff Times" tab to update them (only modified times are saved; existing predictions are preserved). Each match row shows the venue for easy identification. Matches with results already recorded are highlighted in green with a checkmark and score display for easy identification.
 4. Group stage matches complete → admin enters scores inline on the Record Results tab, clicks "Save All Results" to batch-process them
 5. Once all 6 matches in a group are done, the admin switches to the "Assign Knockout Teams" tab and assigns teams to R32 slots in batch. Each match card shows the venue and kickoff date/time to help the admin quickly identify the correct slot.
 6. Once all R32 matches have results, admin assigns R16 teams, and so on through the bracket

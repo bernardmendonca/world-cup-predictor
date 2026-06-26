@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Kickoff Times - Venue Mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-xl font-bold mb-2">Admin &mdash; Kickoff Times</h1>
+    <p class="text-sm text-gray-500 mb-2">
+      Update kickoff times for matches. Changes affect when predictions get locked.
+    </p>
+
+    <!-- Filter buttons -->
+    <div class="flex gap-2 mb-4">
+      <button class="px-2 py-1 rounded text-xs bg-purple-600 text-white">All (104)</button>
+      <button class="px-2 py-1 rounded text-xs bg-gray-200">Group (72)</button>
+      <button class="px-2 py-1 rounded text-xs bg-gray-200">Knockout (32)</button>
+    </div>
+
+    <div class="space-y-1">
+
+      <!-- Match 1 - Group stage, has result -->
+      <div class="p-3 rounded border bg-green-50 border-green-200">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex-1 min-w-[180px]">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#1</span>
+              <span class="text-xs text-gray-400">Grp A</span>
+              <span class="text-xs text-green-600 font-medium">✓ 2–1</span>
+            </div>
+            <div class="font-medium text-sm mt-0.5">
+              Mexico vs Canada
+            </div>
+            <!-- NEW: Venue line -->
+            <div class="flex items-center gap-1 mt-0.5 text-xs text-gray-500">
+              <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>Mexico City</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="datetime-local" value="2026-06-11T18:00" class="px-2 py-1 border rounded text-sm bg-white" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Match 2 - Group stage, upcoming -->
+      <div class="p-3 rounded border bg-white border-gray-200">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex-1 min-w-[180px]">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#2</span>
+              <span class="text-xs text-gray-400">Grp A</span>
+            </div>
+            <div class="font-medium text-sm mt-0.5">
+              USA vs Morocco
+            </div>
+            <!-- NEW: Venue line -->
+            <div class="flex items-center gap-1 mt-0.5 text-xs text-gray-500">
+              <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>Los Angeles</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="datetime-local" value="2026-06-11T21:00" class="px-2 py-1 border rounded text-sm bg-white" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Match 3 - Group stage, upcoming -->
+      <div class="p-3 rounded border bg-white border-gray-200">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex-1 min-w-[180px]">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#3</span>
+              <span class="text-xs text-gray-400">Grp B</span>
+            </div>
+            <div class="font-medium text-sm mt-0.5">
+              Portugal vs Norway
+            </div>
+            <!-- NEW: Venue line -->
+            <div class="flex items-center gap-1 mt-0.5 text-xs text-gray-500">
+              <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>New York/New Jersey</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="datetime-local" value="2026-06-12T15:00" class="px-2 py-1 border rounded text-sm bg-white" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Match with changed time -->
+      <div class="p-3 rounded border bg-purple-50 border-purple-200">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex-1 min-w-[180px]">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#4</span>
+              <span class="text-xs text-gray-400">Grp B</span>
+              <span class="text-xs text-purple-600 font-medium">• changed</span>
+            </div>
+            <div class="font-medium text-sm mt-0.5">
+              Ecuador vs Nigeria
+            </div>
+            <!-- NEW: Venue line -->
+            <div class="flex items-center gap-1 mt-0.5 text-xs text-gray-500">
+              <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>Dallas</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="datetime-local" value="2026-06-12T19:00" class="px-2 py-1 border rounded text-sm bg-white" />
+            <button class="text-xs text-gray-500 hover:text-gray-700" title="Reset to original">↩</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Knockout match example -->
+      <div class="p-3 rounded border bg-white border-gray-200">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex-1 min-w-[180px]">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#73</span>
+              <span class="text-xs text-gray-400">round of 32</span>
+            </div>
+            <div class="font-medium text-sm mt-0.5">
+              2nd Group A vs 2nd Group B
+            </div>
+            <!-- NEW: Venue line -->
+            <div class="flex items-center gap-1 mt-0.5 text-xs text-gray-500">
+              <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>Los Angeles</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="datetime-local" value="2026-06-28T15:00" class="px-2 py-1 border rounded text-sm bg-white" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Final example -->
+      <div class="p-3 rounded border bg-white border-gray-200">
+        <div class="flex items-center gap-3 flex-wrap">
+          <div class="flex-1 min-w-[180px]">
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-gray-400">#104</span>
+              <span class="text-xs text-gray-400">final</span>
+            </div>
+            <div class="font-medium text-sm mt-0.5">
+              Winner Match 101 vs Winner Match 102
+            </div>
+            <!-- NEW: Venue line -->
+            <div class="flex items-center gap-1 mt-0.5 text-xs text-gray-500">
+              <svg class="w-3 h-3 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>New York/New Jersey</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="datetime-local" value="2026-07-19T15:00" class="px-2 py-1 border rounded text-sm bg-white" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sticky footer -->
+    <div class="sticky bottom-0 bg-white border-t border-gray-200 p-4 mt-4 -mx-4 flex items-center justify-between">
+      <div></div>
+      <button class="px-6 py-2 rounded font-medium bg-gray-300 text-gray-500 cursor-not-allowed">
+        Save Kickoff Times
+      </button>
+    </div>
+
+    <!-- Annotation -->
+    <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
+      <strong>What's new (highlighted):</strong>
+      <ul class="mt-2 list-disc list-inside space-y-1">
+        <li>Added a <strong>venue</strong> line with a pin icon below each team name line</li>
+        <li>Small and unobtrusive &mdash; <code>text-xs text-gray-500</code> with a 3px pin icon</li>
+        <li>Already have <code>venue</code> on <code>AdminMatchData</code> (added in previous change) &mdash; just need to surface it in this component</li>
+        <li>No schema or API changes needed</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

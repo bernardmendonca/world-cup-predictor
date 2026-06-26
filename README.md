@@ -169,7 +169,7 @@ Results are idempotent — change any score and re-save to correct mistakes. All
 ### Updating kickoff times
 
 1. Go to the admin panel, click "Kickoff Times" tab
-2. All matches are listed with their current kickoff time in a datetime picker (displayed in your local timezone)
+2. All matches are listed with their current kickoff time in a datetime picker (displayed in your local timezone), along with the match venue
 3. Matches that already have results recorded are highlighted in green with a checkmark and the final score displayed
 4. Change only the times that are incorrect — unmodified matches are left untouched
 5. Changed rows are highlighted in purple with a "changed" indicator
