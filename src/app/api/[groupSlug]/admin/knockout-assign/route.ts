@@ -23,14 +23,14 @@ export async function POST(
     const body = await request.json();
     const { matchId, homeTeamId, awayTeamId } = body;
 
-    if (!matchId || !homeTeamId || !awayTeamId) {
+    if (!matchId) {
       return NextResponse.json(
-        { error: "matchId, homeTeamId, and awayTeamId are required." },
+        { error: "matchId is required." },
         { status: 400 }
       );
     }
 
-    await assignKnockoutTeams(matchId, homeTeamId, awayTeamId);
+    await assignKnockoutTeams(matchId, homeTeamId || null, awayTeamId || null);
 
     return NextResponse.json({
       success: true,

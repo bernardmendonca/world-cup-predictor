@@ -383,7 +383,7 @@ interface AdminService {
 
   // Knockout bracket management
   getKnockoutBracketStatus(): Promise<BracketStatus>;
-  assignTeamsToKnockoutMatch(matchId: string, homeTeamId: string, awayTeamId: string): Promise<void>;
+  assignTeamsToKnockoutMatch(matchId: string, homeTeamId: string | null, awayTeamId: string | null): Promise<void>;
   getPendingKnockoutAssignments(): Promise<PendingAssignment[]>;
 }
 
@@ -422,7 +422,7 @@ interface PendingAssignment {
 2. Player management: Admin creates all players in the Players tab, copies and shares invite links
 3. Kickoff time corrections: If any match times are wrong, admin uses the "Kickoff Times" tab to update them (only modified times are saved; existing predictions are preserved). Each match row shows the venue for easy identification. Matches with results already recorded are highlighted in green with a checkmark and score display for easy identification.
 4. Group stage matches complete → admin enters scores inline on the Record Results tab, clicks "Save All Results" to batch-process them
-5. Once all 6 matches in a group are done, the admin switches to the "Assign Knockout Teams" tab and assigns teams to R32 slots in batch. Each match card shows the venue and kickoff date/time to help the admin quickly identify the correct slot. Already-assigned matches remain visible (highlighted in green) so the admin can correct errors.
+5. Once all 6 matches in a group are done, the admin switches to the "Assign Knockout Teams" tab and assigns teams to R32 slots in batch. Each match card shows the venue and kickoff date/time to help the admin quickly identify the correct slot. Already-assigned matches remain visible (highlighted in green) so the admin can correct errors. Partial assignment (only one team) is supported for cases where one qualifying team is not yet known.
 6. Once all R32 matches have results, admin assigns R16 teams, and so on through the bracket
 7. At each step, the system shows what's pending and what's ready for assignment
 8. Both result recording and team assignment support batch operations with a single submit button

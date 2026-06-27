@@ -61,11 +61,12 @@ export async function recordResult(
 
 /**
  * Assign teams to a knockout match slot.
+ * Supports partial assignment — either team can be set or cleared independently.
  */
 export async function assignKnockoutTeams(
   matchId: string,
-  homeTeamId: string,
-  awayTeamId: string
+  homeTeamId: string | null,
+  awayTeamId: string | null
 ) {
   const match = await prisma.match.findUnique({ where: { id: matchId } });
   if (!match) throw new Error(`Match not found: ${matchId}`);
@@ -73,7 +74,7 @@ export async function assignKnockoutTeams(
 
   await prisma.match.update({
     where: { id: matchId },
-    data: { homeTeamId, awayTeamId },
+    data: { homeTeamId: homeTeamId || null, awayTeamId: awayTeamId || null },
   });
 }
 

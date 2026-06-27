@@ -365,7 +365,7 @@ function KnockoutAssignSection({
 
     for (const match of knockoutMatches) {
       const entry = assignments[match.id];
-      if (!entry || !entry.homeTeamId || !entry.awayTeamId) continue;
+      if (!entry) continue;
       // Skip matches that haven't changed from their current assignment
       if (entry.homeTeamId === (match.homeTeamId || "") && entry.awayTeamId === (match.awayTeamId || "")) continue;
 
@@ -375,8 +375,8 @@ function KnockoutAssignSection({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             matchId: match.id,
-            homeTeamId: entry.homeTeamId,
-            awayTeamId: entry.awayTeamId,
+            homeTeamId: entry.homeTeamId || null,
+            awayTeamId: entry.awayTeamId || null,
           }),
         });
         if (res.ok) success++;
@@ -392,7 +392,7 @@ function KnockoutAssignSection({
 
   const hasChanges = knockoutMatches.some((m) => {
     const entry = assignments[m.id];
-    if (!entry || !entry.homeTeamId || !entry.awayTeamId) return false;
+    if (!entry) return false;
     return entry.homeTeamId !== (m.homeTeamId || "") || entry.awayTeamId !== (m.awayTeamId || "");
   });
 
@@ -416,11 +416,14 @@ function KnockoutAssignSection({
         {knockoutMatches.map((match) => {
           const entry = assignments[match.id];
           const isAssigned = match.homeTeamId != null && match.awayTeamId != null;
+          const isPartial = (match.homeTeamId != null) !== (match.awayTeamId != null);
           return (
             <div key={match.id} data-match-id={match.id} className={`p-3 rounded border scroll-mt-24 ${
               isAssigned
                 ? "bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800"
-                : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                : isPartial
+                  ? "bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800"
+                  : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
             }`}>
               <div className="flex items-center gap-1 mb-1">
                 <span className="text-xs text-gray-400">#{match.matchNumber}</span>
@@ -429,6 +432,9 @@ function KnockoutAssignSection({
                 </span>
                 {isAssigned && (
                   <span className="text-xs text-green-600 dark:text-green-400 font-medium">✓ assigned</span>
+                )}
+                {isPartial && (
+                  <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">½ partial</span>
                 )}
                 <span className="text-xs text-gray-500 ml-2">
                   {match.homeSlotLabel} vs {match.awaySlotLabel}
