@@ -336,15 +336,16 @@ function KnockoutAssignSection({
   groupSlug: string;
   nextUpcomingMatchId: string | null;
 }) {
-  const unassigned = matches.filter(
-    (m) => m.stage === "knockout" && (m.homeTeamId == null || m.awayTeamId == null)
-  );
+  const knockoutMatches = matches.filter((m) => m.stage === "knockout");
 
   useScrollToUpcoming(nextUpcomingMatchId);
 
   const initialState: Record<string, AssignEntry> = {};
-  for (const match of unassigned) {
-    initialState[match.id] = { homeTeamId: "", awayTeamId: "" };
+  for (const match of knockoutMatches) {
+    initialState[match.id] = {
+      homeTeamId: match.homeTeamId || "",
+      awayTeamId: match.awayTeamId || "",
+    };
   }
 
   const [assignments, setAssignments] = useState<Record<string, AssignEntry>>(initialState);
@@ -362,9 +363,11 @@ function KnockoutAssignSection({
     let success = 0;
     let failed = 0;
 
-    for (const match of unassigned) {
+    for (const match of knockoutMatches) {
       const entry = assignments[match.id];
       if (!entry || !entry.homeTeamId || !entry.awayTeamId) continue;
+      // Skip matches that haven't changed from their current assignment
+      if (entry.homeTeamId === (match.homeTeamId || "") && entry.awayTeamId === (match.awayTeamId || "")) continue;
 
       try {
         const res = await fetch(`/api/${groupSlug}/admin/knockout-assign`, {
@@ -387,31 +390,46 @@ function KnockoutAssignSection({
     setOutcome({ success, failed });
   }
 
-  const hasChanges = unassigned.some((m) => {
+  const hasChanges = knockoutMatches.some((m) => {
     const entry = assignments[m.id];
-    return entry && entry.homeTeamId && entry.awayTeamId;
+    if (!entry || !entry.homeTeamId || !entry.awayTeamId) return false;
+    return entry.homeTeamId !== (m.homeTeamId || "") || entry.awayTeamId !== (m.awayTeamId || "");
   });
 
-  if (unassigned.length === 0) {
-    return <p className="text-gray-500">All knockout teams have been assigned.</p>;
+  const unassignedCount = knockoutMatches.filter(
+    (m) => m.homeTeamId == null || m.awayTeamId == null
+  ).length;
+
+  if (knockoutMatches.length === 0) {
+    return <p className="text-gray-500">No knockout matches found.</p>;
   }
 
   return (
     <div>
       <p className="text-sm text-gray-500 mb-4">
-        {unassigned.length} knockout matches need team assignments
+        {unassignedCount > 0
+          ? `${unassignedCount} of ${knockoutMatches.length} knockout matches need team assignments`
+          : `All ${knockoutMatches.length} knockout matches have teams assigned`}
       </p>
 
       <div className="space-y-2">
-        {unassigned.map((match) => {
+        {knockoutMatches.map((match) => {
           const entry = assignments[match.id];
+          const isAssigned = match.homeTeamId != null && match.awayTeamId != null;
           return (
-            <div key={match.id} data-match-id={match.id} className="p-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 scroll-mt-24">
+            <div key={match.id} data-match-id={match.id} className={`p-3 rounded border scroll-mt-24 ${
+              isAssigned
+                ? "bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800"
+                : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+            }`}>
               <div className="flex items-center gap-1 mb-1">
                 <span className="text-xs text-gray-400">#{match.matchNumber}</span>
                 <span className="text-xs text-gray-400">
                   {match.knockoutRound?.replace(/_/g, " ")}
                 </span>
+                {isAssigned && (
+                  <span className="text-xs text-green-600 dark:text-green-400 font-medium">✓ assigned</span>
+                )}
                 <span className="text-xs text-gray-500 ml-2">
                   {match.homeSlotLabel} vs {match.awaySlotLabel}
                 </span>
@@ -477,7 +495,7 @@ function KnockoutAssignSection({
               : "bg-orange-600 text-white hover:bg-orange-700"
           }`}
         >
-          {saving ? "Saving..." : "Assign All Teams"}
+          {saving ? "Saving..." : "Save Assignments"}
         </button>
       </div>
       <ScrollToTopButton />

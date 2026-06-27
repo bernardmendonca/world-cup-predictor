@@ -180,9 +180,9 @@ Updating a match's kickoff time immediately adjusts its prediction deadline (2 h
 ### Managing the knockout bracket
 
 1. Go to the admin panel, click "Assign Knockout Teams" tab
-2. All unassigned knockout matches are listed with their venue, kickoff date/time, and team dropdowns
-3. Select home and away teams for each slot
-4. Click "Assign All Teams" to batch-assign
+2. All knockout matches are listed with their venue, kickoff date/time, and team dropdowns. Already-assigned matches are highlighted in green with a "✓ assigned" badge and pre-populated dropdowns.
+3. Select home and away teams for each slot, or change existing assignments to fix errors
+4. Click "Save Assignments" to batch-save all new or changed assignments
 
 Once teams are assigned, players can submit predictions for that match (up to 2 hours before kickoff).
 
