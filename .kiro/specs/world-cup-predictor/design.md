@@ -230,10 +230,14 @@ A floating "scroll to top" button (`src/components/scroll-to-top-button.tsx`) is
 
 Calculates points based on match results, odds multipliers, and team multipliers. The same scoring formula applies to both group and knockout stages. For knockout matches decided by penalties, the penalty winner prediction is factored into correctness. The team multiplier applies when the player correctly predicts the outcome involving their favorite/minnow team: either predicting that team to win and it wins, or predicting a draw when the team is playing and the match ends in a draw.
 
+The odds multiplier uses different outcome buckets per stage:
+- **Group stage**: 3 outcomes — home win, away win, draw
+- **Knockout stage**: 2 outcomes — home team advances, away team advances (predictions are classified by advancing team regardless of whether the predicted scoreline is an outright win or a draw with penalties)
+
 ```typescript
 interface ScoringService {
   calculateMatchScores(groupId: string, matchId: string, actualHomeScore: number, actualAwayScore: number, penaltyWinner?: 'home' | 'away'): Promise<MatchScoreResult[]>;
-  getOddsMultipliers(groupId: string, matchId: string): OddsMultipliers;
+  getOddsMultipliers(groupId: string, matchId: string): OddsMultipliers | KnockoutOddsMultipliers;
   getPlayerTotalScore(playerId: string): Promise<number>;
 }
 
@@ -251,7 +255,12 @@ interface MatchScoreResult {
 interface OddsMultipliers {
   homeWin: number;
   awayWin: number;
-  draw: number;  // in knockout: "draw" means equal scores (decided by penalties)
+  draw: number;
+}
+
+interface KnockoutOddsMultipliers {
+  homeAdvances: number;
+  awayAdvances: number;
 }
 ```
 

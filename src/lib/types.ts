@@ -95,6 +95,11 @@ export interface OddsMultipliers {
   draw: number;
 }
 
+export interface KnockoutOddsMultipliers {
+  homeAdvances: number;
+  awayAdvances: number;
+}
+
 // ===== Team Selection =====
 
 export interface TeamSelections {

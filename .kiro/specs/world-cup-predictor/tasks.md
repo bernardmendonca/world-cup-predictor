@@ -556,3 +556,14 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Home flag to the LEFT of home name, away flag to the RIGHT of away name (outward-facing, flanking score)
     - Only render when team data is available (skip TBD knockout slots)
     - _Requirements: 21.11_
+
+## Task 20: Knockout Odds Multiplier — 2-Outcome System
+
+- [x] 20.1 Change knockout odds to 2-outcome (home advances / away advances)
+    - Add `KnockoutOddsMultipliers` type to `src/lib/types.ts` with `homeAdvances` and `awayAdvances` fields
+    - Add `calculateKnockoutOddsMultipliers` and `getKnockoutPredictionOutcome` to `src/lib/scoring/odds-multiplier.ts`
+    - Update `src/lib/scoring/scoring-service.ts` to use 2-outcome logic for knockout matches in `calculateMatchScores` and `getOddsMultipliers`
+    - Update match detail page (`src/app/[groupSlug]/matches/[matchId]/page.tsx`) to display 2 columns for knockout odds and 3 for group stage
+    - Update rules page (`src/app/[groupSlug]/rules/page.tsx`) to explain both group (3-outcome) and knockout (2-outcome) systems
+    - Update `scripts/rescore-all.ts` to use knockout 2-outcome logic
+    - _Requirements: 8.8, 5.8_

@@ -64,8 +64,13 @@ export default async function RulesPage({
             Result always between 1.00 and 2.00. Outcomes with 0 predictions get multiplier 0.
           </p>
         </div>
+
+        <h3 className="text-sm font-semibold mb-2 mt-4 dark:text-gray-200">Group Stage (3 outcomes)</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+          In the group stage, predictions are split into three buckets: Home Win, Away Win, or Draw.
+        </p>
         <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-800 text-sm">
-          <p className="font-medium text-blue-800 dark:text-blue-300 mb-1">Example — 10 players predict a match</p>
+          <p className="font-medium text-blue-800 dark:text-blue-300 mb-1">Example — 10 players predict a group match</p>
           <p className="text-blue-700 dark:text-blue-400 mb-2">
             7 predict Team A wins → multiplier = 2 − (7/10) = <strong>1.30</strong><br />
             2 predict Team B wins → multiplier = 2 − (2/10) = <strong>1.80</strong><br />
@@ -75,6 +80,22 @@ export default async function RulesPage({
             If the result is a Draw, the lone player who predicted it gets the highest multiplier (1.90), rewarding their contrarian pick.
           </p>
         </div>
+
+        <h3 className="text-sm font-semibold mb-2 mt-4 dark:text-gray-200">Knockout Stage (2 outcomes)</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+          In the knockout stage, there is no draw — one team always advances. Predictions are split into two buckets based on the <strong>advancing team</strong>: predicting 2-1 or 1-1 with penalties = home counts the same (home advances).
+        </p>
+        <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-800 text-sm">
+          <p className="font-medium text-blue-800 dark:text-blue-300 mb-1">Example — 10 players predict a knockout match</p>
+          <p className="text-blue-700 dark:text-blue-400 mb-2">
+            8 predict Team A advances (mix of outright wins and penalty wins) → multiplier = 2 − (8/10) = <strong>1.20</strong><br />
+            2 predict Team B advances → multiplier = 2 − (2/10) = <strong>1.80</strong>
+          </p>
+          <p className="text-blue-700 dark:text-blue-400">
+            If Team B advances, those 2 players get a 1.80 multiplier for backing the underdog.
+          </p>
+        </div>
+
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
           Odds multipliers are hidden until the prediction deadline passes (2 hours before kickoff).
         </p>

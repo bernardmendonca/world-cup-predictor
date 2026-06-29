@@ -100,7 +100,7 @@ A football World Cup predictor game designed for small groups of friends and col
 5. FOR Knockout_Stage matches that end in a draw (decided by penalties), a Correct_Exact_Score prediction requires: (a) predicting the exact drawn scoreline AND (b) correctly selecting the penalty winner
 6. FOR Knockout_Stage matches that end in a draw (decided by penalties), IF a Player predicted the advancing team to win via an outright (non-draw) scoreline, THE Predictor_System SHALL award 1 base point (correct advancing team)
 7. FOR Knockout_Stage matches that end in a draw (decided by penalties), IF a Player predicted the losing team to win via an outright scoreline, THE Predictor_System SHALL award 0 points
-8. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL calculate the Odds_Multiplier using the same formula as group stage (based on prediction distribution within the group for that match)
+8. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL calculate the Odds_Multiplier using a 2-outcome formula based on predicted advancing team (home advances vs away advances), where each Player's prediction is classified by which team they predict to advance — either via outright win or via draw with penalty winner selection
 9. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL calculate the final points for each Player as: base_points × Odds_Multiplier × team_multiplier, rounded to 2 decimal places
 10. IF a Player has selected a Favorite_Team or Minnow_Team that is the advancing team in a Knockout_Stage Match decided by penalties AND predicted that team to win (either via draw + correct penalty winner, or via outright win), THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 13
 11. IF a Player did not submit a prediction for a Knockout_Stage Match, THEN THE Predictor_System SHALL award 0 points to that Player for that Match
@@ -153,7 +153,7 @@ A football World Cup predictor game designed for small groups of friends and col
 5. WHEN the Prediction_Deadline for a Match is reached, THE Predictor_System SHALL display the Odds_Multiplier values to all Players
 6. IF no Player has predicted a particular outcome, THEN THE Predictor_System SHALL assign an Odds_Multiplier of 0 for that outcome (no one predicted it, so no one can earn points from it)
 7. IF only one Player has submitted a prediction for a Match, THEN THE Predictor_System SHALL assign an Odds_Multiplier of 1.00 for the predicted outcome
-8. THE Predictor_System SHALL apply the Odds_Multiplier to both Group_Stage and Knockout_Stage matches, calculated independently per match based on the prediction distribution within the group
+8. FOR Knockout_Stage matches, THE Predictor_System SHALL calculate the Odds_Multiplier using only 2 outcomes — home team advances or away team advances — where predictions of equal scores with a penalty winner are grouped with outright win predictions for the same advancing team
 
 #### Odds Multiplier Examples
 
@@ -201,6 +201,14 @@ The lone Draw predictor gets the highest multiplier (1.80) if correct.
 | Draw | 0 | N/A | 0.00 |
 
 Only one Player submitted a prediction. Their multiplier is 1.00 (no bonus for being contrarian when there is no crowd).
+
+**Example 6: Knockout Stage — Team K vs Team L (10 total predictions)**
+| Outcome | Predictions | Multiplier Calculation | Multiplier |
+|---------|-------------|----------------------|------------|
+| Team K advances | 7 (5 outright wins + 2 draws with pen winner = K) | 2 - (7/10) = 2 - 0.70 | 1.30 |
+| Team L advances | 3 (1 outright win + 2 draws with pen winner = L) | 2 - (3/10) = 2 - 0.30 | 1.70 |
+
+In knockout, there is no "Draw" outcome — one team always advances. Predictions are classified by which team the Player expects to go through, regardless of whether the prediction is an outright win or a draw decided by penalties.
 
 ### Requirement 9: Leaderboard
 

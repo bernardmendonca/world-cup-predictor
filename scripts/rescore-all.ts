@@ -70,6 +70,16 @@ function getPredictionOutcome(homeScore: number, awayScore: number): "homeWin" |
   return "draw";
 }
 
+function getKnockoutPredictionOutcome(
+  homeScore: number,
+  awayScore: number,
+  penaltyWinner: "home" | "away" | null
+): "homeAdvances" | "awayAdvances" {
+  if (homeScore > awayScore) return "homeAdvances";
+  if (awayScore > homeScore) return "awayAdvances";
+  return penaltyWinner === "away" ? "awayAdvances" : "homeAdvances";
+}
+
 function calculateOddsMultipliers(
   homeWinCount: number,
   awayWinCount: number,
@@ -84,6 +94,21 @@ function calculateOddsMultipliers(
   };
 
   return { homeWin: calc(homeWinCount), awayWin: calc(awayWinCount), draw: calc(drawCount) };
+}
+
+function calculateKnockoutOddsMultipliers(
+  homeAdvancesCount: number,
+  awayAdvancesCount: number
+): { homeAdvances: number; awayAdvances: number } {
+  const total = homeAdvancesCount + awayAdvancesCount;
+  if (total === 0) return { homeAdvances: 0, awayAdvances: 0 };
+
+  const calc = (count: number) => {
+    if (count === 0) return 0;
+    return Math.round((2 - count / total) * 100) / 100;
+  };
+
+  return { homeAdvances: calc(homeAdvancesCount), awayAdvances: calc(awayAdvancesCount) };
 }
 
 function calculateTeamMultiplier(
@@ -192,14 +217,46 @@ async function main() {
       if (predictions.length === 0) continue;
 
       // Calculate odds multipliers
-      let homeWinCount = 0, awayWinCount = 0, drawCount = 0;
-      for (const pred of predictions) {
-        const outcome = getPredictionOutcome(pred.homeScore, pred.awayScore);
-        if (outcome === "homeWin") homeWinCount++;
-        else if (outcome === "awayWin") awayWinCount++;
-        else drawCount++;
+      let oddsLookup: (pred: PredData) => number;
+
+      if (match.stage === "knockout") {
+        // Knockout: 2-outcome system based on predicted advancing team
+        let homeAdvancesCount = 0, awayAdvancesCount = 0;
+        for (const pred of predictions) {
+          const outcome = getKnockoutPredictionOutcome(
+            pred.homeScore,
+            pred.awayScore,
+            pred.penaltyWinner as "home" | "away" | null
+          );
+          if (outcome === "homeAdvances") homeAdvancesCount++;
+          else awayAdvancesCount++;
+        }
+        const knockoutOdds = calculateKnockoutOddsMultipliers(homeAdvancesCount, awayAdvancesCount);
+
+        oddsLookup = (pred: PredData) => {
+          const outcome = getKnockoutPredictionOutcome(
+            pred.homeScore,
+            pred.awayScore,
+            pred.penaltyWinner as "home" | "away" | null
+          );
+          return knockoutOdds[outcome];
+        };
+      } else {
+        // Group stage: 3-outcome system
+        let homeWinCount = 0, awayWinCount = 0, drawCount = 0;
+        for (const pred of predictions) {
+          const outcome = getPredictionOutcome(pred.homeScore, pred.awayScore);
+          if (outcome === "homeWin") homeWinCount++;
+          else if (outcome === "awayWin") awayWinCount++;
+          else drawCount++;
+        }
+        const groupOdds = calculateOddsMultipliers(homeWinCount, awayWinCount, drawCount);
+
+        oddsLookup = (pred: PredData) => {
+          const outcome = getPredictionOutcome(pred.homeScore, pred.awayScore);
+          return groupOdds[outcome];
+        };
       }
-      const oddsMultipliers = calculateOddsMultipliers(homeWinCount, awayWinCount, drawCount);
 
       const actualHomeScore = match.homeScore!;
       const actualAwayScore = match.awayScore!;
@@ -215,8 +272,7 @@ async function main() {
           penaltyWinner
         );
 
-        const predictedOutcome = getPredictionOutcome(pred.homeScore, pred.awayScore);
-        const oddsMultiplier = oddsMultipliers[predictedOutcome];
+        const oddsMultiplier = oddsLookup(pred);
 
         const predictedWinnerTeamId =
           pred.homeScore > pred.awayScore ? match.homeTeamId :

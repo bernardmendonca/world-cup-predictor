@@ -1,8 +1,8 @@
 import { prisma } from "../db";
 import { calculateBasePoints } from "./base-points";
-import { calculateOddsMultipliers, getPredictionOutcome } from "./odds-multiplier";
+import { calculateOddsMultipliers, calculateKnockoutOddsMultipliers, getPredictionOutcome, getKnockoutPredictionOutcome } from "./odds-multiplier";
 import { calculateTeamMultiplier } from "./team-multiplier";
-import type { MatchScoreResult, OddsMultipliers, PenaltyWinner } from "../types";
+import type { MatchScoreResult, OddsMultipliers, KnockoutOddsMultipliers, PenaltyWinner } from "../types";
 
 /**
  * Calculate and store scores for all players in a group for a given match.
@@ -21,6 +21,8 @@ export async function calculateMatchScores(
   });
 
   if (!match) throw new Error(`Match not found: ${matchId}`);
+
+  const isKnockout = match.stage === "knockout";
 
   // Get all predictions for this match from players in this group
   const players = await prisma.player.findMany({
@@ -62,18 +64,53 @@ export async function calculateMatchScores(
   }
 
   // Calculate odds multipliers from prediction distribution
-  let homeWinCount = 0;
-  let awayWinCount = 0;
-  let drawCount = 0;
+  let oddsMultiplierLookup: (pred: PredictionData) => number;
 
-  for (const pred of predictions) {
-    const outcome = getPredictionOutcome(pred.homeScore, pred.awayScore);
-    if (outcome === "homeWin") homeWinCount++;
-    else if (outcome === "awayWin") awayWinCount++;
-    else drawCount++;
+  if (isKnockout) {
+    // Knockout: 2-outcome system based on predicted advancing team
+    let homeAdvancesCount = 0;
+    let awayAdvancesCount = 0;
+
+    for (const pred of predictions) {
+      const outcome = getKnockoutPredictionOutcome(
+        pred.homeScore,
+        pred.awayScore,
+        pred.penaltyWinner as PenaltyWinner | null
+      );
+      if (outcome === "homeAdvances") homeAdvancesCount++;
+      else awayAdvancesCount++;
+    }
+
+    const knockoutOdds = calculateKnockoutOddsMultipliers(homeAdvancesCount, awayAdvancesCount);
+
+    oddsMultiplierLookup = (pred: PredictionData) => {
+      const outcome = getKnockoutPredictionOutcome(
+        pred.homeScore,
+        pred.awayScore,
+        pred.penaltyWinner as PenaltyWinner | null
+      );
+      return knockoutOdds[outcome];
+    };
+  } else {
+    // Group stage: 3-outcome system
+    let homeWinCount = 0;
+    let awayWinCount = 0;
+    let drawCount = 0;
+
+    for (const pred of predictions) {
+      const outcome = getPredictionOutcome(pred.homeScore, pred.awayScore);
+      if (outcome === "homeWin") homeWinCount++;
+      else if (outcome === "awayWin") awayWinCount++;
+      else drawCount++;
+    }
+
+    const groupOdds = calculateOddsMultipliers(homeWinCount, awayWinCount, drawCount);
+
+    oddsMultiplierLookup = (pred: PredictionData) => {
+      const outcome = getPredictionOutcome(pred.homeScore, pred.awayScore);
+      return groupOdds[outcome];
+    };
   }
-
-  const oddsMultipliers = calculateOddsMultipliers(homeWinCount, awayWinCount, drawCount);
 
   // Calculate scores for each player
   const results: MatchScoreResult[] = [];
@@ -89,8 +126,7 @@ export async function calculateMatchScores(
     );
 
     // Get the odds multiplier for this player's predicted outcome
-    const predictedOutcome = getPredictionOutcome(pred.homeScore, pred.awayScore);
-    const oddsMultiplier = oddsMultipliers[predictedOutcome];
+    const oddsMultiplier = oddsMultiplierLookup(pred);
 
     // Derive predicted winner and actual winner team IDs
     const predictedWinnerTeamId =
@@ -152,11 +188,13 @@ export async function calculateMatchScores(
 
 /**
  * Get odds multipliers for a match (after deadline).
+ * Returns OddsMultipliers (3-outcome) for group stage,
+ * or KnockoutOddsMultipliers (2-outcome) for knockout stage.
  */
 export async function getOddsMultipliers(
   groupId: string,
   matchId: string
-): Promise<OddsMultipliers> {
+): Promise<OddsMultipliers | KnockoutOddsMultipliers> {
   const players = await prisma.player.findMany({
     where: { groupId },
     include: { groupPredictions: true, knockoutPredictions: true },
@@ -165,28 +203,39 @@ export async function getOddsMultipliers(
   const match = await prisma.match.findUnique({ where: { id: matchId } });
   if (!match) throw new Error(`Match not found: ${matchId}`);
 
-  let homeWinCount = 0;
-  let awayWinCount = 0;
-  let drawCount = 0;
+  if (match.stage === "knockout") {
+    let homeAdvancesCount = 0;
+    let awayAdvancesCount = 0;
 
-  for (const player of players) {
-    let prediction: { homeScore: number; awayScore: number } | null = null;
-
-    if (match.stage === "group") {
-      const gp = player.groupPredictions.find((p) => p.matchId === matchId);
-      if (gp) prediction = gp;
-    } else {
+    for (const player of players) {
       const kp = player.knockoutPredictions.find((p) => p.matchId === matchId);
-      if (kp) prediction = kp;
+      if (kp) {
+        const outcome = getKnockoutPredictionOutcome(
+          kp.homeScore,
+          kp.awayScore,
+          kp.penaltyWinner as PenaltyWinner | null
+        );
+        if (outcome === "homeAdvances") homeAdvancesCount++;
+        else awayAdvancesCount++;
+      }
     }
 
-    if (prediction) {
-      const outcome = getPredictionOutcome(prediction.homeScore, prediction.awayScore);
-      if (outcome === "homeWin") homeWinCount++;
-      else if (outcome === "awayWin") awayWinCount++;
-      else drawCount++;
+    return calculateKnockoutOddsMultipliers(homeAdvancesCount, awayAdvancesCount);
+  } else {
+    let homeWinCount = 0;
+    let awayWinCount = 0;
+    let drawCount = 0;
+
+    for (const player of players) {
+      const gp = player.groupPredictions.find((p) => p.matchId === matchId);
+      if (gp) {
+        const outcome = getPredictionOutcome(gp.homeScore, gp.awayScore);
+        if (outcome === "homeWin") homeWinCount++;
+        else if (outcome === "awayWin") awayWinCount++;
+        else drawCount++;
+      }
     }
+
+    return calculateOddsMultipliers(homeWinCount, awayWinCount, drawCount);
   }
-
-  return calculateOddsMultipliers(homeWinCount, awayWinCount, drawCount);
 }

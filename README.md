@@ -220,6 +220,9 @@ Matches with open predictions are not clickable — they become accessible only 
 
 Calculated per match from prediction distribution: `2 - (predictions_for_outcome / total_predictions)`. Less popular correct predictions earn more.
 
+- **Group stage**: 3 outcomes — home win, away win, draw
+- **Knockout stage**: 2 outcomes — home team advances, away team advances. A prediction of 2-1 or 1-1 with penalty winner = home both count as "home advances."
+
 ### Team Multiplier
 
 The team multiplier rewards players who correctly predict the outcome of matches involving their selected favorite or minnow team. It applies in two scenarios:

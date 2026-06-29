@@ -45,7 +45,7 @@ export default async function MatchDetailPage({
     penaltyWinner?: string | null;
   }> = [];
 
-  let oddsMultipliers: { homeWin: number; awayWin: number; draw: number } | null = null;
+  let oddsMultipliers: { homeWin: number; awayWin: number; draw: number } | { homeAdvances: number; awayAdvances: number } | null = null;
 
   if (predictionsClosed) {
     if (match.stage === "group") {
@@ -237,20 +237,33 @@ export default async function MatchDetailPage({
       {predictionsClosed && oddsMultipliers ? (
         <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 mb-6">
           <h2 className="font-semibold mb-2">Odds Multipliers</h2>
-          <div className="grid grid-cols-3 gap-4 text-center text-sm">
-            <div>
-              <div className="text-gray-500 dark:text-gray-400">Home Win</div>
-              <div className="font-bold text-lg">{oddsMultipliers.homeWin.toFixed(2)}x</div>
+          {"draw" in oddsMultipliers ? (
+            <div className="grid grid-cols-3 gap-4 text-center text-sm">
+              <div>
+                <div className="text-gray-500 dark:text-gray-400">Home Win</div>
+                <div className="font-bold text-lg">{oddsMultipliers.homeWin.toFixed(2)}x</div>
+              </div>
+              <div>
+                <div className="text-gray-500 dark:text-gray-400">Draw</div>
+                <div className="font-bold text-lg">{oddsMultipliers.draw.toFixed(2)}x</div>
+              </div>
+              <div>
+                <div className="text-gray-500 dark:text-gray-400">Away Win</div>
+                <div className="font-bold text-lg">{oddsMultipliers.awayWin.toFixed(2)}x</div>
+              </div>
             </div>
-            <div>
-              <div className="text-gray-500 dark:text-gray-400">Draw</div>
-              <div className="font-bold text-lg">{oddsMultipliers.draw.toFixed(2)}x</div>
+          ) : (
+            <div className="grid grid-cols-2 gap-4 text-center text-sm">
+              <div>
+                <div className="text-gray-500 dark:text-gray-400">{match.homeTeam?.name || "Home"} advances</div>
+                <div className="font-bold text-lg">{oddsMultipliers.homeAdvances.toFixed(2)}x</div>
+              </div>
+              <div>
+                <div className="text-gray-500 dark:text-gray-400">{match.awayTeam?.name || "Away"} advances</div>
+                <div className="font-bold text-lg">{oddsMultipliers.awayAdvances.toFixed(2)}x</div>
+              </div>
             </div>
-            <div>
-              <div className="text-gray-500 dark:text-gray-400">Away Win</div>
-              <div className="font-bold text-lg">{oddsMultipliers.awayWin.toFixed(2)}x</div>
-            </div>
-          </div>
+          )}
         </div>
       ) : !predictionsClosed ? (
         <div className="bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 mb-6 text-center text-sm text-gray-500 dark:text-gray-400">
