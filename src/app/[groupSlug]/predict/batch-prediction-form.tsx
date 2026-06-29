@@ -361,7 +361,7 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                   </div>
                 </div>
 
-                {/* Penalty winner (knockout only, equal scores) */}
+                {/* Penalty winner (knockout only, equal scores) — editable */}
                 {isKnockout && canPredict && scoresEqual && (
                   <div className="flex items-center gap-1 text-xs">
                     <span className="text-gray-500 dark:text-gray-400">Pen:</span>
@@ -401,6 +401,30 @@ export function BatchPredictionForm({ matches, groupSlug, teamSelections, initia
                       )}
                       {match.awayTeamCode || "A"}
                     </button>
+                  </div>
+                )}
+
+                {/* Penalty winner (knockout only, equal scores) — locked/read-only */}
+                {isKnockout && !canPredict && match.teamsConfirmed && scoresEqual && pred.penaltyWinner && (
+                  <div className="flex items-center gap-1 text-xs">
+                    <span className="text-gray-400 dark:text-gray-500">Pen:</span>
+                    <span className="px-2 py-1 rounded flex items-center gap-1 bg-blue-600 text-white">
+                      {pred.penaltyWinner === "home" && match.homeTeamCode && getFlagPath(match.homeTeamCode) && (
+                        <img
+                          src={getFlagPath(match.homeTeamCode)!}
+                          alt=""
+                          className="w-4 h-3 rounded-[1px] object-cover"
+                        />
+                      )}
+                      {pred.penaltyWinner === "away" && match.awayTeamCode && getFlagPath(match.awayTeamCode) && (
+                        <img
+                          src={getFlagPath(match.awayTeamCode)!}
+                          alt=""
+                          className="w-4 h-3 rounded-[1px] object-cover"
+                        />
+                      )}
+                      {pred.penaltyWinner === "home" ? (match.homeTeamCode || "H") : (match.awayTeamCode || "A")}
+                    </span>
                   </div>
                 )}
 
