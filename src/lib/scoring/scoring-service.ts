@@ -122,7 +122,8 @@ export async function calculateMatchScores(
       actualHomeScore,
       actualAwayScore,
       pred.penaltyWinner as PenaltyWinner | null,
-      penaltyWinner
+      penaltyWinner,
+      isKnockout
     );
 
     // Get the odds multiplier for this player's predicted outcome

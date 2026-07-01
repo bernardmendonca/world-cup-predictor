@@ -219,68 +219,91 @@ export default async function RulesPage({
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3 dark:text-white">Knockout Stage Scoring</h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          The same scoring formula applies to knockout matches. The key difference is how draws are handled — knockout matches cannot end in a draw, so penalties decide the winner. You are also rewarded for correctly identifying the advancing team, even if you predicted an outright win instead of penalties.
+          In knockout matches, scoring is based on <strong>which team advances</strong> — not the scoreline shape. Whether you predict an outright win or a draw with penalties, you&apos;re ultimately predicting one team to go through.
         </p>
 
-        <h3 className="text-sm font-semibold mb-2 dark:text-gray-200">When a knockout match goes to penalties</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          If you predict equal scores, you must select which team wins the penalty shootout. But you can also earn points by predicting the correct advancing team via an outright win.
-        </p>
+        <h3 className="text-sm font-semibold mb-2 dark:text-gray-200">How it works</h3>
+        <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 text-sm mb-3 dark:text-gray-300">
+          <ol className="list-decimal list-inside space-y-2">
+            <li><strong>Correct advancing team</strong> = 1 base point (regardless of predicted score)</li>
+            <li><strong>Correct advancing team + exact score</strong> = 3 base points</li>
+            <li><strong>Wrong advancing team</strong> = 0 points (even if scoreline matches)</li>
+          </ol>
+          <p className="mt-3 text-gray-500 dark:text-gray-400 text-xs">
+            For exact score when the actual result is penalties: your predicted score AND penalty winner must both match.
+          </p>
+        </div>
 
         <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 overflow-hidden mb-3">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 dark:bg-gray-750">
               <tr>
-                <th className="px-4 py-2 text-left text-gray-500 dark:text-gray-400">Scenario</th>
+                <th className="px-4 py-2 text-left text-gray-500 dark:text-gray-400">Your Prediction</th>
+                <th className="px-4 py-2 text-left text-gray-500 dark:text-gray-400">Actual Result</th>
                 <th className="px-4 py-2 text-right text-gray-500 dark:text-gray-400">Points</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-t border-gray-200 dark:border-gray-700">
-                <td className="px-4 py-2 dark:text-gray-300">Exact drawn score + correct penalty winner</td>
-                <td className="px-4 py-2 text-right font-bold dark:text-gray-100">3</td>
-              </tr>
-              <tr className="border-t border-gray-200 dark:border-gray-700">
-                <td className="px-4 py-2 dark:text-gray-300">Any draw predicted + correct penalty winner (wrong exact score)</td>
+                <td className="px-4 py-2 dark:text-gray-300">1-1, Mexico pens</td>
+                <td className="px-4 py-2 dark:text-gray-300">Mexico wins 1-0</td>
                 <td className="px-4 py-2 text-right font-bold dark:text-gray-100">1</td>
               </tr>
               <tr className="border-t border-gray-200 dark:border-gray-700">
-                <td className="px-4 py-2 dark:text-gray-300">Predicted advancing team to win outright (non-draw)</td>
+                <td className="px-4 py-2 dark:text-gray-300">Mexico 2-1</td>
+                <td className="px-4 py-2 dark:text-gray-300">Mexico wins 1-0</td>
                 <td className="px-4 py-2 text-right font-bold dark:text-gray-100">1</td>
               </tr>
               <tr className="border-t border-gray-200 dark:border-gray-700">
-                <td className="px-4 py-2 dark:text-gray-300">Any draw predicted + wrong penalty winner</td>
-                <td className="px-4 py-2 text-right font-bold dark:text-gray-100">0</td>
+                <td className="px-4 py-2 dark:text-gray-300">Mexico 1-0</td>
+                <td className="px-4 py-2 dark:text-gray-300">Mexico wins 1-0</td>
+                <td className="px-4 py-2 text-right font-bold text-green-600 dark:text-green-400">3</td>
               </tr>
               <tr className="border-t border-gray-200 dark:border-gray-700">
-                <td className="px-4 py-2 dark:text-gray-300">Predicted the losing team to win outright</td>
-                <td className="px-4 py-2 text-right font-bold dark:text-gray-100">0</td>
+                <td className="px-4 py-2 dark:text-gray-300">1-1, Mexico pens</td>
+                <td className="px-4 py-2 dark:text-gray-300">1-1, Mexico wins pens</td>
+                <td className="px-4 py-2 text-right font-bold text-green-600 dark:text-green-400">3</td>
+              </tr>
+              <tr className="border-t border-gray-200 dark:border-gray-700">
+                <td className="px-4 py-2 dark:text-gray-300">2-2, Mexico pens</td>
+                <td className="px-4 py-2 dark:text-gray-300">1-1, Mexico wins pens</td>
+                <td className="px-4 py-2 text-right font-bold dark:text-gray-100">1</td>
+              </tr>
+              <tr className="border-t border-gray-200 dark:border-gray-700">
+                <td className="px-4 py-2 dark:text-gray-300">1-1, Ecuador pens</td>
+                <td className="px-4 py-2 dark:text-gray-300">Mexico wins 1-0</td>
+                <td className="px-4 py-2 text-right font-bold text-red-600 dark:text-red-400">0</td>
+              </tr>
+              <tr className="border-t border-gray-200 dark:border-gray-700">
+                <td className="px-4 py-2 dark:text-gray-300">Ecuador 2-0</td>
+                <td className="px-4 py-2 dark:text-gray-300">Mexico wins 1-0</td>
+                <td className="px-4 py-2 text-right font-bold text-red-600 dark:text-red-400">0</td>
+              </tr>
+              <tr className="border-t border-gray-200 dark:border-gray-700">
+                <td className="px-4 py-2 dark:text-gray-300">1-1, Ecuador pens</td>
+                <td className="px-4 py-2 dark:text-gray-300">1-1, Mexico wins pens</td>
+                <td className="px-4 py-2 text-right font-bold text-red-600 dark:text-red-400">0</td>
               </tr>
             </tbody>
           </table>
         </div>
-
-        <h3 className="text-sm font-semibold mb-2 dark:text-gray-200">When a knockout match is decided in regular/extra time</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          If the match has a clear winner (unequal scores), the scoring works exactly like the group stage — correct result = 1 point, exact score = 3 points.
-        </p>
 
         <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-800 text-sm">
           <p className="font-medium text-blue-800 dark:text-blue-300 mb-1">Example — Quarter Final decided by penalties</p>
           <p className="text-blue-700 dark:text-blue-400">
             Actual result: Argentina 1 – 1 France (Argentina wins on penalties)<br /><br />
             Player A predicted: 1 – 1, penalty winner: Argentina → <strong>3 points</strong> (exact score + correct penalty winner)<br />
-            Player B predicted: 0 – 0, penalty winner: Argentina → <strong>1 point</strong> (correct result — draw with correct penalty winner — but wrong exact score)<br />
-            Player C predicted: Argentina 2 – 1 → <strong>1 point</strong> (predicted the correct advancing team via outright win)<br />
-            Player D predicted: 1 – 1, penalty winner: France → <strong>0 points</strong> (correct score but wrong penalty winner)<br />
-            Player E predicted: France 2 – 1 → <strong>0 points</strong> (predicted the wrong team to advance)
+            Player B predicted: 0 – 0, penalty winner: Argentina → <strong>1 point</strong> (right team, wrong score)<br />
+            Player C predicted: Argentina 2 – 1 → <strong>1 point</strong> (right team via outright win, wrong score)<br />
+            Player D predicted: 1 – 1, penalty winner: France → <strong>0 points</strong> (wrong advancing team)<br />
+            Player E predicted: France 2 – 1 → <strong>0 points</strong> (wrong advancing team)
           </p>
         </div>
 
         <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-950 rounded border border-amber-200 dark:border-amber-800 text-sm">
-          <p className="font-medium text-amber-800 dark:text-amber-300 mb-1">💡 Why this matters</p>
+          <p className="font-medium text-amber-800 dark:text-amber-300 mb-1">Key takeaway</p>
           <p className="text-amber-700 dark:text-amber-400">
-            In knockout football, what matters most is <strong>who goes through</strong>. If you correctly identify the advancing team but predict them winning 2–1 instead of on penalties, you still get 1 point. Team multipliers also apply — if the advancing team is your favorite/minnow and you predicted them to win, you earn the 2x bonus.
+            In knockout football, what matters is <strong>who goes through</strong>. Predict the right advancing team and you earn at least 1 point, regardless of how the match plays out. Nail the exact score too and you get 3. Pick the wrong team and it&apos;s always 0 — even if the scoreline happens to match.
           </p>
         </div>
       </section>

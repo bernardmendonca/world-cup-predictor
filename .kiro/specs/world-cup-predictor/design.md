@@ -265,13 +265,14 @@ interface KnockoutOddsMultipliers {
 ```
 
 **Knockout scoring details:**
-- For knockout matches where the actual result is a draw (penalties), the "correct result" means predicting equal scores AND correctly picking the penalty winner.
-- A player who predicts equal scores but picks the wrong penalty winner gets 0 points (wrong result).
-- A player who predicts the exact drawn scoreline AND the correct penalty winner gets 3 base points.
-- A player who predicts the advancing team to win outright (non-draw scoreline) earns 1 base point for correctly identifying the team that goes through.
-- A player who predicts the losing team to win outright gets 0 points.
+- Knockout scoring is based on the **advancing team**, not the scoreline shape.
+- Correct advancing team = 1 base point, regardless of whether the prediction was an outright win or a draw with penalties.
+- Correct advancing team + exact score = 3 base points.
+- For exact score when the actual result is penalties: the predicted scoreline AND predicted penalty winner must both match.
+- Wrong advancing team = 0 points, even if the predicted scoreline matches the actual scoreline.
+- The predicted advancing team is determined by: higher predicted score (outright win) or selected penalty winner (equal predicted scores).
 - The team multiplier applies when a player correctly identifies the advancing team (whether via draw + penalty winner, or via outright win prediction) and that team is their favorite/minnow.
-- The odds multiplier for knockout matches uses the same formula as group stage, with three outcomes: home win, away win, draw (penalties). The "draw" outcome in knockout context means "match goes to penalties".
+- The odds multiplier for knockout matches uses a 2-outcome formula: home team advances vs away team advances. Predictions are classified by advancing team regardless of scoreline shape.
 
 ### 4. Team Selection Module
 

@@ -253,17 +253,26 @@ Both selections are made on the Predict page and saved with the "Save All Predic
 total = base_points × odds_multiplier × team_multiplier
 ```
 
-### Knockout Penalty Rules
+### Knockout Stage Scoring
 
-When you predict equal scores in a knockout match, you must also select which team wins on penalties. You get points if both the draw and the penalty winner are correct. Additionally, if you predicted the correct advancing team to win outright (non-draw scoreline), you earn 1 base point — you got the right team through, just via the wrong method.
+In knockout matches, scoring is based on **which team advances** — not the scoreline shape. Whether you predict an outright win or a draw with penalties, you're predicting one team to go through.
 
-| Scenario | Base Points |
-|----------|------------|
-| Exact drawn score + correct penalty winner | 3 |
-| Any draw + correct penalty winner (wrong score) | 1 |
-| Predicted advancing team to win outright | 1 |
-| Draw predicted + wrong penalty winner | 0 |
-| Predicted the losing team to win outright | 0 |
+- **Correct advancing team** = 1 base point (regardless of predicted score)
+- **Correct advancing team + exact score** = 3 base points
+- **Wrong advancing team** = 0 points (even if the scoreline matches)
+
+For exact score when the actual result is penalties: your predicted score AND penalty winner must both match.
+
+| Your Prediction | Actual Result | Base Points |
+|---|---|---|
+| 1-1, Mexico pens | Mexico wins 1-0 | 1 |
+| Mexico 2-1 | Mexico wins 1-0 | 1 |
+| Mexico 1-0 | Mexico wins 1-0 | 3 |
+| 1-1, Mexico pens | 1-1, Mexico wins pens | 3 |
+| 2-2, Mexico pens | 1-1, Mexico wins pens | 1 |
+| 1-1, Ecuador pens | Mexico wins 1-0 | 0 |
+| Ecuador 2-0 | Mexico wins 1-0 | 0 |
+| 1-1, Ecuador pens | 1-1, Mexico wins pens | 0 |
 
 Team multipliers also apply when you correctly identify the advancing team, whether via a penalty prediction or an outright win prediction.
 

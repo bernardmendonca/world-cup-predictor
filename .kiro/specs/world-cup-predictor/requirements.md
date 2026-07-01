@@ -89,17 +89,17 @@ A football World Cup predictor game designed for small groups of friends and col
 
 ### Requirement 5: Knockout Stage Scoring
 
-**User Story:** As a player, I want to earn points for correct knockout stage predictions using the same scoring rules as group stage, so that the competition remains consistent throughout the tournament.
+**User Story:** As a player, I want to earn points for correct knockout stage predictions based on which team advances, so that I'm rewarded for predicting the right winner regardless of the scoreline.
 
 #### Acceptance Criteria
 
-1. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL award 1 base point to each Player who predicted the Correct_Result (correct winner, or correct draw with correct penalty winner)
-2. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL award 2 base points to each Player who predicted the Correct_Exact_Score (exact scoreline match after regular/extra time)
-3. WHEN a Player has predicted the Correct_Exact_Score in a Knockout_Stage Match, THE Predictor_System SHALL award both the Correct_Result base point (1) and the Correct_Exact_Score base point (2), for a total of 3 base points
-4. FOR Knockout_Stage matches that end in a draw (decided by penalties), a Correct_Result prediction requires: (a) predicting equal scores AND (b) correctly selecting the penalty winner
-5. FOR Knockout_Stage matches that end in a draw (decided by penalties), a Correct_Exact_Score prediction requires: (a) predicting the exact drawn scoreline AND (b) correctly selecting the penalty winner
-6. FOR Knockout_Stage matches that end in a draw (decided by penalties), IF a Player predicted the advancing team to win via an outright (non-draw) scoreline, THE Predictor_System SHALL award 1 base point (correct advancing team)
-7. FOR Knockout_Stage matches that end in a draw (decided by penalties), IF a Player predicted the losing team to win via an outright scoreline, THE Predictor_System SHALL award 0 points
+1. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL award 1 base point to each Player who predicted the correct advancing team — regardless of whether the predicted scoreline was an outright win or a draw with penalties
+2. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL award 3 base points (1 correct team + 2 exact score) to each Player who predicted both the correct advancing team AND the exact scoreline
+3. FOR exact score matching on Knockout_Stage matches decided by penalties, THE Predictor_System SHALL require both the predicted scoreline AND the predicted penalty winner to match the actual result
+4. FOR exact score matching on Knockout_Stage matches decided in regular/extra time (outright win), THE Predictor_System SHALL require only the predicted scoreline to match the actual result (the advancing team is implied by the higher score)
+5. WHEN a Player predicted the wrong advancing team, THE Predictor_System SHALL award 0 base points — even if the predicted scoreline happens to match the actual scoreline
+6. THE Predictor_System SHALL determine the predicted advancing team as: the team with the higher predicted score, OR (when predicted scores are equal) the team selected as penalty winner
+7. THE Predictor_System SHALL determine the actual advancing team as: the team with the higher actual score, OR (when actual scores are equal) the team that won the penalty shootout
 8. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL calculate the Odds_Multiplier using a 2-outcome formula based on predicted advancing team (home advances vs away advances), where each Player's prediction is classified by which team they predict to advance — either via outright win or via draw with penalty winner selection
 9. WHEN a Knockout_Stage Match result is recorded, THE Predictor_System SHALL calculate the final points for each Player as: base_points × Odds_Multiplier × team_multiplier, rounded to 2 decimal places
 10. IF a Player has selected a Favorite_Team or Minnow_Team that is the advancing team in a Knockout_Stage Match decided by penalties AND predicted that team to win (either via draw + correct penalty winner, or via outright win), THEN THE Predictor_System SHALL apply the team_multiplier as defined in Requirement 13

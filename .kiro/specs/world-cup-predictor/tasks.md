@@ -567,3 +567,18 @@ Implement a full-stack World Cup predictor game using Next.js, TypeScript, Prism
     - Update rules page (`src/app/[groupSlug]/rules/page.tsx`) to explain both group (3-outcome) and knockout (2-outcome) systems
     - Update `scripts/rescore-all.ts` to use knockout 2-outcome logic
     - _Requirements: 8.8, 5.8_
+
+## Task 21: Knockout Base Points — Advancing Team Logic
+
+- [x] 21.1 Redesign knockout base points scoring
+    - Add `isKnockout` parameter to `calculateBasePoints` in `src/lib/scoring/base-points.ts`
+    - Knockout logic: determine advancing team from both prediction and actual result
+    - Correct advancing team = 1 base point (regardless of scoreline)
+    - Correct advancing team + exact score = 3 base points (penalty winner must also match if actual result was penalties)
+    - Wrong advancing team = 0 points (even if scoreline matches)
+    - Group stage logic unchanged
+    - Update `src/lib/scoring/scoring-service.ts` to pass `isKnockout` flag
+    - Update `scripts/rescore-all.ts` with same logic
+    - Update rules page with examples table and knockout explanation
+    - Update README.md, requirements.md, design.md
+    - _Requirements: 5.1–5.7_

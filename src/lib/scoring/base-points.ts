@@ -1,16 +1,18 @@
 /**
  * Calculate base points for a prediction against an actual result.
  *
+ * GROUP STAGE:
  * - Exact score match: 3 points (1 for correct result + 2 for exact score)
- * - Correct result only: 1 point
+ * - Correct result only (win/draw/loss): 1 point
  * - Incorrect: 0 points
  *
- * For knockout matches decided by penalties (equal scores):
- * - Predicted draw + correct penalty winner + exact score: 3 points
- * - Predicted draw + correct penalty winner (wrong score): 1 point
- * - Predicted the advancing team to win outright (non-draw): 1 point
- * - Predicted draw + wrong penalty winner: 0 points
- * - Predicted the losing team to win outright: 0 points
+ * KNOCKOUT STAGE:
+ * Scoring is based on the advancing team, not the scoreline shape.
+ * - Correct advancing team: 1 point (regardless of predicted scoreline)
+ * - Correct advancing team + exact score: 3 points
+ *   - For outright wins: predicted score matches actual score
+ *   - For penalty results: predicted score matches AND predicted penalty winner matches
+ * - Wrong advancing team: 0 points (even if scoreline matches)
  */
 export function calculateBasePoints(
   predictedHome: number,
@@ -18,44 +20,21 @@ export function calculateBasePoints(
   actualHome: number,
   actualAway: number,
   predictedPenaltyWinner?: "home" | "away" | null,
-  actualPenaltyWinner?: "home" | "away" | null
+  actualPenaltyWinner?: "home" | "away" | null,
+  isKnockout?: boolean
 ): { basePoints: number; correctResult: boolean; correctExactScore: boolean } {
-  const isKnockoutPenalties = actualHome === actualAway && actualPenaltyWinner != null;
-
-  if (isKnockoutPenalties) {
-    // Knockout match decided by penalties
-    const predictedDraw = predictedHome === predictedAway;
-
-    if (predictedDraw) {
-      // Player predicted a draw — check penalty winner
-      const penaltyMatch = predictedPenaltyWinner === actualPenaltyWinner;
-
-      if (!penaltyMatch) {
-        // Wrong penalty winner
-        return { basePoints: 0, correctResult: false, correctExactScore: false };
-      }
-
-      // Predicted draw + correct penalty winner
-      const exactScore = predictedHome === actualHome && predictedAway === actualAway;
-      if (exactScore) {
-        return { basePoints: 3, correctResult: true, correctExactScore: true };
-      }
-      // Correct result (draw + right penalty winner) but not exact score
-      return { basePoints: 1, correctResult: true, correctExactScore: false };
-    }
-
-    // Player predicted an outright winner (non-draw) — check if they picked the advancing team
-    const predictedWinner = predictedHome > predictedAway ? "home" : "away";
-    if (predictedWinner === actualPenaltyWinner) {
-      // Correct advancing team predicted via outright win
-      return { basePoints: 1, correctResult: true, correctExactScore: false };
-    }
-
-    // Predicted the wrong team to win outright
-    return { basePoints: 0, correctResult: false, correctExactScore: false };
+  if (isKnockout) {
+    return calculateKnockoutBasePoints(
+      predictedHome,
+      predictedAway,
+      actualHome,
+      actualAway,
+      predictedPenaltyWinner ?? null,
+      actualPenaltyWinner ?? null
+    );
   }
 
-  // Regular match (group stage, or knockout decided in regular/extra time)
+  // Group stage scoring
   const exactScore = predictedHome === actualHome && predictedAway === actualAway;
   if (exactScore) {
     return { basePoints: 3, correctResult: true, correctExactScore: true };
@@ -69,6 +48,66 @@ export function calculateBasePoints(
   }
 
   return { basePoints: 0, correctResult: false, correctExactScore: false };
+}
+
+/**
+ * Knockout stage base points calculation.
+ *
+ * Step 1: Determine actual advancing team
+ * Step 2: Determine predicted advancing team
+ * Step 3: If wrong team → 0 points
+ * Step 4: If right team, check exact score for bonus
+ */
+function calculateKnockoutBasePoints(
+  predictedHome: number,
+  predictedAway: number,
+  actualHome: number,
+  actualAway: number,
+  predictedPenaltyWinner: "home" | "away" | null,
+  actualPenaltyWinner: "home" | "away" | null
+): { basePoints: number; correctResult: boolean; correctExactScore: boolean } {
+  // Determine actual advancing team
+  const actualAdvances: "home" | "away" =
+    actualHome > actualAway ? "home" :
+    actualAway > actualHome ? "away" :
+    actualPenaltyWinner!; // Must be set for completed knockout matches with equal scores
+
+  // Determine predicted advancing team
+  const predictedAdvances: "home" | "away" =
+    predictedHome > predictedAway ? "home" :
+    predictedAway > predictedHome ? "away" :
+    predictedPenaltyWinner!; // Must be set for knockout predictions with equal scores
+
+  // Wrong advancing team = always 0 points
+  if (predictedAdvances !== actualAdvances) {
+    return { basePoints: 0, correctResult: false, correctExactScore: false };
+  }
+
+  // Correct advancing team — check for exact score
+  const scoresMatch = predictedHome === actualHome && predictedAway === actualAway;
+
+  if (scoresMatch) {
+    // If actual result was decided by penalties, penalty winner must also match for exact score
+    const actualWasPenalties = actualHome === actualAway && actualPenaltyWinner != null;
+
+    if (actualWasPenalties) {
+      if (predictedPenaltyWinner === actualPenaltyWinner) {
+        // Exact drawn score + correct penalty winner
+        return { basePoints: 3, correctResult: true, correctExactScore: true };
+      }
+      // Scores match but different penalty winner — still right team, just not exact
+      // (This case: e.g., predicted 1-1 home pens, actual 1-1 home pens — would already match above)
+      // (Edge case: predicted 1-1 away outright is impossible since 1-1 is always a draw)
+      // Right team via different method, correct score but wrong penalty pick
+      return { basePoints: 1, correctResult: true, correctExactScore: false };
+    }
+
+    // Outright win with exact score match
+    return { basePoints: 3, correctResult: true, correctExactScore: true };
+  }
+
+  // Correct advancing team, wrong score
+  return { basePoints: 1, correctResult: true, correctExactScore: false };
 }
 
 type Outcome = "home" | "away" | "draw";

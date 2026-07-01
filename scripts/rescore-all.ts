@@ -24,25 +24,45 @@ function calculateBasePoints(
   actualHome: number,
   actualAway: number,
   predictedPenaltyWinner?: "home" | "away" | null,
-  actualPenaltyWinner?: "home" | "away" | null
+  actualPenaltyWinner?: "home" | "away" | null,
+  isKnockout?: boolean
 ): { basePoints: number; correctResult: boolean; correctExactScore: boolean } {
-  const isKnockoutPenalties = actualHome === actualAway && actualPenaltyWinner != null;
+  if (isKnockout) {
+    // Determine actual advancing team
+    const actualAdvances: "home" | "away" =
+      actualHome > actualAway ? "home" :
+      actualAway > actualHome ? "away" :
+      actualPenaltyWinner!;
 
-  if (isKnockoutPenalties) {
-    const predictedDraw = predictedHome === predictedAway;
-    const penaltyMatch = predictedPenaltyWinner === actualPenaltyWinner;
+    // Determine predicted advancing team
+    const predictedAdvances: "home" | "away" =
+      predictedHome > predictedAway ? "home" :
+      predictedAway > predictedHome ? "away" :
+      predictedPenaltyWinner!;
 
-    if (!predictedDraw || !penaltyMatch) {
+    // Wrong advancing team = always 0
+    if (predictedAdvances !== actualAdvances) {
       return { basePoints: 0, correctResult: false, correctExactScore: false };
     }
 
-    const exactScore = predictedHome === actualHome && predictedAway === actualAway;
-    if (exactScore) {
+    // Correct advancing team — check exact score
+    const scoresMatch = predictedHome === actualHome && predictedAway === actualAway;
+    if (scoresMatch) {
+      const actualWasPenalties = actualHome === actualAway && actualPenaltyWinner != null;
+      if (actualWasPenalties) {
+        if (predictedPenaltyWinner === actualPenaltyWinner) {
+          return { basePoints: 3, correctResult: true, correctExactScore: true };
+        }
+        return { basePoints: 1, correctResult: true, correctExactScore: false };
+      }
       return { basePoints: 3, correctResult: true, correctExactScore: true };
     }
+
+    // Right team, wrong score
     return { basePoints: 1, correctResult: true, correctExactScore: false };
   }
 
+  // Group stage
   const exactScore = predictedHome === actualHome && predictedAway === actualAway;
   if (exactScore) {
     return { basePoints: 3, correctResult: true, correctExactScore: true };
@@ -265,11 +285,13 @@ async function main() {
       let groupChanged = 0;
 
       for (const pred of predictions) {
+        const isKnockout = match.stage === "knockout";
         const { basePoints, correctResult, correctExactScore } = calculateBasePoints(
           pred.homeScore, pred.awayScore,
           actualHomeScore, actualAwayScore,
           pred.penaltyWinner as "home" | "away" | null,
-          penaltyWinner
+          penaltyWinner,
+          isKnockout
         );
 
         const oddsMultiplier = oddsLookup(pred);
